@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_marginTop="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/yunam"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@mipmap/yonam"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="연암공대 풋살장 예약"
+            android:textSize="25sp"
+            android:layout_toRightOf="@id/yunam"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+    
+    <LinearLayout
+        android:layout_marginTop="80sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="※풋살장 이용시간"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="월~금 09:00 ~ 18:00"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_marginTop="30sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="※준수사항"
+            android:gravity="center"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="뒷정리 철저, 음식물 반입금지"
+            android:textSize="20sp"
+            />
+
+        <Button
+            android:id="@+id/reservationbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="25sp"
+            android:layout_marginTop="80sp"
+            android:onClick="mClick"
+            android:background="#FE2E2E"
+            android:textColor="#FFFFFF"
+            android:text="   예약신청   "/>
+   </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

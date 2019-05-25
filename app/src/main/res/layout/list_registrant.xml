@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/reservationText">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="여기에 리스트뷰"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/reserve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예약신청"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="200dp"
+        android:background="#FE2E2E"
+        android:textColor="#FFFFFF"/>
+</RelativeLayout>
