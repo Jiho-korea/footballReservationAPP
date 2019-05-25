@@ -1,6 +1,7 @@
 package com.example.footballreservationapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ReservationPage extends AppCompatActivity {
+    private String month;
     private TextView tvDate;
     private GridAdapter gridAdapter;
     private ArrayList<String> dayList;
@@ -43,7 +45,7 @@ public class ReservationPage extends AppCompatActivity {
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-
+        month = curMonthFormat.format(date);
         tvDate.setText(curYearFormat.format(date)+ "/" + curMonthFormat.format(date));
 
         dayList = new ArrayList<String>();
@@ -72,15 +74,20 @@ public class ReservationPage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
-                    int day = Integer.parseInt(parent.getItemAtPosition(position).toString());
+                    final int day = Integer.parseInt(parent.getItemAtPosition(position).toString());
                     Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show();
                     RelativeLayout list = (RelativeLayout)findViewById(R.id.list);
                     RelativeLayout rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
+                    list.removeAllViews();
                     list.addView(rel);
                     rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(),"예약신청!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),RequestPage.class);
+                            intent.putExtra("Month",month);
+                            intent.putExtra("Date", day);
+                            startActivity(intent);
+
                         }
                     });
 
