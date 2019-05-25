@@ -10,4 +10,9 @@ public class RequestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_page);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
