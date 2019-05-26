@@ -8,7 +8,7 @@ import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static final String TABLE_NAME = " REGISTRANT";
+    static final String TABLE_NAME = "STUDENTS";
 
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -23,7 +23,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "SUBJECT TEXT NOT NULL, " +
                 "NAME TEXT NOT NULL, " +
                 "PHONE INTEGER NOT NULL," +
-                "DATE TEXT NOT NULL);";
+                "DATE TEXT NOT NULL," +
+                "STARTTIME TIME NOT NULL," +
+                "ENDTIME TIME NOT NULL);";
         sqLiteDatabase.execSQL(createQuery);
     }
 

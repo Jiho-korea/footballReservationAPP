@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class ReservationPage extends AppCompatActivity {
     private String month;
+    private TextView studentList;
     private TextView tvDate;
     private GridAdapter gridAdapter;
     private ArrayList<String> dayList;
@@ -80,6 +81,7 @@ public class ReservationPage extends AppCompatActivity {
                     RelativeLayout rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
                     list.removeAllViews();
                     list.addView(rel);
+                    studentList = rel.findViewById(R.id.studentlist);
                     rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
@@ -87,7 +89,6 @@ public class ReservationPage extends AppCompatActivity {
                             intent.putExtra("Month",month);
                             intent.putExtra("Date", day);
                             startActivity(intent);
-
                         }
                     });
 
