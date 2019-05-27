@@ -8,7 +8,7 @@ import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static final String TABLE_NAME = "STUDENTS";
+    static final String TABLE_NAME = "REGISTRANTS";
 
     public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -19,11 +19,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "Table onCreate");
         String createQuery = "CREATE TABLE " + TABLE_NAME +
-                "( SID INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "( SID INTEGER PRIMARY KEY , "+
                 "SUBJECT TEXT NOT NULL, " +
                 "NAME TEXT NOT NULL, " +
                 "PHONE INTEGER NOT NULL," +
-                "DATE TEXT NOT NULL," +
+                "DATE TEXT PRIMARY KEY," +
+                "PEOPLE INTEGER PRIMARY KEY," +
                 "STARTTIME TIME NOT NULL," +
                 "ENDTIME TIME NOT NULL);";
         sqLiteDatabase.execSQL(createQuery);

@@ -25,6 +25,7 @@ public class RequestPage extends AppCompatActivity {
     private EditText subjectEdit;
     private EditText nameEdit;
     private EditText phoneEdit;
+    private EditText peopleEdit;
     private EditText startTimehourEdit;
     private EditText startTimeminuteEdit;
     private EditText endTimehourEdit;
@@ -45,6 +46,7 @@ public class RequestPage extends AppCompatActivity {
         subjectEdit = (EditText)findViewById(R.id.subject);
         nameEdit = (EditText)findViewById(R.id.name);
         phoneEdit = (EditText)findViewById(R.id.phone);
+        peopleEdit = (EditText)findViewById(R.id.people);
         startTimehourEdit = (EditText)findViewById(R.id.starttimehour);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
         endTimehourEdit = (EditText)findViewById(R.id.endtimehour);
@@ -56,10 +58,10 @@ public class RequestPage extends AppCompatActivity {
         int day = intent.getIntExtra("Date",00);
         if(month.contains("0")){
             rmonth = month.replace("0","");
-            today = rmonth+day;
+            setToday(rmonth+day);
             date.setText(rmonth + " / " + day);
         }else{
-            today = month+day;
+            setToday(month+day);
             date.setText(month + " / " + day);
         }
 
@@ -67,24 +69,25 @@ public class RequestPage extends AppCompatActivity {
 
     public void mSubmit(View v){
         if(v.getId() == R.id.submit){
-            /*
+
             int sid = Integer.parseInt(sidEdit.getText().toString());
             String subject = subjectEdit.getText().toString();
             String name = nameEdit.getText().toString();
             int phone = Integer.parseInt(phoneEdit.getText().toString());
+            int people = Integer.parseInt(peopleEdit.getText().toString());
             String startTime = startTimehourEdit.getText().toString() + startTimeminuteEdit.getText().toString();
             String endTime = endTimehourEdit.getText().toString() + endTimeminuteEdit.getText().toString();
 
-            dbInsert("STUDENTS", sid,subject,name,phone,today,startTime,endTime);
+            dbInsert("REGISTRANTS", sid,subject,name,phone,people,today,startTime,endTime);
 
             db.close();
-            */
+
             Toast.makeText(this,"신청완료",Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
-    void dbInsert(String tableName, Integer sid, String subject , String name, Integer phone, String date ,String startTime, String endTime) {
+    void dbInsert(String tableName, Integer sid, String subject , String name, Integer phone, Integer people ,String date ,String startTime, String endTime) {
         Log.d("student data input", "Insert Data " + name);
 
         ContentValues contentValues = new ContentValues();
@@ -92,6 +95,7 @@ public class RequestPage extends AppCompatActivity {
         contentValues.put("SUBJECT", subject);
         contentValues.put("NAME", name);
         contentValues.put("PHONE", phone);
+        contentValues.put("PEOPLE", people);
         contentValues.put("DATE", date);
         contentValues.put("STARTTIME", startTime);
         contentValues.put("ENDTIME", endTime);
@@ -101,5 +105,12 @@ public class RequestPage extends AppCompatActivity {
         Log.d("student data input", "id: " + id);
     }
 
+    public String getToday() {
+        return today;
+    }
+
+    public void setToday(String today) {
+        this.today = today;
+    }
 
 }

@@ -160,6 +160,12 @@ public class ReservationPage extends AppCompatActivity {
         TextView tvItemGridView;
     }
 
+    public void reservationCheck(View v){
+        Intent intent = new Intent(this,ReservationCheckPage.class);
+        startActivity(intent);
+    }
+
+
 }
 
 

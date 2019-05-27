@@ -22,10 +22,12 @@
             android:textSize="20sp"
             />
         <Button
+            android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="예약확인"
+            android:onClick="reservationCheck"
             android:textColor="#6E6E6E"
             android:layout_margin="8dp"
             android:background="#F4FA58"

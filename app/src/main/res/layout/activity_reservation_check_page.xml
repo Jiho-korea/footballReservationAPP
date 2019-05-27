@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="40sp"
+    android:orientation="vertical"
+    tools:context=".RequestPage">
+    <TextView
+        android:id="@+id/top"
+        android:text="나의 예약 확인"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FF4000"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        />
+
+    <ListView
+        android:id="@+id/myReservationList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+
+    </ListView>
+
+
+</LinearLayout>
