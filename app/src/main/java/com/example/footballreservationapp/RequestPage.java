@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.sql.Time;
 
 public class RequestPage extends AppCompatActivity {
-
+    DatabaseHelper databaseHelper;
     SQLiteDatabase db;
 
     Intent intent;
@@ -35,7 +35,7 @@ public class RequestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_page);
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(this,"studentDB",null,1);
+        databaseHelper = new DatabaseHelper(this);
         db = databaseHelper.getWritableDatabase();
 
         intent = getIntent();
@@ -75,10 +75,10 @@ public class RequestPage extends AppCompatActivity {
             String name = nameEdit.getText().toString();
             int phone = Integer.parseInt(phoneEdit.getText().toString());
             int people = Integer.parseInt(peopleEdit.getText().toString());
-            String startTime = startTimehourEdit.getText().toString() + startTimeminuteEdit.getText().toString();
-            String endTime = endTimehourEdit.getText().toString() + endTimeminuteEdit.getText().toString();
+            String startTime = startTimehourEdit.getText().toString() + ":"+startTimeminuteEdit.getText().toString();
+            String endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
 
-            dbInsert("REGISTRANTS", sid,subject,name,phone,people,today,startTime,endTime);
+            dbInsert("registrants", sid,subject,name,phone,people,today,startTime,endTime);
 
             db.close();
 
@@ -91,7 +91,7 @@ public class RequestPage extends AppCompatActivity {
         Log.d("student data input", "Insert Data " + name);
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("SID", sid);
+        contentValues.put("_id", sid);
         contentValues.put("SUBJECT", subject);
         contentValues.put("NAME", name);
         contentValues.put("PHONE", phone);

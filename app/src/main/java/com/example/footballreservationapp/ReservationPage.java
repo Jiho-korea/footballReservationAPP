@@ -2,6 +2,7 @@ package com.example.footballreservationapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +26,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ReservationPage extends AppCompatActivity {
-    //dddasdasd
+    DatabaseHelper mHelper;
+
     private String month;
     private TextView studentList;
     private TextView tvDate;
@@ -37,6 +39,9 @@ public class ReservationPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservationpage);
+
+        mHelper = new DatabaseHelper(this);
+        SQLiteDatabase db = mHelper.getWritableDatabase();
 
         tvDate = (TextView)findViewById(R.id.tv_date);
         gridView =(GridView)findViewById(R.id.gridview);
@@ -161,9 +166,12 @@ public class ReservationPage extends AppCompatActivity {
     }
 
     public void reservationCheck(View v){
-        Intent intent = new Intent(this,ReservationCheckPage.class);
-        startActivity(intent);
+        if(v.getId() == R.id.check){
+            Intent intent = new Intent(this,ReservationCheckPage.class);
+            startActivity(intent);
+        }
     }
+
 
 
 }

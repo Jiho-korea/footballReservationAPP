@@ -8,10 +8,10 @@ import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    static final String TABLE_NAME = "REGISTRANTS";
+    static final String TABLE_NAME = "registrants";
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DatabaseHelper(Context context) {
+        super(context, "studentDB.db", null, 3);
         Log.d(TAG, "DataBaseHelper 생성자 호출");
     }
 
@@ -19,13 +19,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "Table onCreate");
         String createQuery = "CREATE TABLE " + TABLE_NAME +
-                "( SID INTEGER PRIMARY KEY , "+
+                "(_id INTEGER PRIMARY KEY, "+
                 "SUBJECT TEXT NOT NULL, " +
                 "NAME TEXT NOT NULL, " +
                 "PHONE INTEGER NOT NULL," +
-                "DATE TEXT PRIMARY KEY," +
-                "PEOPLE INTEGER PRIMARY KEY," +
-                "STARTTIME TIME NOT NULL," +
+                "DATE TEXT NOT NULL," +
+                "PEOPLE INTEGER NOT NULL, " +
+                "STARTTIME TIME NOT NULL, " +
                 "ENDTIME TIME NOT NULL);";
         sqLiteDatabase.execSQL(createQuery);
     }
@@ -33,7 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         Log.d(TAG, "Table onUpgrade");
-        String createQuery = "DROP TABLE IF EXISTS " + TABLE_NAME + ";";
+        String createQuery = "DROP TABLE IF EXISTS " + TABLE_NAME ;
         sqLiteDatabase.execSQL(createQuery);
+        onCreate(sqLiteDatabase);
     }
 }
