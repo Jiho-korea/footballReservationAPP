@@ -122,6 +122,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ems="3"
                 android:text="인원 : "
                 android:textSize="20sp"/>
             <EditText
@@ -205,7 +206,7 @@
         android:padding="10dp"
         android:text="예약신청"
         android:onClick="mSubmit"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textColor="#6E6E6E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

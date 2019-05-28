@@ -58,10 +58,10 @@ public class RequestPage extends AppCompatActivity {
         int day = intent.getIntExtra("Date",00);
         if(month.contains("0")){
             rmonth = month.replace("0","");
-            setToday(rmonth+day);
+            setToday(rmonth+"/"+day);
             date.setText(rmonth + " / " + day);
         }else{
-            setToday(month+day);
+            setToday(month+"/"+day);
             date.setText(month + " / " + day);
         }
 
@@ -75,7 +75,7 @@ public class RequestPage extends AppCompatActivity {
             String name = nameEdit.getText().toString();
             int phone = Integer.parseInt(phoneEdit.getText().toString());
             int people = Integer.parseInt(peopleEdit.getText().toString());
-            String startTime = startTimehourEdit.getText().toString() + ":"+startTimeminuteEdit.getText().toString();
+            String startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
             String endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
 
             dbInsert("registrants", sid,subject,name,phone,people,today,startTime,endTime);

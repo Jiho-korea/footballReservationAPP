@@ -22,9 +22,9 @@ public class ReservationCheckPage extends AppCompatActivity {
         list = findViewById(R.id.myReservationList);
 
         SimpleCursorAdapter adapter = null;
-        adapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_2,
-                cursor,new String[]{"_id","DATE"},
-                new int[]{android.R.id.text1, android.R.id.text2});
+        adapter = new SimpleCursorAdapter(this, R.layout.myreservation,
+                cursor,new String[]{"DATE","STARTTIME","ENDTIME","PEOPLE","NAME"},
+                new int[]{R.id.reservationday ,R.id.reservationstarttime,R.id.reservationendtime ,R.id.reservationpeople ,R.id.reservationname});
 
         list.setAdapter(adapter);
     }
