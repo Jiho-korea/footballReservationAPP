@@ -17,14 +17,14 @@ public class ReservationCheckPage extends AppCompatActivity {
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM registrants",null);
+        Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE SID='21660003'",null);
 
         list = findViewById(R.id.myReservationList);
 
         SimpleCursorAdapter adapter = null;
         adapter = new SimpleCursorAdapter(this, R.layout.myreservation,
-                cursor,new String[]{"DATE","STARTTIME","ENDTIME","PEOPLE","NAME"},
-                new int[]{R.id.reservationday ,R.id.reservationstarttime,R.id.reservationendtime ,R.id.reservationpeople ,R.id.reservationname});
+                cursor,new String[]{"DATE","STARTTIME","ENDTIME","PEOPLE","RESERVATIONDAY"},
+                new int[]{R.id.reservationday ,R.id.reservationstarttime,R.id.reservationendtime ,R.id.reservationpeople ,R.id.dayreserved});
 
         list.setAdapter(adapter);
     }

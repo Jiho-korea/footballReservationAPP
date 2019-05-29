@@ -13,6 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class RequestPage extends AppCompatActivity {
     DatabaseHelper databaseHelper;
@@ -20,6 +23,7 @@ public class RequestPage extends AppCompatActivity {
 
     Intent intent;
     private String today;
+    private String reservationDay;
     private Button submitBtn;
     private EditText sidEdit;
     private EditText subjectEdit;
@@ -54,17 +58,10 @@ public class RequestPage extends AppCompatActivity {
 
         TextView date = (TextView)findViewById(R.id.date);
         String month = intent.getStringExtra("Month");
-        String rmonth;
+        reservationDay = month + "/" +intent.getStringExtra("ReservationDay");
         int day = intent.getIntExtra("Date",00);
-        if(month.contains("0")){
-            rmonth = month.replace("0","");
-            setToday(rmonth+"/"+day);
-            date.setText(rmonth + " / " + day);
-        }else{
-            setToday(month+"/"+day);
-            date.setText(month + " / " + day);
-        }
-
+        today = intent.getStringExtra("Today");
+        date.setText(today);
     }
 
     public void mSubmit(View v){
@@ -78,7 +75,7 @@ public class RequestPage extends AppCompatActivity {
             String startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
             String endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
 
-            dbInsert("registrants", sid,subject,name,phone,people,today,startTime,endTime);
+            dbInsert("registrants", sid,subject,name,phone,people,today,startTime,endTime,reservationDay);
 
             db.close();
 
@@ -87,11 +84,11 @@ public class RequestPage extends AppCompatActivity {
         }
     }
 
-    void dbInsert(String tableName, Integer sid, String subject , String name, Integer phone, Integer people ,String date ,String startTime, String endTime) {
+    void dbInsert(String tableName, Integer sid, String subject , String name, Integer phone, Integer people ,String date ,String startTime, String endTime,String reservationDay) {
         Log.d("student data input", "Insert Data " + name);
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("_id", sid);
+        contentValues.put("SID", sid);
         contentValues.put("SUBJECT", subject);
         contentValues.put("NAME", name);
         contentValues.put("PHONE", phone);
@@ -99,6 +96,7 @@ public class RequestPage extends AppCompatActivity {
         contentValues.put("DATE", date);
         contentValues.put("STARTTIME", startTime);
         contentValues.put("ENDTIME", endTime);
+        contentValues.put("RESERVATIONDAY", reservationDay);
         // 리턴값: 생성된 데이터의 id
         long id = db.insert(tableName, null, contentValues);
 

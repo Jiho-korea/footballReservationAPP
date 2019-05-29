@@ -2,6 +2,7 @@ package com.example.footballreservationapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +29,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ReservationPage extends AppCompatActivity {
+    ListView studentList;
     DatabaseHelper mHelper;
 
+    private String today;
     private String month;
-    private TextView studentList;
     private TextView tvDate;
     private GridAdapter gridAdapter;
     private ArrayList<String> dayList;
@@ -52,6 +56,8 @@ public class ReservationPage extends AppCompatActivity {
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA);
+        final String reservationDay = curDayFormat.format(now);
+
         month = curMonthFormat.format(date);
         tvDate.setText(curYearFormat.format(date)+ "/" + curMonthFormat.format(date));
 
@@ -75,6 +81,8 @@ public class ReservationPage extends AppCompatActivity {
        setCalendarDate(mCal.get(Calendar.DAY_OF_MONTH)+1);
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
+        // WHERE DATE=" + "'" + today +"'
+        final Cursor cursor = db.rawQuery("SELECT * FROM registrants",null);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,13 +95,31 @@ public class ReservationPage extends AppCompatActivity {
                     RelativeLayout rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
                     list.removeAllViews();
                     list.addView(rel);
-                    studentList = rel.findViewById(R.id.studentlist);
+                    studentList = rel.findViewById(R.id.studentList);
+
+                    SimpleCursorAdapter adapter = null;
+                    adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday,
+                            cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE"},
+                            new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber});
+
+                    studentList.setAdapter(adapter);
+
                     rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getApplicationContext(),RequestPage.class);
+                            String rmonth;
+                            if(month.contains("0")){
+                                rmonth = month.replace("0","");
+                                setToday(rmonth+"/"+day);
+
+                            }else{
+                                setToday(month+"/"+day);
+                            }
                             intent.putExtra("Month",month);
                             intent.putExtra("Date", day);
+                            intent.putExtra("Today", today);
+                            intent.putExtra("ReservationDay", reservationDay);
                             startActivity(intent);
                         }
                     });
@@ -172,7 +198,13 @@ public class ReservationPage extends AppCompatActivity {
         }
     }
 
+    public String getToday() {
+        return today;
+    }
 
+    public void setToday(String today) {
+        this.today = today;
+    }
 
 }
 

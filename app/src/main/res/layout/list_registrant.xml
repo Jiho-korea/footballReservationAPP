@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/reservationText">
-    <TextView
-        android:id="@+id/studentlist"
+    <ListView
+        android:id="@+id/studentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="여기에 리스트뷰"
         android:textSize="30sp"/>
 
     <Button

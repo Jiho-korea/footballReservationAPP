@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String TABLE_NAME = "registrants";
 
     public DatabaseHelper(Context context) {
-        super(context, "studentDB.db", null, 4);
+        super(context, "studentDB.db", null, 5);
         Log.d(TAG, "DataBaseHelper 생성자 호출");
     }
 
@@ -19,14 +19,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "Table onCreate");
         String createQuery = "CREATE TABLE " + TABLE_NAME +
-                "(_id INTEGER PRIMARY KEY, "+
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "SID INTEGER NOT NULL, " +
                 "SUBJECT TEXT NOT NULL, " +
                 "NAME TEXT NOT NULL, " +
-                "PHONE INTEGER NOT NULL," +
+                "PHONE INTEGER," +
                 "DATE TEXT NOT NULL," +
                 "PEOPLE INTEGER NOT NULL, " +
                 "STARTTIME TIME NOT NULL, " +
-                "ENDTIME TIME NOT NULL);";
+                "ENDTIME TIME NOT NULL, " +
+                "RESERVATIONDAY STRING NOT NULL);";
         sqLiteDatabase.execSQL(createQuery);
     }
 
