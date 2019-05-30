@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final String TABLE_NAME = "registrants";
 
     public DatabaseHelper(Context context) {
-        super(context, "studentDB.db", null, 5);
+        super(context, "studentDB.db", null, 6);
         Log.d(TAG, "DataBaseHelper 생성자 호출");
     }
 

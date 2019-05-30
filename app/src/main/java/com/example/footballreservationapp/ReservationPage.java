@@ -34,18 +34,22 @@ public class ReservationPage extends AppCompatActivity {
 
     private String today;
     private String month;
+    private String day;
     private TextView tvDate;
     private GridAdapter gridAdapter;
+    private RelativeLayout listlayout;
+
     private ArrayList<String> dayList;
     private GridView gridView;
     private Calendar mCal;
+    private  SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservationpage);
 
         mHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        db = mHelper.getWritableDatabase();
 
         tvDate = (TextView)findViewById(R.id.tv_date);
         gridView =(GridView)findViewById(R.id.gridview);
@@ -82,40 +86,50 @@ public class ReservationPage extends AppCompatActivity {
         gridAdapter = new GridAdapter(getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
         // WHERE DATE=" + "'" + today +"'
-        final Cursor cursor = db.rawQuery("SELECT * FROM registrants",null);
+
+
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
-                    final int day = Integer.parseInt(parent.getItemAtPosition(position).toString());
+                    String rmonth;
+                    day = parent.getItemAtPosition(position).toString();
+                    if(month.contains("0")){
+                        rmonth = month.replace("0","");
+                        setToday(rmonth+"/"+day);
+
+                    }else{
+                        setToday(month+"/"+day);
+                    }
+
+                    final Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE DATE= " +"'" + today + "'",null);
+
                     Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show();
-                    RelativeLayout list = (RelativeLayout)findViewById(R.id.list);
+                    listlayout = (RelativeLayout)findViewById(R.id.list);
                     RelativeLayout rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
-                    list.removeAllViews();
-                    list.addView(rel);
+                    listlayout.removeAllViews();
+                    listlayout.addView(rel);
                     studentList = rel.findViewById(R.id.studentList);
+
+
 
                     SimpleCursorAdapter adapter = null;
                     adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday,
-                            cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE"},
-                            new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber});
+                            cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"},
+                            new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber, R.id.personwhoreserve});
 
                     studentList.setAdapter(adapter);
+
+
 
                     rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getApplicationContext(),RequestPage.class);
-                            String rmonth;
-                            if(month.contains("0")){
-                                rmonth = month.replace("0","");
-                                setToday(rmonth+"/"+day);
 
-                            }else{
-                                setToday(month+"/"+day);
-                            }
                             intent.putExtra("Month",month);
                             intent.putExtra("Date", day);
                             intent.putExtra("Today", today);
@@ -206,6 +220,11 @@ public class ReservationPage extends AppCompatActivity {
         this.today = today;
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
 
 

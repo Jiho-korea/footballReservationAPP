@@ -110,5 +110,4 @@ public class RequestPage extends AppCompatActivity {
     public void setToday(String today) {
         this.today = today;
     }
-
 }
