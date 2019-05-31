@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -97,6 +98,10 @@ public class ReservationPage extends AppCompatActivity {
                 try{
                     String rmonth;
                     day = parent.getItemAtPosition(position).toString();
+
+                    listlayout = (RelativeLayout)findViewById(R.id.list);
+
+                    int intday = Integer.parseInt(day);
                     if(month.contains("0")){
                         rmonth = month.replace("0","");
                         setToday(rmonth+"/"+day);
@@ -139,7 +144,8 @@ public class ReservationPage extends AppCompatActivity {
                     });
 
                 }catch(NumberFormatException e){
-
+                    view.setBackground(new ColorDrawable(Color.WHITE));
+                    listlayout.removeAllViews();
                 }
 
             }
