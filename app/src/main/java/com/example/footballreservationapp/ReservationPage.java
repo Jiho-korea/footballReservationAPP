@@ -32,13 +32,15 @@ import java.util.Map;
 public class ReservationPage extends AppCompatActivity {
     ListView studentList;
     DatabaseHelper mHelper;
-
+    private RelativeLayout rel;
     private String today;
     private String month;
     private String day;
     private TextView tvDate;
     private GridAdapter gridAdapter;
     private RelativeLayout listlayout;
+
+    SimpleCursorAdapter adapter;
 
     private ArrayList<String> dayList;
     private GridView gridView;
@@ -94,6 +96,7 @@ public class ReservationPage extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
                     String rmonth;
@@ -114,14 +117,14 @@ public class ReservationPage extends AppCompatActivity {
 
                     Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show();
                     listlayout = (RelativeLayout)findViewById(R.id.list);
-                    RelativeLayout rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
+                    rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
                     listlayout.removeAllViews();
                     listlayout.addView(rel);
                     studentList = rel.findViewById(R.id.studentList);
 
 
 
-                    SimpleCursorAdapter adapter = null;
+                    adapter = null;
                     adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday,
                             cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"},
                             new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber, R.id.personwhoreserve});
@@ -154,7 +157,7 @@ public class ReservationPage extends AppCompatActivity {
 
     private void setCalendarDate(int month){
         mCal.set(Calendar.MONTH, month-1);
-        for(int i = 0 ; i<mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++){
+        for(int i = 0 ; i<mCal.getActualMaximum(Calendar.DAY_OF_MONTH)-1; i++){
             dayList.add(""+ (i+1));
         }
     }
@@ -226,11 +229,20 @@ public class ReservationPage extends AppCompatActivity {
         this.today = today;
     }
 
-
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onRestart() {
+        super.onRestart();
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
+        final Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE DATE= " +"'" + today + "'",null);
+
+        adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday,
+                cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"},
+                new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber, R.id.personwhoreserve});
+        studentList.setAdapter(adapter);
+        listlayout.addView(rel);
     }
+
 }
 
 

@@ -28,4 +28,6 @@ public class ReservationCheckPage extends AppCompatActivity {
 
         list.setAdapter(adapter);
     }
+
+
 }
