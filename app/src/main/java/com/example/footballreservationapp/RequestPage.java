@@ -20,7 +20,10 @@ import java.util.Locale;
 public class RequestPage extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
-
+/*
+아래를 보면 필드가 상당히 많은 데 전부
+사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
+ */
     Intent intent;
     private String today;
     private String reservationDay;
@@ -42,7 +45,7 @@ public class RequestPage extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         db = databaseHelper.getWritableDatabase();
 
-        intent = getIntent();
+        intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다.
 
         submitBtn = (Button)findViewById(R.id.submit);
 
@@ -64,9 +67,10 @@ public class RequestPage extends AppCompatActivity {
         date.setText(today);
     }
 
-    public void mSubmit(View v){
+    public void mSubmit(View v){  // 노란색 예약신청 버튼 클릭시 사용자가 입력한 정보를 db에 넣는 작업을 합니다. ㅎㅎ
         if(v.getId() == R.id.submit){
-
+            // 학번 학과 이름 전화번호 인원 시작시간 끝시간 을 db에 넣어주네요
+            //수정해야할 부분은 시간과 관련된 부분입니다.
             int sid = Integer.parseInt(sidEdit.getText().toString());
             String subject = subjectEdit.getText().toString();
             String name = nameEdit.getText().toString();
