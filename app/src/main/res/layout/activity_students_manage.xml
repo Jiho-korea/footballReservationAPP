@@ -4,30 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="40sp"
     android:orientation="vertical"
     android:background="@color/colorBackground"
-    tools:context=".RequestPage">
-    <TextView
-        android:id="@+id/top"
-        android:text="나의 예약 확인"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#FF4000"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        />
-
+    tools:context=".StudentsManageActivity">
     <ListView
-        android:id="@+id/myReservationList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       >
-
-
+        android:id="@+id/studentslistView"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:divider="@color/colorListViewDivider">
     </ListView>
-
-
 </LinearLayout>

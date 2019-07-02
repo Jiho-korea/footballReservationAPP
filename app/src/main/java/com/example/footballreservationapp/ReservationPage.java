@@ -30,6 +30,13 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ReservationPage extends AppCompatActivity {
+    int sid;
+    String password;
+    String subject;
+    String name;
+    String phone;
+    int manager;
+
     ListView studentList;
     DatabaseHelper mHelper;
     private RelativeLayout rel; // 날짜 클릭시 하단에 채워지는 렐러티브레이아웃(list_registrant.xml) .. 리스트뷰와 예약신청 버튼을 가지고있음
@@ -50,6 +57,14 @@ public class ReservationPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservationpage);
+
+        Intent intent = getIntent();
+        sid = intent.getIntExtra("sid", 0);
+        password = intent.getStringExtra("password");
+        subject = intent.getStringExtra("subject");
+        name = intent.getStringExtra("name");
+        phone = intent.getStringExtra("phone");
+        manager = intent.getIntExtra("manager",0);
 
         mHelper = new DatabaseHelper(this);
         db = mHelper.getWritableDatabase(); // db 생성후 테이블 만듦
@@ -137,7 +152,12 @@ public class ReservationPage extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
                             Intent intent = new Intent(getApplicationContext(),RequestPage.class);
-
+                            intent.putExtra("sid", sid);
+                            intent.putExtra("password", password);
+                            intent.putExtra("subject", subject);
+                            intent.putExtra("name",name);
+                            intent.putExtra("phone",phone);
+                            intent.putExtra("manager",manager);
                             intent.putExtra("Month",month);
                             intent.putExtra("Date", day);
                             intent.putExtra("Today", today);
@@ -244,6 +264,5 @@ public class ReservationPage extends AppCompatActivity {
     }
 
 }
-
 
 

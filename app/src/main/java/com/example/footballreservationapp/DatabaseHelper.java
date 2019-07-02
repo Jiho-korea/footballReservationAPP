@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /* DatabaseHelper 의 생성자이다 중요한건 매개변수로 주는 version 이다 상승 시키면서 db를 업그레이드 가능하다 업그레이드시동작을
     onUpgrage 에서 정의하는데 주로 테이블 삭제후 재생성임 ㅇㅇ*/
     public DatabaseHelper(Context context) {
-        super(context, "studentDB.db", null, 6);
+        super(context, "studentDB.db", null, 7);
         Log.d(TAG, "DataBaseHelper 생성자 호출");
     }
 // onCreate 에선 테이블을 만드는 코드를 넣어줘야한다. 매개변수로 준 sqLiteDatabase 의 execSQL 메소드로 테이블을 만드는 쿼리를 주며 테이블생성
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "NAME TEXT NOT NULL, " +
                 "PHONE INTEGER," +
                 "DATE TIME NOT NULL," +
-                "PEOPLE INTEGER NOT NULL, " +
+                "PEOPLE TEXT NOT NULL, " +
                 "STARTTIME TIME NOT NULL, " +
                 "ENDTIME TIME NOT NULL, " +
                 "RESERVATIONDAY STRING NOT NULL);";

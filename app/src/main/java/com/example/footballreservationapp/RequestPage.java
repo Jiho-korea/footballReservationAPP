@@ -20,18 +20,21 @@ import java.util.Locale;
 public class RequestPage extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
+
+    int sid;
+    String password;
+    String subject;
+    String name;
+    String phone;
+    int manager;
+
 /*
 아래를 보면 필드가 상당히 많은 데 전부
 사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
  */
-    Intent intent;
     private String today;
     private String reservationDay;
     private Button submitBtn;
-    private EditText sidEdit;
-    private EditText subjectEdit;
-    private EditText nameEdit;
-    private EditText phoneEdit;
     private EditText peopleEdit;
     private EditText startTimehourEdit;
     private EditText startTimeminuteEdit;
@@ -42,6 +45,14 @@ public class RequestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_page);
 
+        Intent intent = getIntent();
+        sid = intent.getIntExtra("sid", 0);
+        password = intent.getStringExtra("password");
+        subject = intent.getStringExtra("subject");
+        name = intent.getStringExtra("name");
+        phone = intent.getStringExtra("phone");
+        manager = intent.getIntExtra("manager",0);
+
         databaseHelper = new DatabaseHelper(this);
         db = databaseHelper.getWritableDatabase();
 
@@ -49,10 +60,6 @@ public class RequestPage extends AppCompatActivity {
 
         submitBtn = (Button)findViewById(R.id.submit);
 
-        sidEdit = (EditText)findViewById(R.id.sid);
-        subjectEdit = (EditText)findViewById(R.id.subject);
-        nameEdit = (EditText)findViewById(R.id.name);
-        phoneEdit = (EditText)findViewById(R.id.phone);
         peopleEdit = (EditText)findViewById(R.id.people);
         startTimehourEdit = (EditText)findViewById(R.id.starttimehour);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
@@ -71,10 +78,7 @@ public class RequestPage extends AppCompatActivity {
         if(v.getId() == R.id.submit){
             // 학번 학과 이름 전화번호 인원 시작시간 끝시간 을 db에 넣어주네요
             //수정해야할 부분은 시간과 관련된 부분입니다.
-            int sid = Integer.parseInt(sidEdit.getText().toString());
-            String subject = subjectEdit.getText().toString();
-            String name = nameEdit.getText().toString();
-            int phone = Integer.parseInt(phoneEdit.getText().toString());
+
             int people = Integer.parseInt(peopleEdit.getText().toString());
             String startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
             String endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
@@ -88,7 +92,7 @@ public class RequestPage extends AppCompatActivity {
         }
     }
 
-    void dbInsert(String tableName, Integer sid, String subject , String name, Integer phone, Integer people ,String date ,String startTime, String endTime,String reservationDay) {
+    void dbInsert(String tableName, Integer sid, String subject , String name, String phone, Integer people ,String date ,String startTime, String endTime,String reservationDay) {
         Log.d("student data input", "Insert Data " + name);
 
         ContentValues contentValues = new ContentValues();

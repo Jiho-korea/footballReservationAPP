@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="40sp"
+    android:background="@color/colorBackground"
     tools:context=".RequestPage">
     <TextView
         android:id="@+id/top"
@@ -50,78 +51,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="학번 : "
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/sid"
-                android:inputType="number"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="학과 : "
-                android:textSize="20sp"/>
-
-            <EditText
-                android:id="@+id/subject"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이름 : "
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="전화번호 : "
-                android:textSize="20sp"/>
-            <EditText
-                android:id="@+id/phone"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="'-' 제외"
-                android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="인원 : "
                 android:textSize="20sp"/>
             <EditText
@@ -133,82 +62,86 @@
                 android:textSize="20sp"
                 />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/timeset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20sp"
+            android:text=" 이용 시간 "
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/editlist"
+            app:layout_constraintBottom_toTopOf="@id/submit"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeset" >
+            <EditText
+                android:id="@+id/starttimehour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2"
+                android:inputType="time"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="25sp"/>
+            <EditText
+                android:id="@+id/starttimeminute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2"
+                android:inputType="time"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" ~ "
+                android:textSize="25sp"/>
+            <EditText
+                android:id="@+id/endtimehour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2"
+                android:inputType="time"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="25sp"/>
+            <EditText
+                android:id="@+id/endtimeminute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="2"
+                android:inputType="time"
+                />
+        </LinearLayout>
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/timeset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=" 이용 시간 "
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editlist"
-        app:layout_constraintBottom_toTopOf="@id/submit"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timeset" >
-        <EditText
-            android:id="@+id/starttimehour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="2"
-            android:inputType="time"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="25sp"/>
-        <EditText
-            android:id="@+id/starttimeminute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="2"
-            android:inputType="time"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" ~ "
-            android:textSize="25sp"/>
-        <EditText
-            android:id="@+id/endtimehour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="2"
-            android:inputType="time"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="25sp"/>
-        <EditText
-            android:id="@+id/endtimeminute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="2"
-            android:inputType="time"
-            />
-    </LinearLayout>
+
     <Button
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#F4FA58"
+        android:background="@color/colorRequestButton"
+        android:layout_marginTop="70sp"
         android:padding="10dp"
         android:text="예약신청"
         android:onClick="mSubmit"
         android:textSize="17sp"
         android:textColor="#6E6E6E"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
