@@ -33,6 +33,7 @@ public class RequestPage extends AppCompatActivity {
 사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
  */
     private String today;
+    private String todayDate;
     private String reservationDay;
     private Button submitBtn;
     private EditText peopleEdit;
@@ -60,6 +61,7 @@ public class RequestPage extends AppCompatActivity {
 
         submitBtn = (Button)findViewById(R.id.submit);
 
+        todayDate = intent.getStringExtra("todayDate");
         peopleEdit = (EditText)findViewById(R.id.people);
         startTimehourEdit = (EditText)findViewById(R.id.starttimehour);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);

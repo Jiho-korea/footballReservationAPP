@@ -20,7 +20,7 @@ public class ReservationCheckPage extends AppCompatActivity {
         Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE SID='21660003'",null); // 학번을 조건으로 검색 여기선 그냥 줬지만 나중에 로그인 기능이 생긴다면 자동으로 되야 겠지요ㅈ
 
         list = findViewById(R.id.myReservationList);
-
+        //여기
         SimpleCursorAdapter adapter = null;
         adapter = new SimpleCursorAdapter(this, R.layout.myreservation, // 이레이아웃의
                 cursor,new String[]{"DATE","STARTTIME","ENDTIME","PEOPLE","RESERVATIONDAY"}, // 이런 속성 정보들을

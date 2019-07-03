@@ -41,8 +41,10 @@ public class ReservationPage extends AppCompatActivity {
     DatabaseHelper mHelper;
     private RelativeLayout rel; // 날짜 클릭시 하단에 채워지는 렐러티브레이아웃(list_registrant.xml) .. 리스트뷰와 예약신청 버튼을 가지고있음
     private String today; //today 필드는 오늘 날짜를 "월/일" 형태의 문자열로 갖고있다. 코드는 밑에서 나오고 사용자가 예약신청을 눌렀을때 날짜 던져주기 위함임
+    private String year;
     private String month; // 월(한자리 달일경우 0포함되있는)
     private String day; // 일
+    private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
     private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터
     private RelativeLayout listlayout; // 달력하단 빈 렐러비트 레이아웃 이안이 rel 렐러티브
@@ -79,9 +81,9 @@ public class ReservationPage extends AppCompatActivity {
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA); //현재날짜를 포맷팅해서 사용하도록 포맷정하는중
         final String reservationDay = curDayFormat.format(now);
-
+        year = curYearFormat.format(date);
         month = curMonthFormat.format(date);
-        tvDate.setText(curYearFormat.format(date)+ "/" + curMonthFormat.format(date));
+        tvDate.setText(year+ "-" + month);
 
         dayList = new ArrayList<String>();
         dayList.add("일");
@@ -116,7 +118,7 @@ public class ReservationPage extends AppCompatActivity {
                 try{
                     String rmonth;
                     day = parent.getItemAtPosition(position).toString(); // 클릭한 날짜 얻어냄
-
+                    setTodayDate(year + "-" + month + "-" + day);
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
                     int intday = Integer.parseInt(day);
@@ -138,7 +140,7 @@ public class ReservationPage extends AppCompatActivity {
                     studentList = rel.findViewById(R.id.studentList);
 
 
-
+                    //여기
                     adapter = null;
                     adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday, // 리스트뷰의 항목뷰입니다. 두줄밑 확인
                             cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"}, // 이 이름들은 속성 이름입니다. 이런 속성 정보를
@@ -161,6 +163,7 @@ public class ReservationPage extends AppCompatActivity {
                             intent.putExtra("Month",month);
                             intent.putExtra("Date", day);
                             intent.putExtra("Today", today);
+                            intent.putExtra("todayDate", todayDate);
                             intent.putExtra("ReservationDay", reservationDay);
                             startActivity(intent);
                         }
@@ -247,6 +250,14 @@ public class ReservationPage extends AppCompatActivity {
 
     public void setToday(String today) {
         this.today = today;
+    }
+
+    public String getTodayDate() {
+        return todayDate;
+    }
+
+    public void setTodayDate(String todayDate) {
+        this.todayDate = todayDate;
     }
 
     @Override
