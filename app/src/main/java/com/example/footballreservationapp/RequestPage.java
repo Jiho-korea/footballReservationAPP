@@ -3,6 +3,7 @@ package com.example.footballreservationapp;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -36,6 +44,9 @@ public class RequestPage extends AppCompatActivity {
     private String todayDate;
     private String reservationDay;
     private Button submitBtn;
+    int people;
+    String startTime;
+    String endTime;
     private EditText peopleEdit;
     private EditText startTimehourEdit;
     private EditText startTimeminuteEdit;
@@ -70,7 +81,7 @@ public class RequestPage extends AppCompatActivity {
 
         TextView date = (TextView)findViewById(R.id.date);
         String month = intent.getStringExtra("Month");
-        reservationDay = month + "/" +intent.getStringExtra("ReservationDay");
+        reservationDay = month + "-" +intent.getStringExtra("ReservationDay");
         int day = intent.getIntExtra("Date",00);
         today = intent.getStringExtra("Today");
         date.setText(today);
@@ -78,39 +89,52 @@ public class RequestPage extends AppCompatActivity {
 
     public void mSubmit(View v){  // 노란색 예약신청 버튼 클릭시 사용자가 입력한 정보를 db에 넣는 작업을 합니다. ㅎㅎ
         if(v.getId() == R.id.submit){
-            // 학번 학과 이름 전화번호 인원 시작시간 끝시간 을 db에 넣어주네요
-            //수정해야할 부분은 시간과 관련된 부분입니다.
+            try{
+                people = Integer.parseInt(peopleEdit.getText().toString());
+                startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
+                endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
+                if(people != 0){
+                    if(startTime.trim().equals(":")) {
+                        Toast.makeText(RequestPage.this, "시작시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    }else if(endTime.trim().equals(":")){
+                        Toast.makeText(RequestPage.this, "종료시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try{
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success")   ;
+                                    if(success){
+                                        Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    }
+                                    else{
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                                        builder.setMessage("예약신청에 실패하셨습니다")
+                                                .setNegativeButton("다시 시도", null)
+                                                .create()
+                                                .show();
 
-            int people = Integer.parseInt(peopleEdit.getText().toString());
-            String startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
-            String endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
+                                    }
+                                }
+                                catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+                        ReserveRequest reserveRequest = new ReserveRequest(sid,todayDate,people,startTime,endTime, reservationDay ,responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+                        queue.add(reserveRequest);
+                    }
+                }else{
+                    Toast.makeText(RequestPage.this, "1명 이상의 인원을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                }
 
-            dbInsert("registrants", sid,subject,name,phone,people,today,startTime,endTime,reservationDay);
-
-            db.close();
-
-            Toast.makeText(this,"신청완료",Toast.LENGTH_SHORT).show();
-            finish();
+            }catch(NumberFormatException e){
+                Toast.makeText(RequestPage.this, "사용인원을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+            }
         }
-    }
-
-    void dbInsert(String tableName, Integer sid, String subject , String name, String phone, Integer people ,String date ,String startTime, String endTime,String reservationDay) {
-        Log.d("student data input", "Insert Data " + name);
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("SID", sid);
-        contentValues.put("SUBJECT", subject);
-        contentValues.put("NAME", name);
-        contentValues.put("PHONE", phone);
-        contentValues.put("PEOPLE", people);
-        contentValues.put("DATE", date);
-        contentValues.put("STARTTIME", startTime);
-        contentValues.put("ENDTIME", endTime);
-        contentValues.put("RESERVATIONDAY", reservationDay);
-        // 리턴값: 생성된 데이터의 id
-        long id = db.insert(tableName, null, contentValues);
-
-        Log.d("student data input", "id: " + id);
     }
 
     public String getToday() {

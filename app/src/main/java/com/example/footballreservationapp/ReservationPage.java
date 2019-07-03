@@ -2,10 +2,9 @@ package com.example.footballreservationapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ColorDrawable;;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,12 +13,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
 
 public class ReservationPage extends AppCompatActivity {
     int sid;
@@ -38,7 +43,6 @@ public class ReservationPage extends AppCompatActivity {
     int manager;
 
     ListView studentList;
-    DatabaseHelper mHelper;
     private RelativeLayout rel; // 날짜 클릭시 하단에 채워지는 렐러티브레이아웃(list_registrant.xml) .. 리스트뷰와 예약신청 버튼을 가지고있음
     private String today; //today 필드는 오늘 날짜를 "월/일" 형태의 문자열로 갖고있다. 코드는 밑에서 나오고 사용자가 예약신청을 눌렀을때 날짜 던져주기 위함임
     private String year;
@@ -49,17 +53,20 @@ public class ReservationPage extends AppCompatActivity {
     private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터
     private RelativeLayout listlayout; // 달력하단 빈 렐러비트 레이아웃 이안이 rel 렐러티브
 
-    SimpleCursorAdapter adapter; // 데이터베이스에 있는 데이터를 어댑터뷰에 띄울려면 필요한 CursorAdapter
+    List<Reservation> reservationList;
+    ReservationListAdapter adapter;
+
+
 
     private ArrayList<String> dayList; // 달력,날짜 정보를 가지고있는 ArrayList 컬렉션
     private GridView gridView;  // 달력 나타내는 그리드뷰
     private Calendar mCal;
-    private  SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservationpage);
 
+        reservationList = new ArrayList<Reservation>();
         Intent intent = getIntent();
         sid = intent.getIntExtra("sid", 0);
         password = intent.getStringExtra("password");
@@ -68,8 +75,6 @@ public class ReservationPage extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
 
-        mHelper = new DatabaseHelper(this);
-        db = mHelper.getWritableDatabase(); // db 생성후 테이블 만듦
 
         tvDate = (TextView)findViewById(R.id.tv_date);
         gridView =(GridView)findViewById(R.id.gridview);  // 필드가 위젯을 가르키도록 findViewById 사용
@@ -108,6 +113,47 @@ public class ReservationPage extends AppCompatActivity {
         // WHERE DATE=" + "'" + today +"'
 
 
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try{
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    if(jsonObject.getJSONArray("response") != null){
+                        reservationList.clear();
+                    //  Toast.makeText(ReservationPage.this,todayDate, Toast.LENGTH_SHORT).show();
+                        try{
+                            JSONArray jsonArray = jsonObject.getJSONArray("response");
+                            int count = 0;
+                            int sid, people;
+                            String name, startTime, endTime;
+                            while(count < jsonArray.length()){
+                                JSONObject object = jsonArray.getJSONObject(count);
+                                sid = object.getInt("sid");
+                                name = object.getString("name");
+                                people = object.getInt("people");
+                                startTime = object.getString("startTime");
+                                endTime = object.getString("endTime");
+                                Reservation reservation = new Reservation(sid, name, people, startTime, endTime);
+                                reservationList.add(reservation);
+                                count++;
+                            }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                        listlayout.addView(rel);
+                    }
+                    else{
+                        Toast.makeText(ReservationPage.this , "예약 목록 읽기 실패", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,7 +167,6 @@ public class ReservationPage extends AppCompatActivity {
                     setTodayDate(year + "-" + month + "-" + day);
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
-                    int intday = Integer.parseInt(day);
                     if(month.contains("0")){ // 이 if 문은 이번 달에 0 포함 되어있을시 없애고 today 필드에 "월/일" 형식으로 저장하는 문장
                         rmonth = month.replace("0","");
                         setToday(rmonth+"/"+day);
@@ -129,26 +174,25 @@ public class ReservationPage extends AppCompatActivity {
                     }else{
                         setToday(month+"/"+day);
                     }
-                    //커서 준비하는 겁니다. 선택한 날짜의 모든 예약정보 다 가지고 있는
-                    final Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE DATE= " +"'" + today + "'",null);
 
-                    Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
-                    listlayout = (RelativeLayout)findViewById(R.id.list);
+                  //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
                     rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
-                    listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
-                    listlayout.addView(rel);
                     studentList = rel.findViewById(R.id.studentList);
 
-
-                    //여기
+                     //////////////////////////////////////
+                    //여기를 내가 만든 어댑터붙여 주고!
                     adapter = null;
-                    adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday, // 리스트뷰의 항목뷰입니다. 두줄밑 확인
-                            cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"}, // 이 이름들은 속성 이름입니다. 이런 속성 정보를
-                            new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber, R.id.personwhoreserve});// 이런 id 가진 텍스트뷰에 집어 넣는겁니다. 시작시간,종료시간,신청자,인원을 나타내는 텍스트뷰 아이디입니다.
 
+                    adapter = new ReservationListAdapter(getApplicationContext(), reservationList);
                     studentList.setAdapter(adapter);
 
 
+                    ReservationRequest reservationRequest = new ReservationRequest(todayDate ,responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(ReservationPage.this);
+                    queue.add(reservationRequest);
+
+                    listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
+                    // 요기서 꺼냄
 
                     rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
                         @Override
@@ -263,15 +307,6 @@ public class ReservationPage extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-    /*    LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-        rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null);
-        final Cursor cursor = db.rawQuery("SELECT * FROM registrants WHERE DATE= " +"'" + today + "'",null);
-
-        adapter = new SimpleCursorAdapter(ReservationPage.this, R.layout.reservationinthatday,
-                cursor,new String[]{"STARTTIME","ENDTIME","PEOPLE","NAME"},
-                new int[]{R.id.usingstarttime, R.id.usingendtime, R.id.usingpersonnumber, R.id.personwhoreserve});
-        studentList.setAdapter(adapter);
-        listlayout.addView(rel); */
     }
 
 }
