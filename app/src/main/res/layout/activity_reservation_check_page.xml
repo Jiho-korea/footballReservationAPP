@@ -13,10 +13,10 @@
         android:text="나의 예약 확인"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FF4000"
+        android:background="@color/colorTopBar"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorBackground"
         android:textSize="20sp"
         />
 

@@ -1,6 +1,7 @@
 package com.example.footballreservationapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -34,6 +35,7 @@ public class ReservationListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.i("t", "ReservationListAdapter getView 실행 됨");
         View v = View.inflate(context, R.layout.reservationinthatday, null);
         TextView usingStartTime = (TextView)v.findViewById(R.id.usingstarttime);
         TextView usingEndTime = (TextView)v.findViewById(R.id.usingendtime);

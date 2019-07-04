@@ -9,4 +9,5 @@
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorText">#6E6E6E</color>
     <color name="colorListViewDivider">#D1D1D1</color>
+    <color name="colorTopBar">#FF4000</color>
 </resources>

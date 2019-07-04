@@ -10,28 +10,35 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FF4000">
+        android:background="@color/colorTopBar">
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#FF4000"
+            android:background="@color/colorTopBar"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorBackground"
             android:textSize="20sp"
             />
+
         <Button
             android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:text="예약확인"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
+            android:backgroundTint="@color/colorRequestButton"
+            android:gravity="center"
             android:onClick="reservationCheck"
-            android:textColor="#6E6E6E"
-            android:layout_margin="8dp"
-            android:background="#F4FA58"
-            />
+            android:text="예약확인"
+            android:textColor="@color/colorText"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <GridView

@@ -82,7 +82,7 @@ public class RequestPage extends AppCompatActivity {
         TextView date = (TextView)findViewById(R.id.date);
         String month = intent.getStringExtra("Month");
         reservationDay = month + "-" +intent.getStringExtra("ReservationDay");
-        int day = intent.getIntExtra("Date",00);
+        String day = intent.getStringExtra("Date");
         today = intent.getStringExtra("Today");
         date.setText(today);
     }

@@ -41,6 +41,7 @@ public class StudentsManageActivity extends AppCompatActivity {
                 subject = object.getString("subject");
                 Student student = new Student(sid, name, phone, subject);
                 studentList.add(student);
+                adapter.notifyDataSetChanged();
                 count++;
             }
         }catch(Exception e){

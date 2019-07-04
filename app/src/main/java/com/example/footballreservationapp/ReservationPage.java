@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,7 +49,7 @@ public class ReservationPage extends AppCompatActivity {
     private String today; //today 필드는 오늘 날짜를 "월/일" 형태의 문자열로 갖고있다. 코드는 밑에서 나오고 사용자가 예약신청을 눌렀을때 날짜 던져주기 위함임
     private String year;
     private String month; // 월(한자리 달일경우 0포함되있는)
-    private String day; // 일
+    private int day; // 일
     private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
     private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터
@@ -110,9 +112,8 @@ public class ReservationPage extends AppCompatActivity {
        setCalendarDate(mCal.get(Calendar.DAY_OF_MONTH)+1); // 이메소드 하단에 있습니다 확인해보세요
         gridAdapter = new GridAdapter(getApplicationContext(), dayList); // 그리드 어댑터 생성  밑에 그리드 어댑터 클래스 있음
         gridView.setAdapter(gridAdapter); //  어댑터 달아주기
-        // WHERE DATE=" + "'" + today +"'
 
-
+/*      스레드 미사용 시
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -153,7 +154,7 @@ public class ReservationPage extends AppCompatActivity {
                 }
             }
         };
-
+*/
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,8 +164,8 @@ public class ReservationPage extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
                     String rmonth;
-                    day = parent.getItemAtPosition(position).toString(); // 클릭한 날짜 얻어냄
-                    setTodayDate(year + "-" + month + "-" + day);
+                    day = Integer.parseInt(parent.getItemAtPosition(position).toString()); // 클릭한 날짜 얻어냄
+                    setTodayDate(year + "-" + month + "-" + day+"");
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
                     if(month.contains("0")){ // 이 if 문은 이번 달에 0 포함 되어있을시 없애고 today 필드에 "월/일" 형식으로 저장하는 문장
@@ -186,10 +187,12 @@ public class ReservationPage extends AppCompatActivity {
                     adapter = new ReservationListAdapter(getApplicationContext(), reservationList);
                     studentList.setAdapter(adapter);
 
-
+                    /* 스레드 미사용 시
                     ReservationRequest reservationRequest = new ReservationRequest(todayDate ,responseListener);
                     RequestQueue queue = Volley.newRequestQueue(ReservationPage.this);
                     queue.add(reservationRequest);
+                    */
+                    new ReservationBackgroundTask().execute(todayDate);
 
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
@@ -205,7 +208,7 @@ public class ReservationPage extends AppCompatActivity {
                             intent.putExtra("phone",phone);
                             intent.putExtra("manager",manager);
                             intent.putExtra("Month",month);
-                            intent.putExtra("Date", day);
+                            intent.putExtra("Date", day+"");
                             intent.putExtra("Today", today);
                             intent.putExtra("todayDate", todayDate);
                             intent.putExtra("ReservationDay", reservationDay);
@@ -215,7 +218,7 @@ public class ReservationPage extends AppCompatActivity {
 
                 }catch(NumberFormatException e){
                     view.setBackground(new ColorDrawable(Color.WHITE));
-                    listlayout.removeAllViews();
+
                 }
 
             }
@@ -284,6 +287,12 @@ public class ReservationPage extends AppCompatActivity {
     public void reservationCheck(View v){
         if(v.getId() == R.id.check){
             Intent intent = new Intent(this,ReservationCheckPage.class);
+            intent.putExtra("sid", sid);
+            intent.putExtra("password", password);
+            intent.putExtra("subject", subject);
+            intent.putExtra("name",name);
+            intent.putExtra("phone",phone);
+            intent.putExtra("manager",manager);
             startActivity(intent); // 예약 확인 버튼 클릭시 ReservationCheckPage 뜨게함
         }
     }
@@ -307,6 +316,76 @@ public class ReservationPage extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        if(listlayout != null){
+            listlayout.removeAllViews();
+        }
+    }
+
+
+    class ReservationBackgroundTask extends AsyncTask<String, Void, Void> {
+        String todayDateclone;
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(String... args) {
+            todayDateclone = args[0];
+            final Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        if(jsonObject.getJSONArray("response") != null){
+                            reservationList.clear();
+                            //  Toast.makeText(ReservationPage.this,todayDate, Toast.LENGTH_SHORT).show();
+                            try{
+                                JSONArray jsonArray = jsonObject.getJSONArray("response");
+                                int count = 0;
+                                int sid, people;
+                                String name, startTime, endTime;
+                                while(count < jsonArray.length()){
+                                    JSONObject object = jsonArray.getJSONObject(count);
+                                    sid = object.getInt("sid");
+                                    name = object.getString("name");
+                                    people = object.getInt("people");
+                                    startTime = object.getString("startTime");
+                                    endTime = object.getString("endTime");
+                                    Reservation reservation = new Reservation(sid, name, people, startTime, endTime);
+                                    reservationList.add(reservation);
+                                    adapter.notifyDataSetChanged();
+                                    count++;
+                                }
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                            listlayout.removeAllViews();
+                            listlayout.addView(rel);
+                        }
+                        else{
+                            Toast.makeText(ReservationPage.this , "예약 목록 읽기 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            ReservationRequest reservationRequest = new ReservationRequest(todayDateclone ,responseListener);
+            RequestQueue queue = Volley.newRequestQueue(ReservationPage.this);
+            queue.add(reservationRequest);
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
     }
 
 }
