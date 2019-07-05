@@ -32,7 +32,7 @@
             android:id="@+id/studentsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorMainButton"
+            android:backgroundTint="@color/colorMainButton"
             android:textColor="#ffffff"
             android:onClick="mClick"
             android:text="학생리스트"/>
@@ -42,7 +42,7 @@
             android:id="@+id/reservationsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorRequestButton"
+            android:backgroundTint="@color/colorRequestButton"
             android:textColor="@color/colorText"
             android:layout_marginTop="30sp"
             android:onClick="mClick"

@@ -227,7 +227,7 @@ public class ReservationPage extends AppCompatActivity {
 
     private void setCalendarDate(int month){ // 이메소드드는  dayList 컬렉션에 날짜 같은 숫자를 집어 넣습니다.
         mCal.set(Calendar.MONTH, month-1);
-        for(int i = 0 ; i<mCal.getActualMaximum(Calendar.DAY_OF_MONTH)-1; i++){
+        for(int i = 0 ; i<mCal.getActualMaximum(Calendar.DAY_OF_MONTH); i++){  // 달의 일 갯수가 다를 땐 여기를 수정 하세요
             dayList.add(""+ (i+1)); // 1일부터 이번달 끝 날짜 만큼 dayList 컬렉션에 문자열 형식으로 넣습니다.
         }
     }

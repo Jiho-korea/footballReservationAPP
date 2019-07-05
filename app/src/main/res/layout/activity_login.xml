@@ -8,7 +8,7 @@
     tools:context=".LoginActivity">
 
     <RelativeLayout
-        android:id="@+id/title"
+        android:id="@+id/title1"
         android:layout_marginTop="30sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:text="연암공대 풋살장 예약"
             android:textSize="25sp"
+            android:layout_marginRight="7dp"
             android:layout_toRightOf="@id/yunam"
             android:layout_centerVertical="true"
             />
@@ -37,15 +38,15 @@
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="13dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="학번"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/campus"
+
         />
 
     <EditText
@@ -61,6 +62,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sidText" />
+
+    <ImageView
+        android:id="@+id/campus"
+        android:layout_width="match_parent"
+        android:layout_height="265dp"
+        android:src="@mipmap/campus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title1"
+        />
 
     <Button
         android:id="@+id/loginButton"

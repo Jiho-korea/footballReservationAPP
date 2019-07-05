@@ -8,6 +8,8 @@
         android:id="@+id/studentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@color/colorListViewDivider"
+        android:dividerHeight="3dp"
         android:textSize="30sp"/>
 
     <Button
