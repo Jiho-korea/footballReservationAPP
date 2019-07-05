@@ -30,17 +30,17 @@ public class ManageMainActivity extends AppCompatActivity {
     public void mClick(View v){
         switch (v.getId()){
             case R.id.studentsList:
-                new BackgroundTask().execute();
+                new StudentListBackgroundTask().execute();
                 break;
 
             case R.id.reservationsList:
-
+                new ReservationListBackgroundTask().execute();
                 break;
         }
     }
 
 
-    class BackgroundTask extends AsyncTask<Void, Void, String> {
+    class StudentListBackgroundTask extends AsyncTask<Void, Void, String> {
         String target;
 
         @Override
@@ -79,6 +79,49 @@ public class ManageMainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             Intent intent = new Intent(ManageMainActivity.this, StudentsManageActivity.class);
             intent.putExtra("studentList", result);
+            ManageMainActivity.this.startActivity(intent);
+        }
+    }
+
+    class ReservationListBackgroundTask extends AsyncTask<Void, Void, String> {
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://yonamfootball.dothome.co.kr/ManageReservationList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try{
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while((temp = bufferedReader.readLine()) != null){
+                    stringBuilder.append(temp + "\n");
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return stringBuilder.toString().trim();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Intent intent = new Intent(ManageMainActivity.this, ReservationManageActivity.class);
+            intent.putExtra("reservationList", result);
             ManageMainActivity.this.startActivity(intent);
         }
     }

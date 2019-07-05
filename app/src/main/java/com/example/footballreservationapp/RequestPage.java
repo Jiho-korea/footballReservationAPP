@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.Locale;
 
 public class RequestPage extends AppCompatActivity {
-    DatabaseHelper databaseHelper;
-    SQLiteDatabase db;
 
     int sid;
     String password;
@@ -64,9 +62,6 @@ public class RequestPage extends AppCompatActivity {
         name = intent.getStringExtra("name");
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
-
-        databaseHelper = new DatabaseHelper(this);
-        db = databaseHelper.getWritableDatabase();
 
         intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다.
 
