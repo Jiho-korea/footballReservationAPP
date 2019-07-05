@@ -51,7 +51,7 @@ public class ReservationManageActivity extends AppCompatActivity {
                 ManageReservation manageReservation = new ManageReservation(sid,name,date,subject,phone,starttime,endtime,people,reservationday,approval);
 
                 manageReservationList.add(manageReservation);
-
+//ㅇㅇㅇㅇ
                 adapter.notifyDataSetChanged();
                 Log.i("t", "notifyDataSetChanged; 실행됨 ");
                 count++;
