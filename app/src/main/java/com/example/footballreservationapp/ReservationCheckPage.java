@@ -51,7 +51,7 @@ public class ReservationCheckPage extends AppCompatActivity {
 
         listView = findViewById(R.id.myReservationList);
         myReservationList = new ArrayList<MyReservation>();
-        adapter = new MyReservationListAdapter(getApplicationContext(),myReservationList);
+        adapter = new MyReservationListAdapter(getApplicationContext(),myReservationList, this);
         listView.setAdapter(adapter); // 어댑터 달기
 
         new MyReservationBackgroundTask().execute(sid+"");

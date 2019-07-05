@@ -40,7 +40,9 @@ public class StudentsManageActivity extends AppCompatActivity {
                 phone = object.getString("phone");
                 subject = object.getString("subject");
                 Student student = new Student(sid, name, phone, subject);
-                studentList.add(student);
+                if(sid != 1111){
+                    studentList.add(student);
+                }
                 adapter.notifyDataSetChanged();
                 count++;
             }
