@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".StudentsManageActivity"></activity>
+        <activity android:name=".ReservationManageActivity"></activity>
+        <activity android:name=".StudentsManageActivity" />
         <activity android:name=".ManageMainActivity" />
         <activity android:name=".ReservationCheckPage" />
         <activity android:name=".RequestPage" />
