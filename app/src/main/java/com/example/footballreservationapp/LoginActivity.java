@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 new LoginBackgroundTask().execute(sid, password);
 
-                    /*  스레드 미사용 시
+                    /*  스레드 미사용 시 ㅇㅇㅇㅇ
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
