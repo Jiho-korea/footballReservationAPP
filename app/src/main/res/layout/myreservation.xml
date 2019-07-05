@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="10sp">
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예약일 : "
+        android:textSize="25sp"/>
+    <TextView
+        android:id="@+id/reservationday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dateText"
+        android:text="날짜"
+        android:textSize="25sp"/>
+
+
+    <TextView
+        android:id="@+id/reservationstarttime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/reservationday"
+        android:text="시작시간 "
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/wave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/reservationstarttime"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:text=" ~ "
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/reservationendtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/wave"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:layout_marginRight="15dp"
+        android:text="끝시간"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@id/reservationendtime"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:text="인원 : "
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/reservationpeople"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@id/number"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:text=""
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_toRightOf="@id/reservationpeople"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:text="신청일 : "
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/dayreserved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@id/day"
+        android:layout_alignBottom="@id/reservationstarttime"
+        android:text=""
+        android:textSize="15sp"/>
+    <Button
+        android:id="@+id/cancleReservation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예약취소"
+        android:textSize="13sp"
+        android:padding="2sp"
+        android:gravity="center"
+        android:backgroundTint="@color/colorMainButton"
+        android:textColor="@color/colorBackground"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/reservationday"
+        android:layout_above="@id/reservationstarttime"
+        />
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/cancleReservation"
+        android:layout_marginRight="3dp"
+        android:layout_alignTop="@id/reservationday"
+        android:layout_alignBottom="@id/cancleReservation"
+        >
+        <Button
+            android:id="@+id/reservationOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:padding="2sp"
+            android:backgroundTint="@color/colorRequestButton"
+            android:textColor="@color/colorText"
+            android:text="승인완료"/>
+        <Button
+            android:id="@+id/reservationWait"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="2sp"
+            android:textSize="13sp"
+            android:textColor="@color/colorText"
+            android:text="승인대기"/>
+    </FrameLayout>
+</RelativeLayout>
