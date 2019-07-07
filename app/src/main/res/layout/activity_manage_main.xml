@@ -47,5 +47,15 @@
             android:layout_marginTop="30sp"
             android:onClick="mClick"
             android:text="예약리스트"/>
+
+        <Button
+            android:id="@+id/reservationincalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorBackground"
+            android:layout_marginTop="30sp"
+            android:onClick="mClick"
+            android:text="날짜별예약"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -31,7 +31,7 @@ public class StudentsManageActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("studentList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
             int count = 0;
-            int sid;
+            int sid, manager;
             String name, phone, subject;
             while(count < jsonArray.length()){
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -39,8 +39,9 @@ public class StudentsManageActivity extends AppCompatActivity {
                 name = object.getString("name");
                 phone = object.getString("phone");
                 subject = object.getString("subject");
+                manager = object.getInt("manager");
                 Student student = new Student(sid, name, phone, subject);
-                if(sid != 1111){
+                if(manager != 1){
                     studentList.add(student);
                 }
                 adapter.notifyDataSetChanged();

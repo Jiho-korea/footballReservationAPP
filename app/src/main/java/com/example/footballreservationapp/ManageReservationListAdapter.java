@@ -26,12 +26,14 @@ import java.util.List;
 public class ManageReservationListAdapter extends BaseAdapter {
     private Context context;
     private List<ManageReservation> manageReservationList;
+    private List<ManageReservation> saveManageReservationList;
     private Activity parentActivity;
 
-    public ManageReservationListAdapter(Context context, List<ManageReservation> manageReservationList, Activity parentActivity){
+    public ManageReservationListAdapter(Context context, List<ManageReservation> manageReservationList, Activity parentActivity, List<ManageReservation> saveManageReservationList){
         this.context = context;
         this.manageReservationList = manageReservationList;
         this.parentActivity = parentActivity;
+        this.saveManageReservationList = saveManageReservationList;
     }
 
     @Override
@@ -101,6 +103,7 @@ public class ManageReservationListAdapter extends BaseAdapter {
         }else{
             approveButton.setVisibility(View.INVISIBLE);
             completeButton.setVisibility(View.VISIBLE);
+            denyButton.setText("예약취소");
         }
 
 
@@ -152,6 +155,12 @@ public class ManageReservationListAdapter extends BaseAdapter {
                         boolean success = jsonResponse.getBoolean("success")   ;
                         if(success){
                             manageReservationList.remove(positionClone);
+                            for(int i = 0; i< saveManageReservationList.size(); i++){
+                                if(saveManageReservationList.get(i).getSid() == Integer.parseInt(sidClone) && saveManageReservationList.get(i).getDate().equals(dateClone)){
+                                    saveManageReservationList.remove(i);
+                                    break;
+                                }
+                            }
                             notifyDataSetChanged();
                             Toast.makeText(parentActivity,"예약 취소 성공", Toast.LENGTH_SHORT).show();
                         }

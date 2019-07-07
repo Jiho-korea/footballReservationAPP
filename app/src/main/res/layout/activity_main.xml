@@ -17,7 +17,7 @@
             android:id="@+id/yunam"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/yonam"
+            android:src="@mipmap/yonam3"
 
             />
         <TextView

@@ -49,7 +49,9 @@ public class ReservationPage extends AppCompatActivity {
     private String today; //today 필드는 오늘 날짜를 "월/일" 형태의 문자열로 갖고있다. 코드는 밑에서 나오고 사용자가 예약신청을 눌렀을때 날짜 던져주기 위함임
     private String year;
     private String month; // 월(한자리 달일경우 0포함되있는)
+    private String rmonth;
     private int day; // 일
+    private String rReservationday;
     private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
     private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터
@@ -77,6 +79,9 @@ public class ReservationPage extends AppCompatActivity {
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
 
+        if(manager == 1){
+            findViewById(R.id.check).setVisibility(View.GONE);
+        }
 
         tvDate = (TextView)findViewById(R.id.tv_date);
         gridView =(GridView)findViewById(R.id.gridview);  // 필드가 위젯을 가르키도록 findViewById 사용
@@ -88,9 +93,19 @@ public class ReservationPage extends AppCompatActivity {
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA); //현재날짜를 포맷팅해서 사용하도록 포맷정하는중
         final String reservationDay = curDayFormat.format(now);
+        if(reservationDay.contains("0")){ // 이 if 문은 이번 달에 0 포함 되어있을시 없애고 today 필드에 "월/일" 형식으로 저장하는 문장
+            rReservationday = reservationDay.replace("0","");
+        }else{
+            rReservationday = reservationDay;
+        }
         year = curYearFormat.format(date);
         month = curMonthFormat.format(date);
-        tvDate.setText(year+ "-" + month);
+        if(month.contains("0")){ // 이 if 문은 이번 달에 0 포함 되어있을시 없애고 today 필드에 "월/일" 형식으로 저장하는 문장
+            rmonth = month.replace("0","");
+        }else{
+            rmonth = month;
+        }
+        tvDate.setText(year+ "-" + rmonth);
 
         dayList = new ArrayList<String>();
         dayList.add("일");
@@ -163,16 +178,18 @@ public class ReservationPage extends AppCompatActivity {
 
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
-                    String rmonth;
+
                     day = Integer.parseInt(parent.getItemAtPosition(position).toString()); // 클릭한 날짜 얻어냄
-                    setTodayDate(year + "-" + month + "-" + day+"");
+
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
                     if(month.contains("0")){ // 이 if 문은 이번 달에 0 포함 되어있을시 없애고 today 필드에 "월/일" 형식으로 저장하는 문장
                         rmonth = month.replace("0","");
+                        setTodayDate(year + "-" + rmonth + "-" + day+"");
                         setToday(rmonth+"/"+day);
 
                     }else{
+                        setTodayDate(year + "-" + month + "-" + day+"");
                         setToday(month+"/"+day);
                     }
 
@@ -196,25 +213,29 @@ public class ReservationPage extends AppCompatActivity {
 
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
+                    if(manager == 1){
+                        rel.findViewById(R.id.reserve).setVisibility(View.GONE);
+                    }else{
+                        rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
+                                Intent intent = new Intent(getApplicationContext(),RequestPage.class);
+                                intent.putExtra("sid", sid);
+                                intent.putExtra("password", password);
+                                intent.putExtra("subject", subject);
+                                intent.putExtra("name",name);
+                                intent.putExtra("phone",phone);
+                                intent.putExtra("manager",manager);
+                                intent.putExtra("Month",rmonth);
+                                intent.putExtra("Date", day+"");
+                                intent.putExtra("Today", today);
+                                intent.putExtra("todayDate", todayDate);
+                                intent.putExtra("ReservationDay", rReservationday);
+                                startActivity(intent);
+                            }
+                        });
 
-                    rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
-                            Intent intent = new Intent(getApplicationContext(),RequestPage.class);
-                            intent.putExtra("sid", sid);
-                            intent.putExtra("password", password);
-                            intent.putExtra("subject", subject);
-                            intent.putExtra("name",name);
-                            intent.putExtra("phone",phone);
-                            intent.putExtra("manager",manager);
-                            intent.putExtra("Month",month);
-                            intent.putExtra("Date", day+"");
-                            intent.putExtra("Today", today);
-                            intent.putExtra("todayDate", todayDate);
-                            intent.putExtra("ReservationDay", reservationDay);
-                            startActivity(intent);
-                        }
-                    });
+                    }
 
                 }catch(NumberFormatException e){
                     view.setBackground(new ColorDrawable(Color.WHITE));
