@@ -75,8 +75,10 @@
     <ImageView
         android:id="@+id/campus"
         android:layout_width="match_parent"
-        android:layout_height="265dp"
-        android:src="@mipmap/campus1"
+        android:layout_height="329dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ground1"
+        android:background="@drawable/image_ground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title1"
