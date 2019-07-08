@@ -10,22 +10,24 @@
         android:label="연암공과대 풋살장 예약 앱"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ReservationManageActivity"></activity>
-        <activity android:name=".StudentsManageActivity" />
-        <activity android:name=".ManageMainActivity" />
-        <activity android:name=".ReservationCheckPage" />
-        <activity android:name=".RequestPage" />
-        <activity android:name=".ReservationPage" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        android:theme="@style/AppTheme.NoActionBar"
+        >
+        <activity android:name=".ReservationManageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".StudentsManageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ManageMainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ReservationCheckPage" android:screenOrientation="portrait"/>
+        <activity android:name=".RequestPage" android:screenOrientation="portrait"/>
+        <activity android:name=".ReservationPage" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterActivity"  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

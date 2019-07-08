@@ -9,18 +9,20 @@
 
     <RelativeLayout
         android:id="@+id/title1"
-        android:layout_marginTop="30sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="8sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         android:gravity="center">
         <ImageView
             android:id="@+id/yunam"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@mipmap/yonam3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/marklogo"
 
             />
 
@@ -28,22 +30,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="7dp"
             android:layout_toRightOf="@id/yunam"
             android:textColor="@color/colorBackground"
             android:textStyle="bold"
-            android:text="연암공대 풋살장 예약"
-            android:textSize="27sp" />
+            android:text="연암공과대학교"
+            android:textSize="17sp" />
 
     </RelativeLayout>
-
+    <TextView
+        android:id="@+id/theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="풋살장 예약 시스템"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/colorBackground"
+        android:textStyle="bold"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title1"
+        />
     <EditText
         android:id="@+id/sidText"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="30dp"
         android:ems="10"
         android:hint="학번"
@@ -75,13 +90,13 @@
     <ImageView
         android:id="@+id/campus"
         android:layout_width="match_parent"
-        android:layout_height="329dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="310dp"
+        android:layout_marginTop="9dp"
         android:src="@mipmap/ground1"
         android:background="@drawable/image_ground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title1"
+        app:layout_constraintTop_toBottomOf="@id/theme"
         />
 
     <Button
@@ -89,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="30dp"
         android:text="@string/buttonLogin"
         android:textSize="14sp"
