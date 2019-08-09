@@ -1,2 +1,2 @@
-# footballReservationAPP
-footballfield_reservation
+연암공과대학교 풋살장 예약 애플리케이션 입니다.
+
