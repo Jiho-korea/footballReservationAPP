@@ -64,10 +64,10 @@ public class MyReservationListAdapter extends BaseAdapter {
 
         String[] tokens = myReservationList.get(position).getDate().split("-");
         String date = null;
-        if(tokens[1].contains("0")){
-            date = tokens[1].replace("0","") +  " / " +tokens[2];
-        }else{
+        if(tokens[1].equals("10")){
             date = tokens[1] + " / " + tokens[2];
+        }else{
+            date = tokens[1].replace("0","") +  " / " +tokens[2];
         }
 
 
