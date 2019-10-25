@@ -16,7 +16,8 @@
         android:id="@+id/reserve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="예약신청"
+        android:text="  예약신청  "
+        android:textStyle="bold"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
@@ -24,12 +25,5 @@
         android:backgroundTint="@color/colorMainButton"
         android:textColor="@color/colorBackground"/>
 
-    <TextView
-        android:id="@+id/empty_reservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="700sp"
-        android:text="예약이 없습니다"
-        android:visibility="gone"/>
+
 </RelativeLayout>

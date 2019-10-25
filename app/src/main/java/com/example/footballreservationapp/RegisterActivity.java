@@ -37,12 +37,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         Button registerButton = (Button) findViewById(R.id.registerButton);
         final ArrayList<String> list = new ArrayList<>();
+        list.add("학과를 선택해 주세요.");
         list.add("스마트소프트웨어");
-        list.add("기계조선");
+        list.add("스마트전기전자공학");
+        list.add("조선자동차항공기계");
+        list.add("전자전기");
         list.add("기계공학");
-        list.add("스마트전자");
-        list.add("전기");
-        list.add("산업디자인");
+        list.add("산업정보디자인");
         ArrayAdapter spinnerAdapter;
         spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list);
         spinner.setAdapter(spinnerAdapter);
@@ -61,46 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "비밀번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else if(name.trim().equals("")){
                         Toast.makeText(RegisterActivity.this, "이름를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
-                    }else if(subject.trim().equals("")){
-                        Toast.makeText(RegisterActivity.this, "학과를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    }else if(subject.trim().equals("학과를 선택해 주세요.")){
+                        Toast.makeText(RegisterActivity.this, "학과를 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else if(phone.trim().equals("")){
                         Toast.makeText(RegisterActivity.this, "전화번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else{
                         new RegisterBackgroundTask().execute(sid+"",subject,name,password,phone);
-                        /* 스레드 미사용 시
-                        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try{
-                                    JSONObject jsonResponse = new JSONObject(response);
-                                    boolean success = jsonResponse.getBoolean("success")   ;
-                                    if(success){
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                        builder.setMessage("회원등록에 성공하셨습니다")
-                                                .setPositiveButton("확인", null)
-                                                .create()
-                                                .show();
-                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                        RegisterActivity.this.startActivity(intent);
-                                    }
-                                    else{
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                        builder.setMessage("회원등록에 실패하셨습니다")
-                                                .setNegativeButton("다시 시도", null)
-                                                .create()
-                                                .show();
-
-                                    }
-                                }
-                                catch (JSONException e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
-                        RegisterRequest registerRequest = new RegisterRequest(sid,subject,name,password,phone ,responseListener);
-                        RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                        queue.add(registerRequest);
-                        */
 
                     }
                 }catch(NumberFormatException e){
@@ -135,12 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success")   ;
                         if(success){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                            builder.setMessage("회원등록에 성공하셨습니다")
-                                    .setPositiveButton("확인", null)
-                                    .create()
-                                    .show();
+
                             finish();
+                            Toast.makeText(RegisterActivity.this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

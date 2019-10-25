@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.view.ViewGroup;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -68,7 +68,7 @@ public class ReservationPage extends AppCompatActivity {
     private List<Reservation> reservationList;
     private ReservationListAdapter adapter;
     //예약이 없을 때 출력할 텍스트
-    private TextView empty_word;
+    private View empty_word;
 
     private ArrayList<String> dayList; // 달력,날짜 정보를 가지고있는 ArrayList 컬렉션(이번달)
     private ArrayList<String> dayList2; // (다음달)
@@ -102,7 +102,9 @@ public class ReservationPage extends AppCompatActivity {
         previousButton = (Button)findViewById(R.id.previousButton);
         secondPage = (LinearLayout)findViewById(R.id.secondPage);
 
-        empty_word = (TextView)findViewById(R.id.empty_reservation);
+        empty_word = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
+        addContentView(empty_word, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        empty_word.setVisibility(View.GONE);
 
 
         long now = System.currentTimeMillis();
@@ -139,6 +141,10 @@ public class ReservationPage extends AppCompatActivity {
                         return;
                     }
                     tvDate.setText(year+ "-" + nextMonth);
+                    if(listlayout != null){
+                        listlayout.removeAllViews();
+                    }
+                    empty_word.setVisibility(View.GONE);
                 }
             }
         });
@@ -150,6 +156,10 @@ public class ReservationPage extends AppCompatActivity {
                     secondPage.setVisibility(View.INVISIBLE);
                     firstPage.setVisibility(View.VISIBLE);
                     tvDate.setText(year+ "-" + rmonth);
+                    if(listlayout != null){
+                        listlayout.removeAllViews();
+                    }
+                    empty_word.setVisibility(View.GONE);
                 }
             }
         });
@@ -220,15 +230,15 @@ public class ReservationPage extends AppCompatActivity {
                   //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
                     rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
                     studentList = rel.findViewById(R.id.studentList);
-
+                    studentList.setEmptyView(empty_word);
                      //////////////////////////////////////
                     //여기를 내가 만든 어댑터붙여 주고!
                     adapter = null;
 
                     adapter = new ReservationListAdapter(getApplicationContext(), reservationList);
 
-                    studentList.setEmptyView(empty_word);
-                    
+
+
                     studentList.setAdapter(adapter);
 
 
@@ -293,7 +303,7 @@ public class ReservationPage extends AppCompatActivity {
                     //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
                     rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
                     studentList = rel.findViewById(R.id.studentList);
-
+                    studentList.setEmptyView(empty_word);
                     //////////////////////////////////////
                     //여기를 내가 만든 어댑터붙여 주고!
                     adapter = null;

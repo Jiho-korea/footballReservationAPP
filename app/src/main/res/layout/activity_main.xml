@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:text="연암공대 풋살장 예약"
             android:textSize="25sp"
+            android:textStyle="bold"
             android:layout_marginRight="10sp"
             android:layout_toRightOf="@id/yunam"
             android:layout_centerVertical="true"
@@ -85,7 +86,8 @@
             android:layout_marginTop="80sp"
             android:onClick="mClick"
             android:backgroundTint="@color/colorMainButton"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorBackground"
+            android:textStyle="bold"
             android:text="   예약신청   "/>
    </LinearLayout>
     <TextView
@@ -93,6 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/caution"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

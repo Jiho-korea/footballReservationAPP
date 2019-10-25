@@ -20,6 +20,7 @@
             android:paddingLeft="10dp"
             android:textColor="@color/colorBackground"
             android:textSize="20sp"
+            android:textStyle="bold"
             />
 
         <Button
@@ -36,8 +37,9 @@
             android:backgroundTint="@color/colorRequestButton"
             android:gravity="center"
             android:onClick="reservationCheck"
-            android:text="예약확인"
+            android:text="  예약확인  "
             android:textColor="@color/colorText"
+            android:textStyle="bold"
             android:textSize="14sp" />
     </RelativeLayout>
     <FrameLayout

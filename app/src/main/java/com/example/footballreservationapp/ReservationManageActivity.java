@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -20,6 +22,8 @@ public class ReservationManageActivity extends AppCompatActivity {
     private ManageReservationListAdapter adapter;
     private List<ManageReservation> manageReservationList;
     private List<ManageReservation> saveManageReservationList;
+    //예약신청이 없을 때 출력 할 멘트
+    private View empty_reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,15 @@ public class ReservationManageActivity extends AppCompatActivity {
         manageReservationList = new ArrayList<ManageReservation>();
         saveManageReservationList = new ArrayList<ManageReservation>();
         adapter = new ManageReservationListAdapter(getApplicationContext(),manageReservationList, this, saveManageReservationList);
+
+        empty_reservation = getLayoutInflater().inflate(R.layout.empty_reservation_manager, null, false);
+        addContentView(empty_reservation, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        empty_reservation.setVisibility(View.GONE);
+
+        listView.setEmptyView(empty_reservation);
         listView.setAdapter(adapter);
+
+
 
         try{
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("reservationList"));

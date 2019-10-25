@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -35,7 +37,8 @@ public class ReservationCheckPage extends AppCompatActivity {
     String name;
     String phone;
     int manager;
-
+    //신청한 예약이 없을 때 출력할 View
+    private View empty_my_reservation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,15 @@ public class ReservationCheckPage extends AppCompatActivity {
 
         listView = findViewById(R.id.myReservationList);
         myReservationList = new ArrayList<MyReservation>();
+
+        empty_my_reservation = getLayoutInflater().inflate(R.layout.ampty_mylist_item, null, false);
+        addContentView(empty_my_reservation, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        empty_my_reservation.setVisibility(View.GONE);
+
+        listView.setEmptyView(empty_my_reservation);
         adapter = new MyReservationListAdapter(getApplicationContext(),myReservationList, this);
+
+
         listView.setAdapter(adapter); // 어댑터 달기
 
         new MyReservationBackgroundTask().execute(sid+"");

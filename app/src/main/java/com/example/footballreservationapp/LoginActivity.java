@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else{
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage("로그인에 실패하셨습니다")
+                            builder.setMessage("학번과 비밀번호를 확인해주세요.")
                                     .setNegativeButton("다시 시도", null)
                                     .create()
                                     .show();
