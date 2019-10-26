@@ -13,21 +13,21 @@
         android:theme="@style/AppTheme.NoActionBar"
         >
         <activity android:name=".ReservationManageActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".StudentsManageActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ManageMainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ReservationCheckPage" android:screenOrientation="portrait"/>
-        <activity android:name=".RequestPage" android:screenOrientation="portrait"/>
-        <activity android:name=".ReservationPage" android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
+            android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".StudentsManageActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".ManageMainActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".ReservationCheckPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".RequestPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".ReservationPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"  android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterActivity"  android:screenOrientation="portrait" android:launchMode="singleTop"/>
     </application>
 
 </manifest>
