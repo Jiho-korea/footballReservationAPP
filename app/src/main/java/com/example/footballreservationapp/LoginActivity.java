@@ -1,7 +1,9 @@
 package com.example.footballreservationapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -181,5 +183,24 @@ public class LoginActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("연암공대 풋살장 예약 종료")
+                .setMessage("애플리케이션을 종료하시겠습니까?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.finishAffinity(LoginActivity.this);
+                        System.exit(0);
+                    }
+
+                })
+                .setNegativeButton("Cancle", null)
+                .show();
     }
 }
