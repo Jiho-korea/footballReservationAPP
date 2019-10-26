@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,6 +28,7 @@ import java.util.List;
 
 // 이 클래스는 activity_reservatoion_check_page 레이아웃의 리스트뷰에 본인이한 예약현황을 띄워 주는 역할 합니다. 학번을 조건으로 검색합니다.
 public class ReservationCheckPage extends AppCompatActivity {
+    private TextView top; // 상단 이름 표시
     private ListView listView;
     private MyReservationListAdapter adapter;
     private List<MyReservation> myReservationList;
@@ -51,8 +53,9 @@ public class ReservationCheckPage extends AppCompatActivity {
         name = intent.getStringExtra("name");
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
-
+        top = findViewById(R.id.top);
         listView = findViewById(R.id.myReservationList);
+        top.setText(name + "님의 예약");
         myReservationList = new ArrayList<MyReservation>();
 
         empty_my_reservation = getLayoutInflater().inflate(R.layout.ampty_mylist_item, null, false);

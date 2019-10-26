@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     private boolean sidValidation = false;
@@ -60,6 +61,11 @@ public class RegisterActivity extends AppCompatActivity {
                             .show();
                     return;
                 }
+                boolean sidPattern = Pattern.matches("[0-9]{8}", sidText.getText().toString());
+                if(!sidPattern){
+                    Toast.makeText(RegisterActivity.this, "학번을 다시 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 new ValidationBackgroundTask().execute(sid);
             }
@@ -85,12 +91,18 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 try{
+
+
                     int sid = Integer.parseInt(sidText.getText().toString());
                     String password = passwordText.getText().toString();
                     String passwordCheck = passwordCheckText.getText().toString();
                     String name = nameText.getText().toString();
                     String subject = spinner.getSelectedItem().toString();
                     String phone = phoneText.getText().toString();
+
+
+                    boolean namePattern = Pattern.matches("[가-힣]*", name);
+                    boolean phonePattern = Pattern.matches("01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}", phone);
 
                     if(!sidValidation){
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
@@ -105,15 +117,23 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }else if(name.trim().equals("")){
                         Toast.makeText(RegisterActivity.this, "이름를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    }else if(!namePattern){
+                        Toast.makeText(RegisterActivity.this, "이름을 정확하게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else if(subject.trim().equals("학과를 선택해 주세요.")){
                         Toast.makeText(RegisterActivity.this, "학과를 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
-                    }else if(phone.trim().equals("")){
+                    }else if(phone.trim().equals("")) {
                         Toast.makeText(RegisterActivity.this, "전화번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    }else if(!phonePattern){
+                        Toast.makeText(RegisterActivity.this, "전화번호를 정확하게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else{
                         new RegisterBackgroundTask().execute(sid+"",subject,name,password,phone);
                     }
                 }catch(NumberFormatException e){
-                    Toast.makeText(RegisterActivity.this, "학번을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("먼저 학번 중복체크를 해주세요.")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
                 }
             }
         });

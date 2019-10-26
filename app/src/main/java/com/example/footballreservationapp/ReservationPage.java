@@ -73,7 +73,7 @@ public class ReservationPage extends AppCompatActivity {
     private ArrayList<String> dayList; // 달력,날짜 정보를 가지고있는 ArrayList 컬렉션(이번달)
     private ArrayList<String> dayList2; // (다음달)
     private GridView gridView;  // 달력 나타내는 그리드뷰(이번달)
-    private GridView gridView2;
+    private GridView gridView2; // 다음달
     private Calendar mCal;
     private Calendar mCal2;
     @Override
@@ -277,8 +277,9 @@ public class ReservationPage extends AppCompatActivity {
                     }
 
                 }catch(NumberFormatException e){
+                    // 빈칸 혹은 요일이름을 클릭했을때의 행동
                     view.setBackground(new ColorDrawable(Color.WHITE));
-
+                    listlayout.removeAllViews();
                 }
 
             }
@@ -296,9 +297,14 @@ public class ReservationPage extends AppCompatActivity {
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
                     String[] subDate = tvDate.getText().toString().split("-");
+                    if(subDate[1].equals("1")){
+                        setTodayDate(Integer.parseInt(year)+1 + "-" + subDate[1] + "-" + day+"");
+                        setToday(subDate[1]+"/"+day);
+                    }else{
+                        setTodayDate(year + "-" + subDate[1] + "-" + day+"");
+                        setToday(subDate[1]+"/"+day);
+                    }
 
-                    setTodayDate(year + "-" + subDate[1] + "-" + day+"");
-                    setToday(subDate[1]+"/"+day);
 
                     //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
                     rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
@@ -346,7 +352,7 @@ public class ReservationPage extends AppCompatActivity {
 
                 }catch(NumberFormatException e){
                     view.setBackground(new ColorDrawable(Color.WHITE));
-
+                    listlayout.removeAllViews();
                 }
 
             }
