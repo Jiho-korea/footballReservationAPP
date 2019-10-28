@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 
 public class ReservationPage extends AppCompatActivity {
@@ -279,7 +280,10 @@ public class ReservationPage extends AppCompatActivity {
                 }catch(NumberFormatException e){
                     // 빈칸 혹은 요일이름을 클릭했을때의 행동
                     view.setBackground(new ColorDrawable(Color.WHITE));
-                    listlayout.removeAllViews();
+                    if(listlayout != null){
+                        listlayout.removeAllViews();
+                        empty_word.setVisibility(View.GONE);
+                    }
                 }
 
             }
@@ -291,7 +295,6 @@ public class ReservationPage extends AppCompatActivity {
 
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
-
                     day = Integer.parseInt(parent.getItemAtPosition(position).toString()); // 클릭한 날짜 얻어냄
 
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
@@ -326,6 +329,7 @@ public class ReservationPage extends AppCompatActivity {
 
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
+
                     if(manager == 1){
                         rel.findViewById(R.id.reserve).setVisibility(View.GONE);
                     }else{
@@ -352,7 +356,10 @@ public class ReservationPage extends AppCompatActivity {
 
                 }catch(NumberFormatException e){
                     view.setBackground(new ColorDrawable(Color.WHITE));
-                    listlayout.removeAllViews();
+                    if(listlayout != null){
+                        listlayout.removeAllViews();
+                        empty_word.setVisibility(View.GONE);
+                    }
                 }
 
             }
@@ -415,6 +422,9 @@ public class ReservationPage extends AppCompatActivity {
             Integer thisMonth = mCal.get(Calendar.MONTH) + 1;
             String sToday = String.valueOf(today);
             String[] subDate = tvDate.getText().toString().split("-");
+            if (!holder.tvItemGridView.getText().toString().equals("") && Pattern.matches( "[0-9]*",holder.tvItemGridView.getText().toString()) && Integer.parseInt(getItem(position)) < Integer.parseInt(sToday)&& subDate[1].equals(thisMonth+"") ) {
+                holder.tvItemGridView.setTextColor(Color.LTGRAY);// 지난 날짜 선택 안되도록 하는 코드
+            }
             if (sToday.equals(getItem(position))&& subDate[1].equals(thisMonth+"")) {
                 holder.tvItemGridView.setTextColor(Color.RED); // 오늘 날짜 빨간색으로 보이게되는 메소드
             }

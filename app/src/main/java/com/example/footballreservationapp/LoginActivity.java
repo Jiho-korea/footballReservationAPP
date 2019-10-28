@@ -1,7 +1,10 @@
 package com.example.footballreservationapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,57 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = passwordText.getText().toString();
 
                 new LoginBackgroundTask().execute(sid, password);
-
-                    /*  스레드 미사용 시 ㅇㅇㅇㅇ
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                               int sid = jsonResponse.getInt("sid");
-                               String password = jsonResponse.getString("password");
-                               String subject = jsonResponse.getString("subject");
-                               String name = jsonResponse.getString("name");
-                               String phone = jsonResponse.getString("phone");
-                               int manager = jsonResponse.getInt("manager");
-
-                               if(manager == 0){
-                                   Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                   intent.putExtra("sid", sid);
-                                   intent.putExtra("password", password);
-                                   intent.putExtra("subject", subject);
-                                   intent.putExtra("name",name);
-                                   intent.putExtra("phone",phone);
-                                   intent.putExtra("manager",manager);
-
-                                   LoginActivity.this.startActivity(intent);
-                               }else{
-                                   Intent intent = new Intent(LoginActivity.this, ManageMainActivity.class);
-                                   intent.putExtra("name",name);
-                                   LoginActivity.this.startActivity(intent);
-                               }
-
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("로그인에 실패하셨습니다")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create()
-                                        .show();
-
-                            }
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                LoginRequest loginRequest = new LoginRequest(sid,password,responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
-           */
             }
         });
     }

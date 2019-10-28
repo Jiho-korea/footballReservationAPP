@@ -80,15 +80,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:layout_marginTop="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timeset" >
-            <EditText
-                android:id="@+id/starttimehour"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/starttimehourSpinner"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:ems="2"
-                android:inputType="time"/>
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,19 +100,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="2"
-                android:inputType="time"
+                android:text="00"
+                android:inputType="none"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" ~ "
                 android:textSize="25sp"/>
-            <EditText
-                android:id="@+id/endtimehour"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/endtimehourSpinner"
+                android:layout_width="90dp"
                 android:layout_height="wrap_content"
                 android:ems="2"
-                android:inputType="time"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -123,7 +124,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="2"
-                android:inputType="time"
+                android:text="00"
+                android:inputType="none"
                 />
         </LinearLayout>
     </LinearLayout>

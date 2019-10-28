@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import org.json.JSONObject;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,6 +40,9 @@ public class RequestPage extends AppCompatActivity {
     String phone;
     int manager;
 
+    private Spinner starttimehourSpinner;
+    private Spinner endtimehourSpinner;
+
 /*
 아래를 보면 필드가 상당히 많은 데 전부
 사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
@@ -49,9 +55,7 @@ public class RequestPage extends AppCompatActivity {
     String startTime;
     String endTime;
     private EditText peopleEdit;
-    private EditText startTimehourEdit;
     private EditText startTimeminuteEdit;
-    private EditText endTimehourEdit;
     private EditText endTimeminuteEdit;
 
     private boolean reservationOverlapValidation = false;
@@ -75,10 +79,14 @@ public class RequestPage extends AppCompatActivity {
 
         todayDate = intent.getStringExtra("todayDate");
         peopleEdit = (EditText)findViewById(R.id.people);
-        startTimehourEdit = (EditText)findViewById(R.id.starttimehour);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
-        endTimehourEdit = (EditText)findViewById(R.id.endtimehour);
         endTimeminuteEdit = (EditText)findViewById(R.id.endtimeminute);
+
+        starttimehourSpinner = (Spinner)findViewById(R.id.starttimehourSpinner);
+        endtimehourSpinner = (Spinner)findViewById(R.id.endtimehourSpinner);
+
+        startTimeminuteEdit.setEnabled(false);
+        endTimeminuteEdit.setEnabled(false);
 
         TextView date = (TextView)findViewById(R.id.date);
         String month = intent.getStringExtra("Month");
@@ -87,21 +95,57 @@ public class RequestPage extends AppCompatActivity {
         today = intent.getStringExtra("Today");
         date.setText(today);
 
+        final ArrayList<String> starttimeList = new ArrayList<>();
+        starttimeList.add("09");
+        starttimeList.add("10");
+        starttimeList.add("11");
+        starttimeList.add("12");
+        starttimeList.add("13");
+        starttimeList.add("14");
+        starttimeList.add("15");
+        starttimeList.add("16");
+        starttimeList.add("17");
+        starttimeList.add("18");
+        starttimeList.add("19");
+        starttimeList.add("20");
+        starttimeList.add("21");
+        ArrayAdapter spinnerAdapter1;
+        spinnerAdapter1 = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,starttimeList);
+        starttimehourSpinner.setAdapter(spinnerAdapter1);
+
+        final ArrayList<String> endtimeList = new ArrayList<>();
+        endtimeList.add("10");
+        endtimeList.add("11");
+        endtimeList.add("12");
+        endtimeList.add("13");
+        endtimeList.add("14");
+        endtimeList.add("15");
+        endtimeList.add("16");
+        endtimeList.add("17");
+        endtimeList.add("18");
+        endtimeList.add("19");
+        endtimeList.add("20");
+        endtimeList.add("21");
+        endtimeList.add("22");
+        ArrayAdapter spinnerAdapter2;
+        spinnerAdapter2 = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,endtimeList);
+        endtimehourSpinner.setAdapter(spinnerAdapter2);
+
     }
 
     public void mSubmit(View v){  // 노란색 예약신청 버튼 클릭시 사용자가 입력한 정보를 db에 넣는 작업을 합니다.
         if(v.getId() == R.id.submit){
             try{
                 people = Integer.parseInt(peopleEdit.getText().toString());
-                startTime = startTimehourEdit.getText().toString() + ":" +startTimeminuteEdit.getText().toString();
-                endTime = endTimehourEdit.getText().toString() + ":" + endTimeminuteEdit.getText().toString();
+                startTime = starttimehourSpinner.getSelectedItem().toString()+ ":" +startTimeminuteEdit.getText().toString();
+                endTime =  endtimehourSpinner.getSelectedItem().toString() + ":" + endTimeminuteEdit.getText().toString();
 
 
                 // 입력한시간의 패턴 검사
-                boolean startHourPattern = Pattern.matches("[0-1][0-9]|[2][0-4]", startTimehourEdit.getText().toString());
-                boolean startMinutePattern = Pattern.matches("[0-5][0-9]", startTimeminuteEdit.getText().toString());
-                boolean endHourPattern = Pattern.matches("[0-1][0-9]|[2][0-4]", endTimehourEdit.getText().toString());
-                boolean endMinutePattern = Pattern.matches("[0-5][0-9]", endTimeminuteEdit.getText().toString());
+                boolean startHourPattern = Pattern.matches("[0-1][0-9]|[2][0-1]", starttimehourSpinner.getSelectedItem().toString());
+                boolean startMinutePattern = Pattern.matches("[0][0]", startTimeminuteEdit.getText().toString());
+                boolean endHourPattern = Pattern.matches("[0-1][0-9]|[2][0-2]",endtimehourSpinner.getSelectedItem().toString());
+                boolean endMinutePattern = Pattern.matches("[0][0]", endTimeminuteEdit.getText().toString());
 
                 if(!peopleEdit.getText().toString().equals("")){
                     if(startTime.trim().equals(":")) {
@@ -122,10 +166,10 @@ public class RequestPage extends AppCompatActivity {
                         String[] todaySplit = today.split("/");
 
                         Calendar startCal = Calendar.getInstance();
-                        startCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(startTimehourEdit.getText().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
+                        startCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(starttimehourSpinner.getSelectedItem().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
 
                         Calendar endCal = Calendar.getInstance();
-                        endCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(endTimehourEdit.getText().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
+                        endCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(endtimehourSpinner.getSelectedItem().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
 
                         int i = endCal.compareTo(startCal);
 
@@ -133,7 +177,18 @@ public class RequestPage extends AppCompatActivity {
                             Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        // 한사람이 한시간 이상 예약하는 것은 방지하는 코드
+                        int starttimeint = Integer.parseInt(starttimehourSpinner.getSelectedItem().toString() + startTimeminuteEdit.getText().toString());
+                        int endtimeint = Integer.parseInt(endtimehourSpinner.getSelectedItem().toString() + endTimeminuteEdit.getText().toString());
 
+                        if((endtimeint - starttimeint) > 100){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("한 시간 이상 예약할 수 없습니다.")
+                                    .setNegativeButton("확인", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
 
                         Response.Listener<String> validateListener = new Response.Listener<String>() {
                                 @Override

@@ -3,11 +3,14 @@ package com.example.footballreservationapp;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     String name;
     String phone;
     int manager;
+    ImageView campusTint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
-
+        campusTint = (ImageView)findViewById(R.id.campusTint);
+        Drawable alpha = campusTint.getDrawable();
+        alpha.setAlpha(50);
 
         welcomeText.setText("안녕하세요 " + name + " 님!");
     }
