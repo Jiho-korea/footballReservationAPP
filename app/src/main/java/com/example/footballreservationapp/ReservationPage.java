@@ -190,7 +190,8 @@ public class ReservationPage extends AppCompatActivity {
         for(int i = 0; i<startday; i++){
             dayList.add("");   // 달력 상단 봐보세요 빈날짜가있죠?? 그렇게 나타나도록 "" 빈문자열 넣는겁니다. 위 문장들은 얼마나 넣어야하는지 정보 얻는겁니다
         }
-       setCalendarDate(mCal.get(Calendar.DAY_OF_MONTH)); // 이메소드 하단에 있습니다 확인
+
+       setCalendarDate(Integer.parseInt(month)); // 이메소드 하단에 있습니다 확인
         gridAdapter = new GridAdapter(getApplicationContext(), dayList); // 그리드 어댑터 생성  밑에 그리드 어댑터 클래스 있음
         gridView.setAdapter(gridAdapter); //  어댑터 달아주기
         //다음달의 달력을 만드는 코드
@@ -205,7 +206,7 @@ public class ReservationPage extends AppCompatActivity {
             dayList2.add("");   // 달력 상단 봐보세요 빈날짜가있죠?? 그렇게 나타나도록 "" 빈문자열 넣는겁니다. 위 문장들은 얼마나 넣어야하는지 정보 얻는겁니다
         }
 
-        setCalendarDate2(mCal2.get(Calendar.DAY_OF_MONTH)); // 이메소드 하단에 있습니다 확인해보세요
+        setCalendarDate2(Integer.parseInt(month)+1); // 이메소드 하단에 있습니다 확인해보세요
         gridAdapter2 = new GridAdapter2(getApplicationContext(), dayList2); // 그리드 어댑터 생성  밑에 그리드 어댑터 클래스 있음
         gridView2.setAdapter(gridAdapter2);
 
@@ -254,6 +255,8 @@ public class ReservationPage extends AppCompatActivity {
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
                     if(manager == 1){
+                        rel.findViewById(R.id.reserve).setVisibility(View.GONE);
+                    }else if(Integer.parseInt(parent.getItemAtPosition(position).toString())<mCal.get(Calendar.DAY_OF_MONTH)){
                         rel.findViewById(R.id.reserve).setVisibility(View.GONE);
                     }else{
                         rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
