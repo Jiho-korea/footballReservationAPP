@@ -49,8 +49,8 @@ public class RequestPage extends AppCompatActivity {
  */
     private String today;
     private String todayDate;
+    private String trueTodayDate; // yyyy-MM-dd 형태의 날짜 (todayDate의 날짜를 포맷 )
     private String reservationDay;
-    private Button submitBtn;
     int people;
     String startTime;
     String endTime;
@@ -75,9 +75,19 @@ public class RequestPage extends AppCompatActivity {
 
         intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다.
 
-        submitBtn = (Button)findViewById(R.id.submit);
+
 
         todayDate = intent.getStringExtra("todayDate");
+
+        String[] dateSplit = todayDate.split("-");
+        if(Integer.parseInt(dateSplit[1]) < 10){
+            dateSplit[1] ="0"+ dateSplit[1];
+        }
+        if(Integer.parseInt(dateSplit[2]) < 10){
+            dateSplit[2] ="0"+ dateSplit[2];
+        }
+        trueTodayDate = dateSplit[0] + "-" +dateSplit[1] + "-" +  dateSplit[2];
+
         peopleEdit = (EditText)findViewById(R.id.people);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
         endTimeminuteEdit = (EditText)findViewById(R.id.endtimeminute);
@@ -140,6 +150,10 @@ public class RequestPage extends AppCompatActivity {
                 startTime = starttimehourSpinner.getSelectedItem().toString()+ ":" +startTimeminuteEdit.getText().toString();
                 endTime =  endtimehourSpinner.getSelectedItem().toString() + ":" + endTimeminuteEdit.getText().toString();
 
+                if(startTime.equals(endTime)){
+                    Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // 입력한시간의 패턴 검사
                 boolean startHourPattern = Pattern.matches("[0-1][0-9]|[2][0-1]", starttimehourSpinner.getSelectedItem().toString());
@@ -161,7 +175,7 @@ public class RequestPage extends AppCompatActivity {
                     }else if(!endMinutePattern){
                         Toast.makeText(RequestPage.this, "종료 시간의 분을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
                     }else{
-                        new CheckOverlapBackgroundTask().execute(startTime,endTime,todayDate);
+                        new CheckOverlapBackgroundTask().execute(startTime,endTime,trueTodayDate);
 
                         String[] todaySplit = today.split("/");
 
@@ -228,7 +242,7 @@ public class RequestPage extends AppCompatActivity {
                                                                     }
                                                                 }
                                                             };
-                                                            ReserveRequest reserveRequest = new ReserveRequest(sid,todayDate,people,startTime,endTime, reservationDay ,responseListener);
+                                                            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime, reservationDay ,responseListener);
                                                             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
                                                             queue.add(reserveRequest);
                                                         }else{
@@ -244,7 +258,7 @@ public class RequestPage extends AppCompatActivity {
                                                     }
                                                 }
                                             };
-                                            CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,todayDate,checkOverlapListener);
+                                            CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
                                             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
                                             queue.add(checkReservationOverlapRequest);
                                         }else{
@@ -261,7 +275,7 @@ public class RequestPage extends AppCompatActivity {
                                     }
                                 }
                             };
-                            ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,todayDate,validateListener);
+                            ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
                             RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
                             vqueue.add(reservationValidateRequest);
 

@@ -58,6 +58,7 @@ public class ReservationPage extends AppCompatActivity {
     private int day; // 일
     private String rReservationday;
     private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
+    private String clickDate;
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
     private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터(이번달)
     private GridAdapter2 gridAdapter2; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터(다음달)
@@ -224,6 +225,15 @@ public class ReservationPage extends AppCompatActivity {
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
                     String[] subDate = tvDate.getText().toString().split("-");
 
+                    String trueDay = day+"";
+                    String trueMonth = subDate[1];
+                    if(day < 10){
+                        trueDay = "0"+trueDay;
+                    }
+                    if(Integer.parseInt(subDate[1]) < 10){
+                        trueMonth = "0"+trueMonth;
+                    }
+                    clickDate = year + "-" + trueMonth + "-" + trueDay;
                     setTodayDate(year + "-" + subDate[1] + "-" + day+"");
                     setToday(subDate[1]+"/"+day);
 
@@ -250,7 +260,7 @@ public class ReservationPage extends AppCompatActivity {
                     RequestQueue queue = Volley.newRequestQueue(ReservationPage.this);
                     queue.add(reservationRequest);
                     */
-                    new ReservationBackgroundTask().execute(todayDate);
+                    new ReservationBackgroundTask().execute(clickDate);
 
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
@@ -303,13 +313,26 @@ public class ReservationPage extends AppCompatActivity {
                     listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
 
                     String[] subDate = tvDate.getText().toString().split("-");
+                    String trueYear = year;
                     if(subDate[1].equals("1")){
-                        setTodayDate(Integer.parseInt(year)+1 + "-" + subDate[1] + "-" + day+"");
+                        trueYear = ""+(Integer.parseInt(year)+1);
+                        setTodayDate((Integer.parseInt(year)+1) + "-" + subDate[1] + "-" + day+"");
                         setToday(subDate[1]+"/"+day);
                     }else{
                         setTodayDate(year + "-" + subDate[1] + "-" + day+"");
                         setToday(subDate[1]+"/"+day);
                     }
+
+                    String trueDay = ""+day;
+                    String trueMonth = subDate[1];
+                    if(day < 10){
+                        trueDay = "0"+trueDay;
+                    }
+                    if(Integer.parseInt(subDate[1]) < 10){
+                        trueMonth = "0" + trueMonth;
+                    }
+                    clickDate = trueYear + "-" + trueMonth + "-" + trueDay;
+
 
 
                     //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
@@ -328,7 +351,7 @@ public class ReservationPage extends AppCompatActivity {
                     RequestQueue queue = Volley.newRequestQueue(ReservationPage.this);
                     queue.add(reservationRequest);
                     */
-                    new ReservationBackgroundTask().execute(todayDate);
+                    new ReservationBackgroundTask().execute(clickDate);
 
                     listlayout.removeAllViews(); // 레이아웃이 덮혀써지지 않도록 이미 만들어진 레이아웃 제거 하는겁니다.
                     // 요기서 꺼냄
