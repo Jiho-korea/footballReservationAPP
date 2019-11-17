@@ -26,7 +26,8 @@
         android:layout_marginTop="8dp"
         android:layout_below="@id/reservationday"
         android:text="시작시간 "
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:drawableLeft="@drawable/text_clock3"/>
 
     <TextView
         android:id="@+id/wave"

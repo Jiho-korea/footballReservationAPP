@@ -31,8 +31,8 @@
         app:layout_constraintTop_toBottomOf="@id/top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/editlist" />
-
+        app:layout_constraintBottom_toTopOf="@id/editlist"
+        android:drawableTop="@drawable/req_date"/>
 
 
     <LinearLayout
@@ -52,8 +52,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="인원 : "
-                android:textSize="20sp"/>
+                android:text=" 인원 : "
+                android:textSize="20sp"
+                android:drawableLeft="@drawable/req_people"/>
             <EditText
                 android:id="@+id/people"
                 android:layout_width="50dp"
@@ -66,16 +67,17 @@
 
         <TextView
             android:id="@+id/timeset"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="20sp"
-            android:text=" 이용 시간 "
+            android:layout_marginTop="30sp"
+            android:text=" 이용 시간"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editlist"
-            app:layout_constraintBottom_toTopOf="@id/submit"/>
+            app:layout_constraintBottom_toTopOf="@id/submit"
+            android:drawableLeft="@drawable/text_clock"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
