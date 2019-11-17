@@ -35,7 +35,10 @@
             android:backgroundTint="@color/colorMainButton"
             android:textColor="#ffffff"
             android:onClick="mClick"
-            android:text="학생리스트"/>
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="학생리스트"
+            android:drawableLeft="@drawable/manager_stu"/>
 
 
         <Button
@@ -46,7 +49,10 @@
             android:textColor="@color/colorText"
             android:layout_marginTop="30sp"
             android:onClick="mClick"
-            android:text="예약리스트"/>
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="예약리스트"
+            android:drawableLeft="@drawable/manager_res"/>
 
         <Button
             android:id="@+id/reservationincalendar"
@@ -56,6 +62,9 @@
             android:textColor="@color/colorBackground"
             android:layout_marginTop="30sp"
             android:onClick="mClick"
-            android:text="날짜별예약"/>
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="날짜별예약"
+            android:drawableLeft="@drawable/board_cal"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

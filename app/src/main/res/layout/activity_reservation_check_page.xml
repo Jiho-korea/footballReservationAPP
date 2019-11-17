@@ -18,6 +18,7 @@
         android:paddingLeft="10dp"
         android:textColor="@color/colorBackground"
         android:textSize="20sp"
+        android:drawableLeft="@drawable/check_res"
         />
 
     <ListView

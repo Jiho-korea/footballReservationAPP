@@ -119,7 +119,8 @@
                 android:backgroundTint="@color/colorMainButton"
                 android:textColor="@color/colorBackground"
                 android:textStyle="bold"
-                android:text="   예약신청   "/>
+                android:text="  예약신청   "
+                android:drawableLeft="@drawable/main_re"/>
         </LinearLayout>
 
     </FrameLayout>
