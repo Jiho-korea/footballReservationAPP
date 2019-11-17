@@ -53,12 +53,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title1"
         />
+
+    <ImageView
+        android:id="@+id/campus"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:layout_marginTop="9dp"
+        android:src="@mipmap/ground1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/theme"
+        />
     <EditText
         android:id="@+id/sidText"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:ems="10"
         android:hint="학번"
@@ -87,24 +98,54 @@
         app:layout_constraintTop_toBottomOf="@+id/sidText"
         android:background="@drawable/edittext_login"/>
 
-    <ImageView
-        android:id="@+id/campus"
+
+    <LinearLayout
+        android:id="@+id/memory"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="310dp"
-        android:layout_marginTop="9dp"
-        android:src="@mipmap/ground1"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/theme"
-        />
-
+        app:layout_constraintTop_toBottomOf="@+id/passwordText">
+        <CheckBox
+            android:id="@+id/id_save"
+            android:button="@drawable/checkbox_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디저장"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="35dp"
+            android:textColor="@color/colorBackground"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+        <CheckBox
+            android:id="@+id/pwd_save"
+            android:button="@drawable/checkbox_login"
+            android:drawable="@drawable/checkbox_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="비밀번호저장"
+            android:textColor="@color/colorBackground"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+    </LinearLayout>
     <Button
         android:textStyle="bold"
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:text="@string/buttonLogin"
         android:textSize="14sp"
@@ -112,7 +153,7 @@
         android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+        app:layout_constraintTop_toBottomOf="@+id/memory" />
 
     <TextView
         android:id="@+id/registerButton"

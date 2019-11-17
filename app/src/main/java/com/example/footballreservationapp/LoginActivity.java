@@ -1,8 +1,10 @@
 package com.example.footballreservationapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,16 +37,39 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
-
+    CheckBox etIdSave;
+    CheckBox etPwdSave;
+    EditText sidText;
+    EditText passwordText;
+    Button loginButton;
+    TextView registerButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText sidText =(EditText) findViewById(R.id.sidText);
-        final EditText passwordText =(EditText) findViewById(R.id.passwordText);
-        final Button loginButton = (Button) findViewById(R.id.loginButton);
-        final TextView registerButton = (TextView) findViewById(R.id.registerButton);
+        sidText =(EditText) findViewById(R.id.sidText);
+        passwordText =(EditText) findViewById(R.id.passwordText);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        registerButton = (TextView) findViewById(R.id.registerButton);
+
+        etIdSave = (CheckBox)findViewById(R.id.id_save);
+        etPwdSave =(CheckBox)findViewById(R.id.pwd_save);
+
+        SharedPreferences pref=getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String sid=pref.getString("id_save", "");
+        String pwd=pref.getString("pwd_save", "");
+        Boolean chk1=pref.getBoolean("chk1", false);
+        Boolean chk2=pref.getBoolean("chk2", false);
+
+        if(chk1==true){
+            sidText.setText(sid);
+            etIdSave.setChecked(chk1);
+        }
+        if(chk2==true){
+            passwordText.setText(pwd);
+            etPwdSave.setChecked(chk2);
+        }
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +124,18 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("phone",phone);
                                 intent.putExtra("manager",manager);
 
+
+                                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+
+                                //SharedPreferences에 각 아이디를 지정하고 EditText 내용을 저장한다.
+                                editor.putString("id_save", sidText.getText().toString());
+                                editor.putString("pwd_save", passwordText.getText().toString());
+                                editor.putBoolean("chk1", etIdSave.isChecked());
+                                editor.putBoolean("chk2", etPwdSave.isChecked());
+
+                                editor.commit();
+
                                 LoginActivity.this.startActivity(intent);
                             }else{
                                 Intent intent = new Intent(LoginActivity.this, ManageMainActivity.class);
@@ -107,6 +145,18 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("name",name);
                                 intent.putExtra("phone",phone);
                                 intent.putExtra("manager",manager);
+
+                                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pref.edit();
+
+                                //SharedPreferences에 각 아이디를 지정하고 EditText 내용을 저장한다.
+                                editor.putString("id_save", sidText.getText().toString());
+                                editor.putString("pwd_save", passwordText.getText().toString());
+                                editor.putBoolean("chk1", etIdSave.isChecked());
+                                editor.putBoolean("chk2", etPwdSave.isChecked());
+
+                                editor.commit();
+
                                 LoginActivity.this.startActivity(intent);
                             }
 
