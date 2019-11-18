@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,7 @@ public class ReservationPage extends AppCompatActivity {
     private ReservationListAdapter adapter;
     //예약이 없을 때 출력할 텍스트
     private View empty_word;
+    //프로그레스바
 
     private ArrayList<String> dayList; // 달력,날짜 정보를 가지고있는 ArrayList 컬렉션(이번달)
     private ArrayList<String> dayList2; // (다음달)
@@ -107,7 +109,6 @@ public class ReservationPage extends AppCompatActivity {
         empty_word = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
         addContentView(empty_word, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         empty_word.setVisibility(View.GONE);
-
 
         long now = System.currentTimeMillis();
         final Date date = new Date(now); // 현재 날짜얻음
@@ -216,7 +217,6 @@ public class ReservationPage extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) { // 항목(날짜) 클릭시 항 행동 정의하는 메소드
-
                 LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
                 try{
 
@@ -237,14 +237,14 @@ public class ReservationPage extends AppCompatActivity {
                     setTodayDate(year + "-" + subDate[1] + "-" + day+"");
                     setToday(subDate[1]+"/"+day);
 
-
-
                   //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
                     rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
+
                     studentList = rel.findViewById(R.id.studentList);
                     studentList.setEmptyView(empty_word);
                      //////////////////////////////////////
                     //여기를 내가 만든 어댑터붙여 주고!
+
                     adapter = null;
 
                     adapter = new ReservationListAdapter(getApplicationContext(), reservationList);
@@ -614,6 +614,10 @@ public class ReservationPage extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class RequestPage extends AppCompatActivity {
     private Spinner starttimehourSpinner;
     private Spinner endtimehourSpinner;
 
+    private ProgressBar circle_bar;
 /*
 아래를 보면 필드가 상당히 많은 데 전부
 사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
@@ -75,7 +77,8 @@ public class RequestPage extends AppCompatActivity {
 
         intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다.
 
-
+        circle_bar = (ProgressBar)findViewById(R.id.progressBar);
+        circle_bar.setVisibility(View.GONE);
 
         todayDate = intent.getStringExtra("todayDate");
 
@@ -146,11 +149,13 @@ public class RequestPage extends AppCompatActivity {
     public void mSubmit(View v){  // 노란색 예약신청 버튼 클릭시 사용자가 입력한 정보를 db에 넣는 작업을 합니다.
         if(v.getId() == R.id.submit){
             try{
+                circle_bar.setVisibility(View.VISIBLE);
                 people = Integer.parseInt(peopleEdit.getText().toString());
                 startTime = starttimehourSpinner.getSelectedItem().toString()+ ":" +startTimeminuteEdit.getText().toString();
                 endTime =  endtimehourSpinner.getSelectedItem().toString() + ":" + endTimeminuteEdit.getText().toString();
 
                 if(startTime.equals(endTime)){
+                    circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -162,17 +167,26 @@ public class RequestPage extends AppCompatActivity {
                 boolean endMinutePattern = Pattern.matches("[0][0]", endTimeminuteEdit.getText().toString());
 
                 if(!peopleEdit.getText().toString().equals("")){
-                    if(startTime.trim().equals(":")) {
+                    if(people > 20){
+                        circle_bar.setVisibility(View.GONE);
+                        Toast.makeText(RequestPage.this, "인원이 너무 많습니다.", Toast.LENGTH_SHORT).show();
+                    }else if(startTime.trim().equals(":")) {
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "시작시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else if(!startHourPattern){
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "시작 시간의 시간을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
                     }else if(!startMinutePattern){
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "시작 시간의 분을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
                     }else if(endTime.trim().equals(":")){
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "종료시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     }else if(!endHourPattern){
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "종료 시간의 시간을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
                     }else if(!endMinutePattern){
+                        circle_bar.setVisibility(View.GONE);
                         Toast.makeText(RequestPage.this, "종료 시간의 분을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
                     }else{
                         new CheckOverlapBackgroundTask().execute(startTime,endTime,trueTodayDate);
@@ -188,6 +202,7 @@ public class RequestPage extends AppCompatActivity {
                         int i = endCal.compareTo(startCal);
 
                         if(i != 1){
+                            circle_bar.setVisibility(View.GONE);
                             Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -196,6 +211,7 @@ public class RequestPage extends AppCompatActivity {
                         int endtimeint = Integer.parseInt(endtimehourSpinner.getSelectedItem().toString() + endTimeminuteEdit.getText().toString());
 
                         if((endtimeint - starttimeint) > 100){
+                            circle_bar.setVisibility(View.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
                             builder.setMessage("한 시간 이상 예약할 수 없습니다.")
                                     .setNegativeButton("확인", null)
@@ -225,10 +241,12 @@ public class RequestPage extends AppCompatActivity {
                                                                         JSONObject jsonResponse = new JSONObject(response);
                                                                         boolean success = jsonResponse.getBoolean("success")   ;
                                                                         if(success){
+                                                                            circle_bar.setVisibility(View.GONE);
                                                                             Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
                                                                             finish();
                                                                         }
                                                                         else{
+                                                                            circle_bar.setVisibility(View.GONE);
                                                                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
                                                                             builder.setMessage("예약신청에 실패하셨습니다")
                                                                                     .setNegativeButton("다시 시도", null)
@@ -246,6 +264,7 @@ public class RequestPage extends AppCompatActivity {
                                                             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
                                                             queue.add(reserveRequest);
                                                         }else{
+                                                            circle_bar.setVisibility(View.GONE);
                                                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
                                                             builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
                                                                     .setNegativeButton("확인", null)
@@ -262,6 +281,7 @@ public class RequestPage extends AppCompatActivity {
                                             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
                                             queue.add(checkReservationOverlapRequest);
                                         }else{
+                                            circle_bar.setVisibility(View.GONE);
                                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
                                             builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
                                                     .setNegativeButton("확인", null)
@@ -281,10 +301,12 @@ public class RequestPage extends AppCompatActivity {
 
                     }
                 }else{
+                    circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "1명 이상의 인원을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 }
 
             }catch(NumberFormatException e){
+                circle_bar.setVisibility(View.GONE);
                 Toast.makeText(RequestPage.this, "모든 입력 사항을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
             }
         }

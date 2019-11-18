@@ -25,6 +25,4 @@
         android:backgroundTint="@color/colorMainButton"
         android:textColor="@color/colorBackground"
         android:drawableLeft="@drawable/board_res"/>
-
-
 </RelativeLayout>
