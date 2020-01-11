@@ -19,14 +19,14 @@
         <activity android:name=".ReservationCheckPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".RequestPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".ReservationPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait" android:launchMode="singleTop">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".RegisterActivity"  android:screenOrientation="portrait" android:launchMode="singleTop"/>
         <activity android:name=".Splashscreen">
             <intent-filter>

@@ -10,23 +10,10 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="200dp"
+        android:layout_alignParentTop="true"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="예약 신청을 눌러 예약을 해주세요."
-        android:visibility="visible"
-        />
-    <TextView
-        android:textColor="@color/colorHint"
-        android:id="@+id/empty_reservation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_above="@id/empty_doReservation"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:text="이날의 예약이 없습니다."
+        android:text="이날의 예약이 없습니다. \n예약 신청을 눌러 예약을 해주세요."
         android:visibility="visible"
         />
 </RelativeLayout>

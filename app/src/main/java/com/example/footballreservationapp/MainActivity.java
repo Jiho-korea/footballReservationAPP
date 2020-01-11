@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Drawable alpha = campusTint.getDrawable();
         alpha.setAlpha(50);
 
-        welcomeText.setText("안녕하세요 " + name + " 님!");
+        welcomeText.setText("안녕하세요! 반갑습니다.");
     }
 
     public void mClick(View v){

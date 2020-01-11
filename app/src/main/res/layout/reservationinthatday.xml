@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    android:orientation="vertical"
     android:padding="10sp">
     <LinearLayout
         android:id="@+id/usingtime"
@@ -35,45 +36,145 @@
             android:text="시작시간 "
             android:textSize="20sp"/>
 
+        <TextView
+            android:id="@+id/persontext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="신청자 : "
+            android:textSize="20sp"/>
 
+        <TextView
+            android:id="@+id/personwhoreserve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/persontext"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_below="@id/usingtime"
-        android:text="신청자 : "
-        android:textSize="15sp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/personwhoreserve"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/wholepersontext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="인원 :  "
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/usingpersonnumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/colorText"
+            android:layout_marginLeft="30dp"
+            android:text="전화번호 : "/>
+
+        <TextView
+            android:id="@+id/phoneText"
+            android:text="000-0000-0000"
+            android:textSize="15sp"
+            android:textColor="@color/colorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/usingtime"
-        android:layout_toRightOf="@id/persontext"
-        android:textSize="15sp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/colorText"
+            android:text="학번 : "/>
 
+        <TextView
+            android:id="@+id/sidText"
+            android:text="00000000"
+            android:textSize="14sp"
+            android:textColor="@color/colorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/wholepersontext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_below="@id/usingtime"
-        android:layout_toRightOf="@id/personwhoreserve"
-        android:text="인원 :  "
-        android:textSize="15sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/colorText"
+            android:text="학과(부서) : "/>
 
-    <TextView
-        android:id="@+id/usingpersonnumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/usingtime"
-        android:layout_toRightOf="@id/wholepersontext"
-        android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/subjectText"
+            android:text="##########"
+            android:textSize="14sp"
+            android:textColor="@color/colorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:id="@+id/approveProcedure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp">
 
+            <Button
+                android:id="@+id/complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:text="승인대기"
+                />
+            <Button
+                android:id="@+id/approve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorRequestButton"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:text="승인완료"
+                />
 
-</RelativeLayout>
+            <Button
+                android:id="@+id/cancellation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:visibility="invisible"
+                android:textSize="14sp"
+                android:clickable="false"
+                android:text="예약취소됨"
+                />
+        </FrameLayout>
+        <Button
+            android:id="@+id/cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorMainButton"
+            android:textColor="@color/colorBackground"
+            android:textSize="14sp"
+            android:text="예약취소"
+            />
+    </LinearLayout>
+</LinearLayout>

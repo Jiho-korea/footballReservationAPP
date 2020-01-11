@@ -22,7 +22,7 @@
             android:textSize="20sp"
             android:drawableLeft="@drawable/board_cal"
             />
-
+        <!--
         <Button
             android:id="@+id/check"
             android:layout_width="wrap_content"
@@ -42,7 +42,9 @@
             android:drawableLeft="@drawable/board_check"
             android:textStyle="bold"
             android:textSize="14sp" />
+            -->
     </RelativeLayout>
+    <!--
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -106,12 +108,16 @@
             </GridView>
         </LinearLayout>
     </FrameLayout>
-
+      -->
     <RelativeLayout
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         />
 
 

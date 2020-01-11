@@ -6,13 +6,21 @@ public class Reservation {
     int people;
     String startTime;
     String endTime;
+    String subject;
+    String phone;
+    int approval;
+    int cancellation;
 
-    public Reservation(int sid, String name, int people, String startTime, String endTime) {
+    public Reservation(int sid, String name, int people, String startTime, String endTime, String subject, String phone, int approval, int cancellation) {
         this.sid = sid;
         this.name = name;
         this.people = people;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.subject = subject;
+        this.phone = phone;
+        this.approval = approval;
+        this.cancellation = cancellation;
     }
 
     public int getSid() {
@@ -23,6 +31,13 @@ public class Reservation {
         this.sid = sid;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getPeople() {
         return people;
@@ -48,11 +63,35 @@ public class Reservation {
         this.endTime = endTime;
     }
 
-    public String getName() {
-        return name;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getApproval() {
+        return approval;
+    }
+
+    public void setApproval(int approval) {
+        this.approval = approval;
+    }
+
+    public int getCancellation() {
+        return cancellation;
+    }
+
+    public void setCancellation(int cancellation) {
+        this.cancellation = cancellation;
     }
 }
