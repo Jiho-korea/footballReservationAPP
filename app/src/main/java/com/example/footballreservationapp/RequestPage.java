@@ -33,26 +33,23 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class RequestPage extends AppCompatActivity {
-
-    int sid;
-    String password;
-    String subject;
-    String name;
-    String phone;
-    int manager;
-
     private Spinner starttimehourSpinner;
     private Spinner endtimehourSpinner;
-
+    private Spinner subjectSpinner;
     private ProgressBar circle_bar;
 /*
 아래를 보면 필드가 상당히 많은 데 전부
 사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
  */
-    private String today;
+
     private String todayDate;
     private String trueTodayDate; // yyyy-MM-dd 형태의 날짜 (todayDate의 날짜를 포맷 )
     private String reservationDay;
+    int sid;
+    String password;
+    String subject;
+    String name;
+    String phone;
     int people;
     String startTime;
     String endTime;
@@ -67,15 +64,27 @@ public class RequestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_page);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다
+        /*
         sid = intent.getIntExtra("sid", 0);
         password = intent.getStringExtra("password");
         subject = intent.getStringExtra("subject");
         name = intent.getStringExtra("name");
         phone = intent.getStringExtra("phone");
         manager = intent.getIntExtra("manager",0);
-
-        intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다.
+        */
+        subjectSpinner = (Spinner)findViewById(R.id.spinner);
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("학과를 선택해 주세요.");
+        list.add("스마트소프트웨어");
+        list.add("스마트전기전자공학");
+        list.add("조선자동차항공기계");
+        list.add("전자전기");
+        list.add("기계공학");
+        list.add("산업정보디자인");
+        ArrayAdapter spinnerAdapter;
+        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list);
+        subjectSpinner.setAdapter(spinnerAdapter);
 
         circle_bar = (ProgressBar)findViewById(R.id.progressBar);
         circle_bar.setVisibility(View.GONE);
@@ -83,6 +92,8 @@ public class RequestPage extends AppCompatActivity {
         todayDate = intent.getStringExtra("todayDate");
 
         String[] dateSplit = todayDate.split("-");
+        TextView date = (TextView)findViewById(R.id.date);
+        date.setText(dateSplit[1] + "/" +  dateSplit[2]);
         if(Integer.parseInt(dateSplit[1]) < 10){
             dateSplit[1] ="0"+ dateSplit[1];
         }
@@ -101,12 +112,9 @@ public class RequestPage extends AppCompatActivity {
         startTimeminuteEdit.setEnabled(false);
         endTimeminuteEdit.setEnabled(false);
 
-        TextView date = (TextView)findViewById(R.id.date);
+
         String month = intent.getStringExtra("Month");
         reservationDay = month + "-" +intent.getStringExtra("ReservationDay");
-        String day = intent.getStringExtra("Date");
-        today = intent.getStringExtra("Today");
-        date.setText(today);
 
         final ArrayList<String> starttimeList = new ArrayList<>();
         starttimeList.add("09");
@@ -191,13 +199,13 @@ public class RequestPage extends AppCompatActivity {
                     }else{
                         new CheckOverlapBackgroundTask().execute(startTime,endTime,trueTodayDate);
 
-                        String[] todaySplit = today.split("/");
+                        String[] todaySplit = trueTodayDate.split("-");
 
                         Calendar startCal = Calendar.getInstance();
-                        startCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(starttimehourSpinner.getSelectedItem().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
+                        startCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(starttimehourSpinner.getSelectedItem().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
 
                         Calendar endCal = Calendar.getInstance();
-                        endCal.set(0,Integer.parseInt(todaySplit[0]),Integer.parseInt(todaySplit[1]),Integer.parseInt(endtimehourSpinner.getSelectedItem().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
+                        endCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(endtimehourSpinner.getSelectedItem().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
 
                         int i = endCal.compareTo(startCal);
 
@@ -310,14 +318,6 @@ public class RequestPage extends AppCompatActivity {
                 Toast.makeText(RequestPage.this, "모든 입력 사항을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    public String getToday() {
-        return today;
-    }
-
-    public void setToday(String today) {
-        this.today = today;
     }
 
     class CheckOverlapBackgroundTask extends AsyncTask<String, Void, Void> {

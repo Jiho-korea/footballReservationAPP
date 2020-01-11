@@ -52,7 +52,6 @@ public class ReservationPage extends AppCompatActivity {
 
     private ListView studentList;
     private RelativeLayout rel; // 날짜 클릭시 하단에 채워지는 렐러티브레이아웃(list_registrant.xml) .. 리스트뷰와 예약신청 버튼을 가지고있음
-    private String today; //today 필드는 오늘 날짜를 "월/일" 형태의 문자열로 갖고있다. 코드는 밑에서 나오고 사용자가 예약신청을 눌렀을때 날짜 던져주기 위함임
     private String year; // 년
     private String month; // 월(한자리 달일경우 0포함되있는)
     private String rmonth;
@@ -149,7 +148,6 @@ public class ReservationPage extends AppCompatActivity {
             }
             */
             setTodayDate(year + "-" + month + "-" + trueDay);
-            setToday(month+"/"+day);
 
             //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
             rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
@@ -193,7 +191,6 @@ public class ReservationPage extends AppCompatActivity {
                     */
                     intent.putExtra("Month",rmonth);
                     intent.putExtra("Date", day+"");
-                    intent.putExtra("Today", today);
                     intent.putExtra("todayDate", todayDate);
                     intent.putExtra("ReservationDay", rReservationday);
                     startActivity(intent);
@@ -360,7 +357,7 @@ public class ReservationPage extends AppCompatActivity {
                                 intent.putExtra("manager",manager);
                                 intent.putExtra("Month",rmonth);
                                 intent.putExtra("Date", day+"");
-                                intent.putExtra("Today", today);
+
                                 intent.putExtra("todayDate", todayDate);
                                 intent.putExtra("ReservationDay", rReservationday);
                                 startActivity(intent);
@@ -607,7 +604,7 @@ public class ReservationPage extends AppCompatActivity {
             startActivity(intent); // 예약 확인 버튼 클릭시 ReservationCheckPage 뜨게함
         }
     }
-     */
+
     public String getToday() {
         return today;
     }
@@ -615,7 +612,7 @@ public class ReservationPage extends AppCompatActivity {
     public void setToday(String today) {
         this.today = today;
     }
-
+*/
     public String getTodayDate() {
         return todayDate;
     }
@@ -643,7 +640,6 @@ public class ReservationPage extends AppCompatActivity {
             }
             */
             setTodayDate(year + "-" + month + "-" + trueDay);
-            setToday(month+"/"+day);
 
             //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
             rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
@@ -684,7 +680,6 @@ public class ReservationPage extends AppCompatActivity {
                     */
                     intent.putExtra("Month",rmonth);
                     intent.putExtra("Date", day+"");
-                    intent.putExtra("Today", today);
                     intent.putExtra("todayDate", todayDate);
                     intent.putExtra("ReservationDay", rReservationday);
                     startActivity(intent);
