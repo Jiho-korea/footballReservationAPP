@@ -722,8 +722,8 @@ public class ReservationPage extends AppCompatActivity {
                             try{
                                 JSONArray jsonArray = jsonObject.getJSONArray("response");
                                 int count = 0;
-                                int sid, people;
-                                String name, startTime, endTime;
+                                int sid, people, approval, cancellation;
+                                String name, startTime, endTime, subject, phone;
                                 while(count < jsonArray.length()){
                                     JSONObject object = jsonArray.getJSONObject(count);
                                     sid = object.getInt("sid");
@@ -731,7 +731,11 @@ public class ReservationPage extends AppCompatActivity {
                                     people = object.getInt("people");
                                     startTime = object.getString("startTime");
                                     endTime = object.getString("endTime");
-                                    Reservation reservation = new Reservation(sid, name, people, startTime, endTime);
+                                    subject = object.getString("subject");
+                                    phone = object.getString("phone");
+                                    approval = object.getInt("approval");
+                                    cancellation = object.getInt("cancellation");
+                                    Reservation reservation = new Reservation(sid, name, people, startTime, endTime,subject, phone, approval , cancellation);
                                     reservationList.add(reservation);
                                     adapter.notifyDataSetChanged();
                                     count++;

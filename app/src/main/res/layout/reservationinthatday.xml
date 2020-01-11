@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:padding="10sp">
     <LinearLayout
-        android:id="@+id/usingtime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,10 +19,8 @@
             android:drawableLeft="@drawable/text_clock2"/>
 
         <TextView
-            android:id="@+id/wave2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/usingstarttime"
             android:text=" ~ "
             android:textSize="15sp"/>
 
@@ -32,12 +29,10 @@
             android:id="@+id/usingendtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/wave2"
             android:text="시작시간 "
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/persontext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -58,10 +53,9 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/wholepersontext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="25dp"
             android:text="인원 :  "
             android:textSize="15sp"/>
 
@@ -77,7 +71,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/colorText"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:text="전화번호 : "/>
 
         <TextView
@@ -97,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="25dp"
             android:textColor="@color/colorText"
             android:text="학번 : "/>
 
@@ -113,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:textColor="@color/colorText"
             android:text="학과(부서) : "/>
 
@@ -137,7 +131,7 @@
             android:layout_marginRight="5dp">
 
             <Button
-                android:id="@+id/complete"
+                android:id="@+id/approveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorText"
@@ -145,7 +139,7 @@
                 android:text="승인대기"
                 />
             <Button
-                android:id="@+id/approve"
+                android:id="@+id/approval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorRequestButton"
@@ -168,7 +162,7 @@
                 />
         </FrameLayout>
         <Button
-            android:id="@+id/cancle"
+            android:id="@+id/cancleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorMainButton"
