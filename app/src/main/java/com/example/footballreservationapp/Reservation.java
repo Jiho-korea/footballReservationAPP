@@ -8,10 +8,11 @@ public class Reservation {
     String endTime;
     String subject;
     String phone;
+    String date;
     int approval;
     int cancellation;
 
-    public Reservation(int sid, String name, int people, String startTime, String endTime, String subject, String phone, int approval, int cancellation) {
+    public Reservation(int sid, String date, String name, int people, String startTime, String endTime, String subject, String phone, int approval, int cancellation) {
         this.sid = sid;
         this.name = name;
         this.people = people;
@@ -19,6 +20,7 @@ public class Reservation {
         this.endTime = endTime;
         this.subject = subject;
         this.phone = phone;
+        this.date = date;
         this.approval = approval;
         this.cancellation = cancellation;
     }
@@ -77,6 +79,14 @@ public class Reservation {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getApproval() {

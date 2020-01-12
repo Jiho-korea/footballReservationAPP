@@ -1,6 +1,10 @@
 package com.example.footballreservationapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +19,12 @@ import java.util.List;
 public class ReservationListAdapter extends BaseAdapter {
     private Context context;
     private List<Reservation> reservationList;
+    private Activity parentActivity;
 
-    public ReservationListAdapter(Context context, List<Reservation> reservationList){
+    public ReservationListAdapter(Context context, List<Reservation> reservationList, Activity parentActivity){
         this.context = context;
         this.reservationList = reservationList;
+        this.parentActivity = parentActivity;
     }
 
     @Override
@@ -37,8 +43,10 @@ public class ReservationListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context, R.layout.reservationinthatday, null);
+
+
 
         TextView usingStartTime = (TextView)v.findViewById(R.id.usingstarttime);
         TextView usingEndTime = (TextView)v.findViewById(R.id.usingendtime);
@@ -53,8 +61,64 @@ public class ReservationListAdapter extends BaseAdapter {
         Button approval = (Button)v.findViewById(R.id.approval);
         Button cancellation = (Button)v.findViewById(R.id.cancellation);
 
+        approveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                builder.setMessage("예약 신청을 승인하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //new ApproveReservationBackgroundTask().execute(sidText.getText().toString(),dateText.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .create()
+                        .show();
+            }
+        });
+
+        cancleButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                builder.setMessage("예약 신청을 취소하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(parentActivity.getApplicationContext(),CancleReservationActivity.class);
+                                intent.putExtra("date", reservationList.get(position).getDate());
+                                intent.putExtra("sid", reservationList.get(position).getSid());
+                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
+                                intent.putExtra("cancellation", reservationList.get(position).getCancellation());
+                                parentActivity.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .create()
+                        .show();
+            }
+        });
+
+        cancellation.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                builder.setMessage("예약 리스트에서 삭제하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //new ReservationDeleteBackgroundTask(position).execute(sidText.getText().toString(),dateText.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .create()
+                        .show();
+            }
+        });
 
         Reservation reservation = reservationList.get(position);
+
         usingStartTime.setText(reservation.getStartTime());
         usingEndTime.setText(reservation.getEndTime());
         person.setText(reservation.getName());
@@ -71,7 +135,7 @@ public class ReservationListAdapter extends BaseAdapter {
             approval.setVisibility(View.GONE);
         }
 
-        if(reservation.getCancellation() == 1){
+        if(reservation.getCancellation() != 0){
             cancleButton.setVisibility(View.GONE);
             approveButton.setVisibility(View.GONE);
             approval.setVisibility(View.GONE);

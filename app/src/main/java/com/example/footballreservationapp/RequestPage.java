@@ -37,27 +37,27 @@ public class RequestPage extends AppCompatActivity {
     private Spinner endtimehourSpinner;
     private Spinner subjectSpinner;
     private ProgressBar circle_bar;
-/*
-아래를 보면 필드가 상당히 많은 데 전부
-사용자가 입력한 내용을 얻기위해 EditText 필드 선언한겁니다. 이름을 보면 직관적으로 어떤 정보를 입력받는 EditText인지 알 수있습니다.
- */
 
     private String todayDate;
     private String trueTodayDate; // yyyy-MM-dd 형태의 날짜 (todayDate의 날짜를 포맷 )
-    private String reservationDay;
-    int sid;
-    String password;
-    String subject;
-    String name;
-    String phone;
-    int people;
-    String startTime;
-    String endTime;
+    private int sid;
+    private String password;
+    private String subject;
+    private String name;
+    private String phone;
+    private int people;
+    private String startTime;
+    private String endTime;
+
+    private EditText sidText;
+    private EditText nameText;
+    private EditText phoneText;
+    private EditText passwordText;
     private EditText peopleEdit;
     private EditText startTimeminuteEdit;
     private EditText endTimeminuteEdit;
 
-    private boolean reservationOverlapValidation = false;
+   // private boolean reservationOverlapValidation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class RequestPage extends AppCompatActivity {
         */
         subjectSpinner = (Spinner)findViewById(R.id.spinner);
         final ArrayList<String> list = new ArrayList<>();
-        list.add("학과를 선택해 주세요.");
+        list.add("선택");
         list.add("스마트소프트웨어");
         list.add("스마트전기전자공학");
         list.add("조선자동차항공기계");
@@ -93,15 +93,15 @@ public class RequestPage extends AppCompatActivity {
 
         String[] dateSplit = todayDate.split("-");
         TextView date = (TextView)findViewById(R.id.date);
-        date.setText(dateSplit[1] + "/" +  dateSplit[2]);
-        if(Integer.parseInt(dateSplit[1]) < 10){
-            dateSplit[1] ="0"+ dateSplit[1];
-        }
-        if(Integer.parseInt(dateSplit[2]) < 10){
-            dateSplit[2] ="0"+ dateSplit[2];
-        }
+        date.setText(Integer.parseInt(dateSplit[1]) + "/" +  Integer.parseInt(dateSplit[2]));
+
         trueTodayDate = dateSplit[0] + "-" +dateSplit[1] + "-" +  dateSplit[2];
 
+        // 입력 TestView 참조 얻기
+        sidText = (EditText)findViewById(R.id.sidText);
+        nameText = (EditText)findViewById(R.id.nameText);
+        phoneText = (EditText)findViewById(R.id.phoneText);
+        passwordText = (EditText)findViewById(R.id.passwordText);
         peopleEdit = (EditText)findViewById(R.id.people);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
         endTimeminuteEdit = (EditText)findViewById(R.id.endtimeminute);
@@ -111,10 +111,6 @@ public class RequestPage extends AppCompatActivity {
 
         startTimeminuteEdit.setEnabled(false);
         endTimeminuteEdit.setEnabled(false);
-
-
-        String month = intent.getStringExtra("Month");
-        reservationDay = month + "-" +intent.getStringExtra("ReservationDay");
 
         final ArrayList<String> starttimeList = new ArrayList<>();
         starttimeList.add("09");
@@ -158,9 +154,55 @@ public class RequestPage extends AppCompatActivity {
         if(v.getId() == R.id.submit){
             try{
                 circle_bar.setVisibility(View.VISIBLE);
-                people = Integer.parseInt(peopleEdit.getText().toString());
+                if(!"".equals(sidText.getText().toString())){
+                    sid = Integer.parseInt(sidText.getText().toString());
+                }else{
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "학번을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                name = nameText.getText().toString();
+                phone = phoneText.getText().toString();
+                password = passwordText.getText().toString();
+                subject = subjectSpinner.getSelectedItem().toString();
+                if(!"".equals(peopleEdit.getText().toString())){
+                    people = Integer.parseInt(peopleEdit.getText().toString());
+                }else{
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "인원을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 startTime = starttimehourSpinner.getSelectedItem().toString()+ ":" +startTimeminuteEdit.getText().toString();
                 endTime =  endtimehourSpinner.getSelectedItem().toString() + ":" + endTimeminuteEdit.getText().toString();
+
+                boolean namePattern = Pattern.matches("[가-힣]*", name);
+                boolean phonePattern = Pattern.matches("01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}", phone);
+
+                if("".equals(name.trim())){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "이름을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if("".equals(phone.trim())){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "전화번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if("".equals(password.trim())){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "예약 비밀번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if("선택".equals(subject.trim())){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "학과를 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(!namePattern){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "이름을 정확하게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(!phonePattern){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "전화번호를 정확하게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 if(startTime.equals(endTime)){
                     circle_bar.setVisibility(View.GONE);
@@ -174,152 +216,122 @@ public class RequestPage extends AppCompatActivity {
                 boolean endHourPattern = Pattern.matches("[0-1][0-9]|[2][0-2]",endtimehourSpinner.getSelectedItem().toString());
                 boolean endMinutePattern = Pattern.matches("[0][0]", endTimeminuteEdit.getText().toString());
 
-                if(!peopleEdit.getText().toString().equals("")){
-                    if(people > 20){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "인원이 너무 많습니다.", Toast.LENGTH_SHORT).show();
-                    }else if(startTime.trim().equals(":")) {
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "시작시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
-                    }else if(!startHourPattern){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "시작 시간의 시간을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
-                    }else if(!startMinutePattern){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "시작 시간의 분을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
-                    }else if(endTime.trim().equals(":")){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "종료시간를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
-                    }else if(!endHourPattern){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "종료 시간의 시간을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
-                    }else if(!endMinutePattern){
-                        circle_bar.setVisibility(View.GONE);
-                        Toast.makeText(RequestPage.this, "종료 시간의 분을 정확하게 입력하여 주십시오(두자리숫자).", Toast.LENGTH_SHORT).show();
-                    }else{
-                        new CheckOverlapBackgroundTask().execute(startTime,endTime,trueTodayDate);
+                String[] todaySplit = trueTodayDate.split("-");
 
-                        String[] todaySplit = trueTodayDate.split("-");
-
-                        Calendar startCal = Calendar.getInstance();
-                        startCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(starttimehourSpinner.getSelectedItem().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
-
-                        Calendar endCal = Calendar.getInstance();
-                        endCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(endtimehourSpinner.getSelectedItem().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
-
-                        int i = endCal.compareTo(startCal);
-
-                        if(i != 1){
-                            circle_bar.setVisibility(View.GONE);
-                            Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        // 한사람이 한시간 이상 예약하는 것은 방지하는 코드
-                        int starttimeint = Integer.parseInt(starttimehourSpinner.getSelectedItem().toString() + startTimeminuteEdit.getText().toString());
-                        int endtimeint = Integer.parseInt(endtimehourSpinner.getSelectedItem().toString() + endTimeminuteEdit.getText().toString());
-
-                        if((endtimeint - starttimeint) > 100){
-                            circle_bar.setVisibility(View.GONE);
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                            builder.setMessage("한 시간 이상 예약할 수 없습니다.")
-                                    .setNegativeButton("확인", null)
-                                    .create()
-                                    .show();
-                            return;
-                        }
-
-                        Response.Listener<String> validateListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try{
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        boolean success = jsonResponse.getBoolean("success")   ;
-                                        if(success){
-                                            Response.Listener<String> checkOverlapListener = new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    try{
-                                                        JSONObject jsonResponse = new JSONObject(response);
-                                                        boolean success = jsonResponse.getBoolean("success");
-                                                        if(success){
-                                                            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                                @Override
-                                                                public void onResponse(String response) {
-                                                                    try{
-                                                                        JSONObject jsonResponse = new JSONObject(response);
-                                                                        boolean success = jsonResponse.getBoolean("success")   ;
-                                                                        if(success){
-                                                                            circle_bar.setVisibility(View.GONE);
-                                                                            Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
-                                                                            finish();
-                                                                        }
-                                                                        else{
-                                                                            circle_bar.setVisibility(View.GONE);
-                                                                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                                            builder.setMessage("예약신청에 실패하셨습니다")
-                                                                                    .setNegativeButton("다시 시도", null)
-                                                                                    .create()
-                                                                                    .show();
-
-                                                                        }
-                                                                    }
-                                                                    catch (JSONException e){
-                                                                        e.printStackTrace();
-                                                                    }
-                                                                }
-                                                            };
-                                                            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime, reservationDay ,responseListener);
-                                                            RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-                                                            queue.add(reserveRequest);
-                                                        }else{
-                                                            circle_bar.setVisibility(View.GONE);
-                                                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                            builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
-                                                                    .setNegativeButton("확인", null)
-                                                                    .create()
-                                                                    .show();
-                                                        }
-                                                    }
-                                                    catch (JSONException e){
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            };
-                                            CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
-                                            RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-                                            queue.add(checkReservationOverlapRequest);
-                                        }else{
-                                            circle_bar.setVisibility(View.GONE);
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                            builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
-                                                    .setNegativeButton("확인", null)
-                                                    .create()
-                                                    .show();
-
-                                        }
-                                    }
-                                    catch (JSONException e){
-                                        e.printStackTrace();
-                                    }
-                                }
-                            };
-                            ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
-                            RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
-                            vqueue.add(reservationValidateRequest);
-
-                    }
-                }else{
+                Calendar startCal = Calendar.getInstance();
+                startCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(starttimehourSpinner.getSelectedItem().toString()),Integer.parseInt(startTimeminuteEdit.getText().toString()));
+                Calendar endCal = Calendar.getInstance();
+                endCal.set(0,Integer.parseInt(todaySplit[1]),Integer.parseInt(todaySplit[2]),Integer.parseInt(endtimehourSpinner.getSelectedItem().toString()),Integer.parseInt(endTimeminuteEdit.getText().toString()));
+                int i = endCal.compareTo(startCal);
+                if(i != 1){
                     circle_bar.setVisibility(View.GONE);
-                    Toast.makeText(RequestPage.this, "1명 이상의 인원을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // 한사람이 한시간 이상 예약하는 것은 방지하는 코드
+                int starttimeint = Integer.parseInt(starttimehourSpinner.getSelectedItem().toString() + startTimeminuteEdit.getText().toString());
+                int endtimeint = Integer.parseInt(endtimehourSpinner.getSelectedItem().toString() + endTimeminuteEdit.getText().toString());
+                if((endtimeint - starttimeint) > 100){
+                    circle_bar.setVisibility(View.GONE);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                    builder.setMessage("한 시간 이상 예약할 수 없습니다.")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+                    return;
                 }
 
-            }catch(NumberFormatException e){
+                // ReservationValidateRequest -> 같은 날에 예약을 한적이 있는 지 확인
+                Response.Listener<String> validateListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success){
+                                // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
+                                Response.Listener<String> checkOverlapListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try{
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+                                            if(success){
+                                                // ReserveRequest -> 사용자가 입력한 정보를 갖고 예약을 신청
+                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try{
+                                                            JSONObject jsonResponse = new JSONObject(response);
+                                                            boolean success = jsonResponse.getBoolean("success")   ;
+                                                            if(success){
+                                                                circle_bar.setVisibility(View.GONE);
+                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+                                                                finish();
+                                                            }
+                                                            else{
+                                                                circle_bar.setVisibility(View.GONE);
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                                                                builder.setMessage("예약신청에 실패하셨습니다")
+                                                                        .setNegativeButton("다시 시도", null)
+                                                                        .create()
+                                                                        .show();
+                                                                return;
+                                                            }
+                                                        }
+                                                        catch (JSONException e){
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                };
+                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+                                                queue.add(reserveRequest);
+                                            }else{
+                                                circle_bar.setVisibility(View.GONE);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                                                builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
+                                                        .setNegativeButton("확인", null)
+                                                        .create()
+                                                        .show();
+                                                return;
+                                            }
+                                        }
+                                        catch (JSONException e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+                                CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
+                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+                                queue.add(checkReservationOverlapRequest);
+                            }else{
+                                circle_bar.setVisibility(View.GONE);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                                builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
+                                        .setNegativeButton("확인", null)
+                                        .create()
+                                        .show();
+                                return;
+                            }
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
+                Log.i("b",trueTodayDate);
+                RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
+                vqueue.add(reservationValidateRequest);
+
+            }catch(Exception e){
                 circle_bar.setVisibility(View.GONE);
-                Toast.makeText(RequestPage.this, "모든 입력 사항을 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestPage.this, "모든 입력 사항을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
+    /*
     class CheckOverlapBackgroundTask extends AsyncTask<String, Void, Void> {
         String startTimeclone;
         String endTimeclone;
@@ -341,9 +353,19 @@ public class RequestPage extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success");
                         if(success){
-                            reservationOverlapValidation = true;
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("예약 가능.")
+                                    .setNegativeButton("확인", null)
+                                    .create()
+                                    .show();
+                            return;
                         }else{
-                            reservationOverlapValidation = false;
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
+                                    .setNegativeButton("확인", null)
+                                    .create()
+                                    .show();
+                            return;
                         }
                     }
                     catch (JSONException e){
@@ -363,5 +385,5 @@ public class RequestPage extends AppCompatActivity {
         }
 
     }
-
+    */
 }

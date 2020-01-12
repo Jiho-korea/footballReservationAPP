@@ -10,24 +10,42 @@
         android:label="연암공과대 풋살장 예약 앱"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
-        >
-        <activity android:name=".ReservationManageActivity"
-            android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".StudentsManageActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".ManageMainActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".ReservationCheckPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".RequestPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".ReservationPage" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" android:launchMode="singleTop">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".CancleReservationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".StudentsManageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReservationCheckPage"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RequestPage"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ReservationPage"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait" android:launchMode="singleTop"/>
-        <activity android:name=".RegisterActivity"  android:screenOrientation="portrait" android:launchMode="singleTop"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
