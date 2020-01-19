@@ -17,14 +17,6 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".StudentsManageActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ReservationCheckPage"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".RequestPage"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -42,10 +34,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

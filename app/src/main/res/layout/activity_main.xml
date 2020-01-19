@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center">
         <ImageView
-            android:id="@+id/yunam"
+            android:id="@+id/yonam"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/invisableyonam"
@@ -28,7 +28,7 @@
             android:textSize="25sp"
             android:textStyle="bold"
             android:layout_marginRight="10sp"
-            android:layout_toRightOf="@id/yunam"
+            android:layout_toRightOf="@id/yonam"
             android:layout_centerVertical="true"
             />
 
@@ -49,7 +49,7 @@
             android:src="@mipmap/ground1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/theme"
+            app:layout_constraintTop_toBottomOf="@id/yonam"
             />
         <LinearLayout
             android:id="@+id/caution"
@@ -124,7 +124,4 @@
         </LinearLayout>
 
     </FrameLayout>
-
-
-
 </android.support.constraint.ConstraintLayout>
