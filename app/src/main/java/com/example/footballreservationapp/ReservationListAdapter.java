@@ -69,7 +69,12 @@ public class ReservationListAdapter extends BaseAdapter {
                         .setPositiveButton("예", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //new ApproveReservationBackgroundTask().execute(sidText.getText().toString(),dateText.getText().toString());
+                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
+                                intent.putExtra("date", reservationList.get(position).getDate());
+                                intent.putExtra("sid", reservationList.get(position).getSid());
+                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
+                                intent.putExtra("cancellation", reservationList.get(position).getCancellation());
+                                parentActivity.startActivity(intent);
                             }
                         })
                         .setNegativeButton("아니오", null)

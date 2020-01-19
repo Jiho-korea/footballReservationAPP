@@ -1,45 +1,27 @@
 package com.example.footballreservationapp;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.ViewGroup;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 // 당일의 예약을 보여주는 액티비티 이다.
 public class ReservationPage extends AppCompatActivity {
@@ -51,8 +33,6 @@ public class ReservationPage extends AppCompatActivity {
     private int day; // 일
     private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
-    //private GridAdapter gridAdapter; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터(이번달)
-    //private GridAdapter2 gridAdapter2; // 그리드 뷰에 항목정보를 제공해주는 그리드어댑터(다음달)
     private RelativeLayout listlayout; // 달력하단 빈 렐러비트 레이아웃 이안이 rel 렐러티브
     private List<Reservation> reservationList;
     private ReservationListAdapter adapter;
@@ -66,27 +46,9 @@ public class ReservationPage extends AppCompatActivity {
 
         reservationList = new ArrayList<Reservation>();
         Intent intent = getIntent();
-        /*
-        sid = intent.getIntExtra("sid", 0);
-        password = intent.getStringExtra("password");
-        subject = intent.getStringExtra("subject");
-        name = intent.getStringExtra("name");
-        phone = intent.getStringExtra("phone");
-        manager = intent.getIntExtra("manager",0);
 
-        if(manager == 1){
-            findViewById(R.id.check).setVisibility(View.GONE);
-        }
-        */
         tvDate = (TextView)findViewById(R.id.tv_date);
-        /*
-        gridView =(GridView)findViewById(R.id.gridview);  // 첫번째 달력 그리드뷰(필드가 위젯을 가르키도록 findViewById 사용)
-        gridView2 =(GridView)findViewById(R.id.gridview2);  // 두번째 달력 그리드뷰
-        nextButton = (Button)findViewById(R.id.nextButton);
-        firstPage = (LinearLayout)findViewById(R.id.firstPage);
-        previousButton = (Button)findViewById(R.id.previousButton);
-        secondPage = (LinearLayout)findViewById(R.id.secondPage);
-        */
+
         empty_word = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
         addContentView(empty_word, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         empty_word.setVisibility(View.GONE);
@@ -96,7 +58,6 @@ public class ReservationPage extends AppCompatActivity {
         final SimpleDateFormat curYearFormat = new SimpleDateFormat("yyyy", Locale.KOREA);
         final SimpleDateFormat curMonthFormat = new SimpleDateFormat("MM", Locale.KOREA);
         final SimpleDateFormat curDayFormat = new SimpleDateFormat("dd", Locale.KOREA); //현재날짜를 포맷팅해서 사용하도록 포맷정하는중
-        final String reservationDay = curDayFormat.format(now);
 
         year = curYearFormat.format(date); // 이번 년도
         month = curMonthFormat.format(date); // 이번 달
@@ -108,6 +69,8 @@ public class ReservationPage extends AppCompatActivity {
         }
         tvDate.setText(year+ "-" + rmonth + "-" + day);
         // 예약리스트를 보여주는 코드
+        listReservation();
+        /*
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         try{
             listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
@@ -118,11 +81,11 @@ public class ReservationPage extends AppCompatActivity {
             if(day < 10){
                 trueDay = "0"+trueDay;
             }
-            /*
-            if(Integer.parseInt(subDate[1]) < 10){
-                trueMonth = "0"+trueMonth;
-            }
-            */
+
+            //if(Integer.parseInt(subDate[1]) < 10){
+            //    trueMonth = "0"+trueMonth;
+            //}
+
             setTodayDate(year + "-" + month + "-" + trueDay);
 
             //  Toast.makeText(ReservationPage.this, day + "일 선택", Toast.LENGTH_SHORT).show(); // 선택 날짜 출력 있으나 마나입니다. 그냥 넣어봤습니다
@@ -136,8 +99,6 @@ public class ReservationPage extends AppCompatActivity {
             adapter = null;
 
             adapter = new ReservationListAdapter(getApplicationContext(), reservationList, this);
-
-
 
             studentList.setAdapter(adapter);
 
@@ -160,7 +121,7 @@ public class ReservationPage extends AppCompatActivity {
                 empty_word.setVisibility(View.GONE);
             }
         }
-
+        */
     }
     public String getTodayDate() {
         return todayDate;
@@ -173,6 +134,53 @@ public class ReservationPage extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        listReservation();
+        /*
+        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+        try{
+            listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
+            String[] subDate = tvDate.getText().toString().split("-");
+
+            String trueDay = day+"";
+
+            if(day < 10){
+                trueDay = "0"+trueDay;
+            }
+            setTodayDate(year + "-" + month + "-" + trueDay);
+
+            rel = (RelativeLayout)inflater.inflate(R.layout.list_registrant,null); // 빈레이아웃을 R.layout.list_registrant 로 채웁니다.
+
+            studentList = rel.findViewById(R.id.studentList);
+            studentList.setEmptyView(empty_word);
+
+            adapter = null;
+
+            adapter = new ReservationListAdapter(getApplicationContext(), reservationList, this);
+
+            studentList.setAdapter(adapter);
+
+            new ReservationBackgroundTask().execute(getTodayDate());
+
+            listlayout.removeAllViews();
+
+            rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
+                    Intent intent = new Intent(getApplicationContext(),RequestPage.class);
+                    intent.putExtra("todayDate", todayDate);
+                    startActivity(intent);
+                }
+            });
+        }catch(NumberFormatException e){
+            if(listlayout != null){
+                listlayout.removeAllViews();
+                empty_word.setVisibility(View.GONE);
+            }
+        }
+         */
+    }
+
+    private void listReservation(){
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         try{
             listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
@@ -215,7 +223,6 @@ public class ReservationPage extends AppCompatActivity {
             }
         }
     }
-
 
     class ReservationBackgroundTask extends AsyncTask<String, Void, Void> {
         String todayDateclone;

@@ -22,93 +22,7 @@
             android:textSize="20sp"
             android:drawableLeft="@drawable/board_cal"
             />
-        <!--
-        <Button
-            android:id="@+id/check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginBottom="3dp"
-            android:backgroundTint="@color/colorRequestButton"
-            android:gravity="center"
-            android:onClick="reservationCheck"
-            android:text=" 예약확인  "
-            android:textColor="@color/colorText"
-            android:drawableLeft="@drawable/board_check"
-            android:textStyle="bold"
-            android:textSize="14sp" />
-            -->
     </RelativeLayout>
-    <!--
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3.5"
-        >
-        <LinearLayout
-            android:id="@+id/firstPage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/nextButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@color/colorBackground"
-                android:textSize="20sp"
-                android:textColor="@color/colorAccent"
-                android:layout_gravity="right"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:text="▶"/>
-            <GridView
-                android:id="@+id/gridview"
-                android:paddingTop="20sp"
-                android:paddingLeft="20sp"
-                android:paddingRight="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:numColumns="7"
-                android:listSelector="@color/colorPrimaryDark">
-            </GridView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/secondPage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:orientation="vertical">
-            <Button
-                android:id="@+id/previousButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@color/colorBackground"
-                android:textSize="20sp"
-                android:textColor="@color/colorAccent"
-                android:layout_gravity="left"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:text="◀"/>
-            <GridView
-                android:id="@+id/gridview2"
-                android:paddingTop="20sp"
-                android:paddingLeft="20sp"
-                android:paddingRight="20sp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:numColumns="7"
-                android:listSelector="@color/colorPrimaryDark">
-            </GridView>
-        </LinearLayout>
-    </FrameLayout>
-      -->
     <RelativeLayout
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -119,6 +33,4 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         />
-
-
 </LinearLayout>
