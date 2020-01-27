@@ -1,6 +1,7 @@
 package com.example.footballreservationapp;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -290,8 +291,42 @@ public class RequestPage extends AppCompatActivity {
                                             }else{
                                                 circle_bar.setVisibility(View.GONE);
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
-                                                        .setNegativeButton("확인", null)
+                                                builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.\n해당 신청자의 취소를 기다리시겠습니까?")
+                                                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                                                    @Override
+                                                                    public void onResponse(String response) {
+                                                                        try{
+                                                                            JSONObject jsonResponse = new JSONObject(response);
+                                                                            boolean success = jsonResponse.getBoolean("success")   ;
+                                                                            if(success){
+                                                                                circle_bar.setVisibility(View.GONE);
+                                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+                                                                                finish();
+                                                                            }
+                                                                            else{
+                                                                                circle_bar.setVisibility(View.GONE);
+                                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                                                                                builder.setMessage("예약신청에 실패하셨습니다")
+                                                                                        .setNegativeButton("다시 시도", null)
+                                                                                        .create()
+                                                                                        .show();
+                                                                                return;
+                                                                            }
+                                                                        }
+                                                                        catch (JSONException e){
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+                                                                };
+                                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+                                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+                                                                queue.add(reserveRequest);
+                                                            }
+                                                        })
+                                                        .setNegativeButton("아니오", null)
                                                         .create()
                                                         .show();
                                                 return;

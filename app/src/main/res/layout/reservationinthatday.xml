@@ -138,6 +138,17 @@
                 android:textSize="14sp"
                 android:text="승인대기"
                 />
+
+            <Button
+                android:id="@+id/approvalReception"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="14sp"
+                android:visibility="invisible"
+                android:text="승인반려"
+                />
+
             <Button
                 android:id="@+id/approval"
                 android:layout_width="wrap_content"

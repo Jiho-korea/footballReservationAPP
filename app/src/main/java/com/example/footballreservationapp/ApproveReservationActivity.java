@@ -17,11 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApproveReservationActivity extends AppCompatActivity {
+    int serial_number;
     String date;
-    int sid;
     String starttime;
     String m_password;
-    int cancellation;
     private EditText m_passwordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +28,9 @@ public class ApproveReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_approve_reservation);
 
         Intent intent = getIntent();
-        sid = intent.getIntExtra("sid", 0);
+        serial_number = intent.getIntExtra("serial_number", 0);
         date = intent.getStringExtra("date");
         starttime = intent.getStringExtra("starttime");
-        cancellation = intent.getIntExtra("cancellation",0);
 
         m_passwordText = (EditText)findViewById(R.id.m_passwordText);
     }
@@ -83,7 +81,7 @@ public class ApproveReservationActivity extends AppCompatActivity {
                     }
                 }
             };
-            ApproveReservationRequest approveReservationRequest = new ApproveReservationRequest(sid,date,starttime,m_password,cancellation,responseListener);
+            ApproveReservationRequest approveReservationRequest = new ApproveReservationRequest(serial_number,date,starttime,m_password,responseListener);
             RequestQueue queue = Volley.newRequestQueue(ApproveReservationActivity.this);
             queue.add(approveReservationRequest);
 

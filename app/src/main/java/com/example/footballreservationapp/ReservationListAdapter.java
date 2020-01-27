@@ -60,6 +60,7 @@ public class ReservationListAdapter extends BaseAdapter {
         Button cancleButton = (Button)v.findViewById(R.id.cancleButton);
         Button approval = (Button)v.findViewById(R.id.approval);
         Button cancellation = (Button)v.findViewById(R.id.cancellation);
+        Button approvalReception = (Button)v.findViewById(R.id.approvalReception);
 
         approveButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -71,9 +72,29 @@ public class ReservationListAdapter extends BaseAdapter {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
                                 intent.putExtra("date", reservationList.get(position).getDate());
-                                intent.putExtra("sid", reservationList.get(position).getSid());
+                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
                                 intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                //intent.putExtra("cancellation", reservationList.get(position).getCancellation());
+                                parentActivity.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("아니오", null)
+                        .create()
+                        .show();
+            }
+        });
+
+        approvalReception.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+                builder.setMessage("예약 신청을 승인하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
+                                intent.putExtra("date", reservationList.get(position).getDate());
+                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
+                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
                                 parentActivity.startActivity(intent);
                             }
                         })
@@ -93,9 +114,8 @@ public class ReservationListAdapter extends BaseAdapter {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent(parentActivity.getApplicationContext(),CancleReservationActivity.class);
                                 intent.putExtra("date", reservationList.get(position).getDate());
-                                intent.putExtra("sid", reservationList.get(position).getSid());
+                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
                                 intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                //intent.putExtra("cancellation", reservationList.get(position).getCancellation());
                                 parentActivity.startActivity(intent);
                             }
                         })
@@ -105,22 +125,6 @@ public class ReservationListAdapter extends BaseAdapter {
             }
         });
 
-        cancellation.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
-                builder.setMessage("예약 리스트에서 삭제하시겠습니까?")
-                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //new ReservationDeleteBackgroundTask(position).execute(sidText.getText().toString(),dateText.getText().toString());
-                            }
-                        })
-                        .setNegativeButton("아니오", null)
-                        .create()
-                        .show();
-            }
-        });
 
         Reservation reservation = reservationList.get(position);
 
@@ -132,21 +136,29 @@ public class ReservationListAdapter extends BaseAdapter {
         subjectTestView.setText(reservation.getSubject());
         sidTextView.setText(reservation.getSid() + "");
 
-        if(reservation.getStatus_code() == 2){
-            approveButton.setVisibility(View.GONE);
-            approval.setVisibility(View.VISIBLE);
-        }else{
+        if(reservation.getStatus_code() == 1){
             approveButton.setVisibility(View.VISIBLE);
+            cancleButton.setVisibility(View.VISIBLE);
+            approvalReception.setVisibility(View.GONE);
             approval.setVisibility(View.GONE);
-        }
-
-        if(reservation.getStatus_code() == 3){
+            cancellation.setVisibility(View.GONE);
+        }else if(reservation.getStatus_code() == 2){
+            approval.setVisibility(View.VISIBLE);
+            cancleButton.setVisibility(View.VISIBLE);
+            approvalReception.setVisibility(View.GONE);
+            approveButton.setVisibility(View.GONE);
+            cancellation.setVisibility(View.GONE);
+        }else if(reservation.getStatus_code() == 3){
+            cancellation.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.GONE);
             approveButton.setVisibility(View.GONE);
             approval.setVisibility(View.GONE);
-            cancellation.setVisibility(View.VISIBLE);
-        }else{
+            approvalReception.setVisibility(View.GONE);
+        }else if(reservation.getStatus_code() == 4){
+            approvalReception.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.VISIBLE);
+            approval.setVisibility(View.GONE);
+            approveButton.setVisibility(View.GONE);
             cancellation.setVisibility(View.GONE);
         }
 

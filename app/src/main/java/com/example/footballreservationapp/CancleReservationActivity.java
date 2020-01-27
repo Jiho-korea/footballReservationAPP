@@ -17,11 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CancleReservationActivity extends AppCompatActivity {
+    int serial_number;
     String date;
-    int sid;
     String starttime;
     String c_password;
-    int cancellation;
     private EditText c_passwordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +28,9 @@ public class CancleReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cancle_reservation);
 
         Intent intent = getIntent();
-        sid = intent.getIntExtra("sid", 0);
+        serial_number = intent.getIntExtra("serial_number", 0);
         date = intent.getStringExtra("date");
         starttime = intent.getStringExtra("starttime");
-        cancellation = intent.getIntExtra("cancellation",0);
 
         c_passwordText = (EditText)findViewById(R.id.c_passwordText);
     }
@@ -83,7 +81,7 @@ public class CancleReservationActivity extends AppCompatActivity {
                     }
                 }
             };
-            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(sid,date,starttime,c_password,cancellation,responseListener);
+            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(serial_number,date,starttime,c_password,responseListener);
             RequestQueue queue = Volley.newRequestQueue(CancleReservationActivity.this);
             queue.add(cancleReservationRequest);
 

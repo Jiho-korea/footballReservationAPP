@@ -10,14 +10,13 @@ public class ApproveReservationRequest  extends StringRequest {
     final static private String URL = "http://yonamfootball.dothome.co.kr/ApproveReservation.php";
     private Map<String, String> parameters;
 
-    public ApproveReservationRequest(int sid, String date, String starttime, String password, int cancellation, Response.Listener<String> listener) {
+    public ApproveReservationRequest(int serial_number, String date, String starttime, String password, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
-        parameters.put("sid", sid+"");
+        parameters.put("serial_number", serial_number+"");
         parameters.put("date", date);
         parameters.put("starttime", starttime);
         parameters.put("password", password);
-        parameters.put("cancellation", cancellation+"");
     }
 
     @Override
