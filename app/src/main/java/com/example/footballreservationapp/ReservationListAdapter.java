@@ -73,7 +73,7 @@ public class ReservationListAdapter extends BaseAdapter {
                                 intent.putExtra("date", reservationList.get(position).getDate());
                                 intent.putExtra("sid", reservationList.get(position).getSid());
                                 intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                intent.putExtra("cancellation", reservationList.get(position).getCancellation());
+                                //intent.putExtra("cancellation", reservationList.get(position).getCancellation());
                                 parentActivity.startActivity(intent);
                             }
                         })
@@ -95,7 +95,7 @@ public class ReservationListAdapter extends BaseAdapter {
                                 intent.putExtra("date", reservationList.get(position).getDate());
                                 intent.putExtra("sid", reservationList.get(position).getSid());
                                 intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                intent.putExtra("cancellation", reservationList.get(position).getCancellation());
+                                //intent.putExtra("cancellation", reservationList.get(position).getCancellation());
                                 parentActivity.startActivity(intent);
                             }
                         })
@@ -132,7 +132,7 @@ public class ReservationListAdapter extends BaseAdapter {
         subjectTestView.setText(reservation.getSubject());
         sidTextView.setText(reservation.getSid() + "");
 
-        if(reservation.getApproval() == 1){
+        if(reservation.getStatus_code() == 2){
             approveButton.setVisibility(View.GONE);
             approval.setVisibility(View.VISIBLE);
         }else{
@@ -140,7 +140,7 @@ public class ReservationListAdapter extends BaseAdapter {
             approval.setVisibility(View.GONE);
         }
 
-        if(reservation.getCancellation() != 0){
+        if(reservation.getStatus_code() == 3){
             cancleButton.setVisibility(View.GONE);
             approveButton.setVisibility(View.GONE);
             approval.setVisibility(View.GONE);

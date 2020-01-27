@@ -1,6 +1,7 @@
 package com.example.footballreservationapp;
 
 public class Reservation {
+    int serial_number;
     int sid;
     String name;
     int people;
@@ -9,10 +10,10 @@ public class Reservation {
     String subject;
     String phone;
     String date;
-    int approval;
-    int cancellation;
+    int status_code;
 
-    public Reservation(int sid, String date, String name, int people, String startTime, String endTime, String subject, String phone, int approval, int cancellation) {
+    public Reservation(int serial_number, int sid, String name, int people, String startTime, String endTime, String subject, String phone, String date, int status_code) {
+        this.serial_number = serial_number;
         this.sid = sid;
         this.name = name;
         this.people = people;
@@ -21,8 +22,18 @@ public class Reservation {
         this.subject = subject;
         this.phone = phone;
         this.date = date;
-        this.approval = approval;
-        this.cancellation = cancellation;
+        this.status_code = status_code;
+    }
+
+    public Reservation() {
+    }
+
+    public int getSerial_number() {
+        return serial_number;
+    }
+
+    public void setSerial_number(int serial_number) {
+        this.serial_number = serial_number;
     }
 
     public int getSid() {
@@ -89,19 +100,11 @@ public class Reservation {
         this.date = date;
     }
 
-    public int getApproval() {
-        return approval;
+    public int getStatus_code() {
+        return status_code;
     }
 
-    public void setApproval(int approval) {
-        this.approval = approval;
-    }
-
-    public int getCancellation() {
-        return cancellation;
-    }
-
-    public void setCancellation(int cancellation) {
-        this.cancellation = cancellation;
+    public void setStatus_code(int status_code) {
+        this.status_code = status_code;
     }
 }

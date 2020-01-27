@@ -247,10 +247,11 @@ public class ReservationPage extends AppCompatActivity {
                             try{
                                 JSONArray jsonArray = jsonObject.getJSONArray("response");
                                 int count = 0;
-                                int sid, people, approval, cancellation;
+                                int serial_number, sid, people, status_code;
                                 String name, date, startTime, endTime, subject, phone;
                                 while(count < jsonArray.length()){
                                     JSONObject object = jsonArray.getJSONObject(count);
+                                    serial_number = object.getInt("serial_number");
                                     sid = object.getInt("sid");
                                     date = object.getString("date");
                                     name = object.getString("name");
@@ -259,9 +260,8 @@ public class ReservationPage extends AppCompatActivity {
                                     endTime = object.getString("endTime");
                                     subject = object.getString("subject");
                                     phone = object.getString("phone");
-                                    approval = object.getInt("approval");
-                                    cancellation = object.getInt("cancellation");
-                                    Reservation reservation = new Reservation(sid, date,name, people, startTime, endTime,subject, phone, approval , cancellation);
+                                    status_code = object.getInt("status_code");
+                                    Reservation reservation = new Reservation(serial_number,sid, name, people, startTime, endTime,subject, phone, date , status_code);
                                     reservationList.add(reservation);
                                     adapter.notifyDataSetChanged();
                                     count++;

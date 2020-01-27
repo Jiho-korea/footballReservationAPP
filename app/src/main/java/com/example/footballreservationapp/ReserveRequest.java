@@ -24,8 +24,7 @@ public class ReserveRequest extends StringRequest {
         parameters.put("phone", phone);
         parameters.put("subject", subject);
         parameters.put("password", password);
-        parameters.put("approval", 0+"");
-        parameters.put("cancellation", 0+"");
+        parameters.put("status_code", 1+"");
     }
     @Override
     public Map<String, String> getParams() {
