@@ -17,6 +17,8 @@ import android.support.v7.app.AlertDialog;
 
 // 이클래스는 R.layout.activity_main 레이아웃으로 화면을 채워 주의사항, 이용시간등을 보여준다. 있으나마나 그래그래
 public class MainActivity extends AppCompatActivity {
+    TextView information;
+
     int sid;
     String password;
     String subject;
@@ -42,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         Drawable alpha = campusTint.getDrawable();
         alpha.setAlpha(50);
 
+        information = (TextView)findViewById(R.id.information);
+        information.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, InformationPopupActivity.class));
+            }
+        });
         welcomeText.setText("안녕하세요! 반갑습니다.");
     }
 

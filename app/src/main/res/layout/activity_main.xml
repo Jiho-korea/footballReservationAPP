@@ -19,7 +19,6 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/invisableyonam"
-
             />
         <TextView
             android:layout_width="wrap_content"
@@ -124,4 +123,17 @@
         </LinearLayout>
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text=" 애플리케이션 정보"
+        android:drawableLeft="@drawable/question"
+        />
 </android.support.constraint.ConstraintLayout>

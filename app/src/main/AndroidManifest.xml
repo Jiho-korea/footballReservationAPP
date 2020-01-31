@@ -11,16 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".InformationPopupActivity"
+            android:theme="@style/AppTheme.Pop"
+            android:label=" 애플리케이션 정보"/>
         <activity
             android:name=".CancleReservationActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ApproveReservationActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RequestPage"
             android:launchMode="singleTop"

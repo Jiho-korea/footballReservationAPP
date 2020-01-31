@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InformationPopupActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="연암공과대학교"
+        android:textSize="12sp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/informationPopupTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="애플리케이션 정보"
+        android:background="@color/colorPrimary"
+        android:textSize="17sp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:drawableLeft="@drawable/question_big"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/versionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=" version : 1.0"
+        android:background="@drawable/infotmation_text"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/version"
+        app:layout_constraintTop_toBottomOf="@id/informationPopupTitle"/>
+
+    <TextView
+        android:id="@+id/callText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=" 경비실 : 055-751-0000"
+        android:background="@drawable/infotmation_text"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/call"
+        app:layout_constraintTop_toBottomOf="@id/versionText"/>
+
+    <TextView
+        android:id="@+id/developerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text=" 개발자 : 스마트SW 강지호"
+        android:background="@drawable/infotmation_text"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+        android:drawableLeft="@drawable/developer"
+        app:layout_constraintTop_toBottomOf="@id/callText"/>
+</android.support.constraint.ConstraintLayout>
