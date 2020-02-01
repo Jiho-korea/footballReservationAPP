@@ -11,9 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".InformationPopupActivity"
-            android:theme="@style/AppTheme.Pop"
-            android:label=" 애플리케이션 정보"/>
+        <activity
+            android:name=".PrivacyTermPopupActivity"
+            android:theme="@style/AppTheme.Pop" />
+        <activity
+            android:name=".InformationPopupActivity"
+            android:theme="@style/AppTheme.Pop" />
         <activity
             android:name=".CancleReservationActivity"
             android:launchMode="singleTop"

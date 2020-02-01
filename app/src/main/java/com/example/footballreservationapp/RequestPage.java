@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -57,8 +58,8 @@ public class RequestPage extends AppCompatActivity {
     private EditText peopleEdit;
     private EditText startTimeminuteEdit;
     private EditText endTimeminuteEdit;
-
-   // private boolean reservationOverlapValidation = false;
+    private TextView privacyTermText;
+    // private boolean reservationOverlapValidation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +67,7 @@ public class RequestPage extends AppCompatActivity {
         setContentView(R.layout.activity_request_page);
 
         Intent intent = getIntent(); // ReservationPage 에서전달 받은 인텐트 얻어줍니다. 날짜정보만 가지고 있습니다
-        /*
-        sid = intent.getIntExtra("sid", 0);
-        password = intent.getStringExtra("password");
-        subject = intent.getStringExtra("subject");
-        name = intent.getStringExtra("name");
-        phone = intent.getStringExtra("phone");
-        manager = intent.getIntExtra("manager",0);
-        */
+
         subjectSpinner = (Spinner)findViewById(R.id.spinner);
         final ArrayList<String> list = new ArrayList<>();
         list.add("선택");
@@ -106,6 +100,14 @@ public class RequestPage extends AppCompatActivity {
         peopleEdit = (EditText)findViewById(R.id.people);
         startTimeminuteEdit = (EditText)findViewById(R.id.starttimeminute);
         endTimeminuteEdit = (EditText)findViewById(R.id.endtimeminute);
+        privacyTermText = (TextView)findViewById(R.id.privacyTermText);
+        privacyTermText.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RequestPage.this, PrivacyTermPopupActivity.class));
+            }
+        });
+
 
         starttimehourSpinner = (Spinner)findViewById(R.id.starttimehourSpinner);
         endtimehourSpinner = (Spinner)findViewById(R.id.endtimehourSpinner);
