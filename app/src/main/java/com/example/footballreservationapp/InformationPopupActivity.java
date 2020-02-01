@@ -17,6 +17,6 @@ public class InformationPopupActivity extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width * 0.7), (int)(height * 0.5));
+        getWindow().setLayout((int)(width * 0.7), (int)(height * 0.4));
     }
 }

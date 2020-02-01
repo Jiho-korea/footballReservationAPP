@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -59,7 +60,7 @@ public class RequestPage extends AppCompatActivity {
     private EditText startTimeminuteEdit;
     private EditText endTimeminuteEdit;
     private TextView privacyTermText;
-    // private boolean reservationOverlapValidation = false;
+    private CheckBox privacyTermCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class RequestPage extends AppCompatActivity {
                 startActivity(new Intent(RequestPage.this, PrivacyTermPopupActivity.class));
             }
         });
-
+        privacyTermCheckBox = (CheckBox)findViewById(R.id.checkbox_privacyTerm);
 
         starttimehourSpinner = (Spinner)findViewById(R.id.starttimehourSpinner);
         endtimehourSpinner = (Spinner)findViewById(R.id.endtimehourSpinner);
@@ -205,11 +206,13 @@ public class RequestPage extends AppCompatActivity {
                     circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "전화번호를 정확하게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                     return;
-                }
-
-                if(startTime.equals(endTime)){
+                }else if(startTime.equals(endTime)){
                     circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "시간 시간과 종료 시간을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(!privacyTermCheckBox.isChecked()){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "개인 정보 처리 방침을 확인하시고 약관에 동의해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
