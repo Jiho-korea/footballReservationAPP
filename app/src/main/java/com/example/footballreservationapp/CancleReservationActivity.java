@@ -1,7 +1,12 @@
 package com.example.footballreservationapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +43,7 @@ public class CancleReservationActivity extends AppCompatActivity {
     // 예약 취소 작업
     public void mCancle(View v) {
         if (v.getId() == R.id.cancle) {
+            checkNetWork();
             if(!"".equals(c_passwordText.getText().toString())){
                 c_password = c_passwordText.getText().toString();
             }else{
@@ -96,6 +102,44 @@ public class CancleReservationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
 
+        }
+    }
+
+    // 네트워크 연결 유무 확인 후 대화상자를 띄우는 메소드
+    private void checkNetWork(){
+        if(netWork() == false){
+            AlertDialog.Builder builder = new AlertDialog.Builder(CancleReservationActivity.this);
+            builder.setMessage("네트워크 연결이 끊어져 있습니다.\nwifi 또는 모바일 데이터 네트워크\n연결 상태를 확인해주세요.\n재시도 하려면 확인을 터치 해주세요.")
+                    .setCancelable(false)
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(netWork() == true){
+//                                circle_bar.setVisibility(View.GONE);
+                            }else{
+                                checkNetWork();
+                            }
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.finishAffinity(CancleReservationActivity.this);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    // 네트워크 연결 유무를 확인하는 메소드
+    private boolean netWork(){
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ninfo = cm.getActiveNetworkInfo();
+        if(ninfo == null){
+            return false;
+        }else{
+            return true;
         }
     }
 }

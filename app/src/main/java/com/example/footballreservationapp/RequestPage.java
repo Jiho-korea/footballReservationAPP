@@ -382,10 +382,12 @@ public class RequestPage extends AppCompatActivity {
         }
     }
 
+    // 네트워크 연결 유무 확인 후 대화상자를 띄우는 메소드
     private void checkNetWork(){
         if(netWork() == false){
             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
             builder.setMessage("네트워크 연결이 끊어져 있습니다.\nwifi 또는 모바일 데이터 네트워크\n연결 상태를 확인해주세요.\n재시도 하려면 확인을 터치 해주세요.")
+                    .setCancelable(false)
                     .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -407,6 +409,7 @@ public class RequestPage extends AppCompatActivity {
         }
     }
 
+    // 네트워크 연결 유무를 확인하는 메소드
     private boolean netWork(){
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ninfo = cm.getActiveNetworkInfo();
