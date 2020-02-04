@@ -103,6 +103,7 @@ public class ReservationPage extends AppCompatActivity {
         listReservation();
     }
 
+    // 네트워크 연결 유무 확인 후 대화상자를 띄우는 메소드
     private void checkNetWork(){
         if(netWork() == false){
             AlertDialog.Builder builder = new AlertDialog.Builder(ReservationPage.this);
@@ -128,6 +129,7 @@ public class ReservationPage extends AppCompatActivity {
         }
     }
 
+    // 네트워크 연결 유무를 확인하는 메소드
     private boolean netWork(){
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ninfo = cm.getActiveNetworkInfo();

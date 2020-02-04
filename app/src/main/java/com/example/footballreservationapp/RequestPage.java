@@ -1,10 +1,14 @@
 package com.example.footballreservationapp;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -154,8 +158,14 @@ public class RequestPage extends AppCompatActivity {
 
     }
 
+
+
+
     public void mSubmit(View v){  // 노란색 예약신청 버튼 클릭시 사용자가 입력한 정보를 db에 넣는 작업을 합니다.
         if(v.getId() == R.id.submit){
+
+            checkNetWork();
+
             try{
                 circle_bar.setVisibility(View.VISIBLE);
                 if(!"".equals(sidText.getText().toString())){
@@ -369,6 +379,41 @@ public class RequestPage extends AppCompatActivity {
                 circle_bar.setVisibility(View.GONE);
                 Toast.makeText(RequestPage.this, "모든 입력 사항을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void checkNetWork(){
+        if(netWork() == false){
+            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+            builder.setMessage("네트워크 연결이 끊어져 있습니다.\nwifi 또는 모바일 데이터 네트워크\n연결 상태를 확인해주세요.\n재시도 하려면 확인을 터치 해주세요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(netWork() == true){
+                                circle_bar.setVisibility(View.GONE);
+                            }else{
+                                checkNetWork();
+                            }
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.finishAffinity(RequestPage.this);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    private boolean netWork(){
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ninfo = cm.getActiveNetworkInfo();
+        if(ninfo == null){
+            return false;
+        }else{
+            return true;
         }
     }
     /*
