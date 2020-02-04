@@ -1,12 +1,19 @@
 package com.example.footballreservationapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +40,8 @@ public class ReservationPage extends AppCompatActivity {
     private int day; // 일
     private String todayDate; // yyyy-mm-dd 형식의 date 입력 폼
     private TextView tvDate; // 좌상단  "연/월" 표시해주는 텍스트뷰
-    private RelativeLayout listlayout; // 달력하단 빈 렐러비트 레이아웃 이안이 rel 렐러티브
+    private RelativeLayout listlayout; // 예약자 리스트를 보여주는 렐러티브 레이아웃
+    private Button reserveButton;
     private List<Reservation> reservationList;
     private ReservationListAdapter adapter;
     //예약이 없을 때 출력할 텍스트
@@ -48,17 +56,19 @@ public class ReservationPage extends AppCompatActivity {
         Intent intent = getIntent();
 
         tvDate = (TextView)findViewById(R.id.tv_date);
-
+        reserveButton = (Button)findViewById(R.id.reserveButton);
         empty_word = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
         addContentView(empty_word, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        empty_word.findViewById(R.id.reserve2).setOnClickListener(new View.OnClickListener(){
+
+        reserveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
-                Intent intent = new Intent(getApplicationContext(),RequestPage.class);
+                Intent intent = new Intent(ReservationPage.this,RequestPage.class);
                 intent.putExtra("todayDate", todayDate);
                 startActivity(intent);
             }
         });
+
         empty_word.setVisibility(View.GONE);
 
         long now = System.currentTimeMillis();
@@ -93,6 +103,41 @@ public class ReservationPage extends AppCompatActivity {
         listReservation();
     }
 
+    private void checkNetWork(){
+        if(netWork() == false){
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReservationPage.this);
+            builder.setMessage("네트워크 연결이 끊어져 있습니다.\nwifi 또는 모바일 데이터 네트워크\n연결 상태를 확인해주세요.\n재시도 하려면 확인을 터치 해주세요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(netWork() == true){
+                                listReservation();
+                            }else{
+                                checkNetWork();
+                            }
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.finishAffinity(ReservationPage.this);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    private boolean netWork(){
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ninfo = cm.getActiveNetworkInfo();
+        if(ninfo == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     private void listReservation(){
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         try{
@@ -117,18 +162,12 @@ public class ReservationPage extends AppCompatActivity {
 
             studentList.setAdapter(adapter);
 
+            checkNetWork();
+
             new ReservationBackgroundTask().execute(getTodayDate());
 
             listlayout.removeAllViews();
 
-            rel.findViewById(R.id.reserve).setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {  // 예약 하기 버튼을 눌렀을 때 할 행동을 정의합니다. 추가정보로 월,일,오늘날짜 전달합니다.
-                    Intent intent = new Intent(getApplicationContext(),RequestPage.class);
-                    intent.putExtra("todayDate", todayDate);
-                    startActivity(intent);
-                }
-            });
         }catch(NumberFormatException e){
             if(listlayout != null){
                 listlayout.removeAllViews();

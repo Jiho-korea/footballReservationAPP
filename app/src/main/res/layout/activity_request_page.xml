@@ -232,7 +232,7 @@
         android:backgroundTint="@color/colorRequestButton"
         android:layout_marginTop="20dp"
         android:padding="15dp"
-        android:text=" 예약신청  "
+        android:text=" 신청하기  "
         android:textStyle="bold"
         android:onClick="mSubmit"
         android:textSize="14sp"

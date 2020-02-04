@@ -3,6 +3,7 @@
     package="com.example.footballreservationapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,14 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".PrivacyTermPopupActivity"
-            android:theme="@style/AppTheme.Pop" />
+            android:theme="@style/AppTheme.Pop"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".InformationPopupActivity"
-            android:theme="@style/AppTheme.Pop" />
+            android:theme="@style/AppTheme.Pop"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CancleReservationActivity"
             android:launchMode="singleTop"
@@ -43,7 +48,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Splashscreen">
+        <activity android:name=".Splashscreen"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

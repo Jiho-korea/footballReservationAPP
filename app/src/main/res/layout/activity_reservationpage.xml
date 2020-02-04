@@ -22,6 +22,21 @@
             android:textSize="20sp"
             android:drawableLeft="@drawable/board_cal"
             />
+
+        <Button
+            android:id="@+id/reserveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:text=" 예약신청  "
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/colorRequestButton"
+            android:textColor="@color/colorText"
+            android:drawableLeft="@drawable/board_res"
+            android:layout_centerVertical="true"
+            />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/list"

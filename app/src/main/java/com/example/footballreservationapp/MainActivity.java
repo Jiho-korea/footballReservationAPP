@@ -1,21 +1,20 @@
 package com.example.footballreservationapp;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.app.AlertDialog;
 
-// 이클래스는 R.layout.activity_main 레이아웃으로 화면을 채워 주의사항, 이용시간등을 보여준다. 있으나마나 그래그래
+// 이클래스는 R.layout.activity_main 레이아웃으로 화면을 채워 주의사항, 이용시간등을 보여준다.
 public class MainActivity extends AppCompatActivity {
     private TextView information;
 
@@ -24,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkNetWork();
 
         TextView welcomeText = (TextView)findViewById(R.id.welcome);
 
@@ -44,9 +45,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void mClick(View v){
-        Intent intent = new Intent(this, ReservationPage.class);
-        startActivity(intent);
+        if(v.getId() == R.id.reservationbtn) {
+            Intent intent = new Intent(MainActivity.this, ReservationPage.class);
+            startActivity(intent);
+        }
     }
+
+    private void checkNetWork(){
+        if(netWork() == false){
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setMessage("네트워크 연결이 끊어져 있습니다.\nwifi 또는 모바일 데이터 네트워크\n연결 상태를 확인해주세요.\n재시도 하려면 확인을 터치 해주세요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(netWork() == true){
+
+                            }else{
+                                checkNetWork();
+                            }
+                        }
+                    })
+                    .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ActivityCompat.finishAffinity(MainActivity.this);
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    private boolean netWork(){
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ninfo = cm.getActiveNetworkInfo();
+        if(ninfo == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

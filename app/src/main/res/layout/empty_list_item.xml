@@ -16,17 +16,4 @@
         android:text="이날의 예약이 없습니다. \n예약 신청을 눌러 예약을 해주세요."
         android:visibility="visible"
         />
-
-    <Button
-        android:id="@+id/reserve2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" 예약신청  "
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/colorMainButton"
-        android:textColor="@color/colorBackground"
-        android:drawableLeft="@drawable/board_res"/>
 </RelativeLayout>

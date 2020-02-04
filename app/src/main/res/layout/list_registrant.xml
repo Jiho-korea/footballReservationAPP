@@ -11,17 +11,4 @@
         android:divider="@color/colorListViewDivider"
         android:dividerHeight="3dp"
         android:textSize="30sp"/>
-
-    <Button
-        android:id="@+id/reserve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" 예약신청  "
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/colorMainButton"
-        android:textColor="@color/colorBackground"
-        android:drawableLeft="@drawable/board_res"/>
 </RelativeLayout>
