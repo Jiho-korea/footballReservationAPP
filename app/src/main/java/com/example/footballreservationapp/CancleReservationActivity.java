@@ -10,9 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -22,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CancleReservationActivity extends AppCompatActivity {
+    private ProgressBar circle_bar;
+
     int serial_number;
     String date;
     String starttime;
@@ -39,6 +41,9 @@ public class CancleReservationActivity extends AppCompatActivity {
         starttime = intent.getStringExtra("starttime");
         status_code = intent.getIntExtra("status_code", 0);
 
+        circle_bar = (ProgressBar)findViewById(R.id.progressBar);
+        circle_bar.setVisibility(View.GONE);
+
         c_passwordText = (EditText)findViewById(R.id.c_passwordText);
     }
 
@@ -46,9 +51,11 @@ public class CancleReservationActivity extends AppCompatActivity {
     public void mCancle(View v) {
         if (v.getId() == R.id.cancle) {
             checkNetWork();
+            circle_bar.setVisibility(View.VISIBLE);
             if(!"".equals(c_passwordText.getText().toString())){
                 c_password = c_passwordText.getText().toString();
             }else{
+                circle_bar.setVisibility(View.GONE);
                 Toast.makeText(CancleReservationActivity.this, "예약비밀번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -72,10 +79,12 @@ public class CancleReservationActivity extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success")   ;
                         if(success){
+                            circle_bar.setVisibility(View.GONE);
                             Toast.makeText(CancleReservationActivity.this,"예약취소완료",Toast.LENGTH_SHORT).show();
                             finish();
                         }
                         else{
+                            circle_bar.setVisibility(View.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(CancleReservationActivity.this);
                             builder.setMessage("예약취소에 실패하셨습니다. 비밀번호를 확인해 주세요.")
                                     .setNegativeButton("다시 시도", null)
