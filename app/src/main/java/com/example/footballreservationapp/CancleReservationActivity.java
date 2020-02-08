@@ -26,6 +26,7 @@ public class CancleReservationActivity extends AppCompatActivity {
     String date;
     String starttime;
     String c_password;
+    int status_code;
     private EditText c_passwordText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class CancleReservationActivity extends AppCompatActivity {
         serial_number = intent.getIntExtra("serial_number", 0);
         date = intent.getStringExtra("date");
         starttime = intent.getStringExtra("starttime");
+        status_code = intent.getIntExtra("status_code", 0);
 
         c_passwordText = (EditText)findViewById(R.id.c_passwordText);
     }
@@ -87,7 +89,7 @@ public class CancleReservationActivity extends AppCompatActivity {
                     }
                 }
             };
-            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(serial_number,date,starttime,c_password,responseListener);
+            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(serial_number,date,starttime,status_code,c_password,responseListener);
             RequestQueue queue = Volley.newRequestQueue(CancleReservationActivity.this);
             queue.add(cancleReservationRequest);
 

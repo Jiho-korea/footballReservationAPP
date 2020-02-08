@@ -59,53 +59,56 @@ public class ReservationListAdapter extends BaseAdapter {
         TextView subjectTestView = (TextView)v.findViewById(R.id.subjectText);
         TextView sidTextView = (TextView)v.findViewById(R.id.sidText);
 
-        Button approveButton = (Button)v.findViewById(R.id.approveButton);
+
+        TextView approvalText = (TextView)v.findViewById(R.id.approvalText);
+        TextView approvalReception = (TextView)v.findViewById(R.id.approvalReception);
+
         Button cancleButton = (Button)v.findViewById(R.id.cancleButton);
-        Button approval = (Button)v.findViewById(R.id.approval);
         Button cancellation = (Button)v.findViewById(R.id.cancellation);
-        Button approvalReception = (Button)v.findViewById(R.id.approvalReception);
 
-        approveButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
-                builder.setMessage("예약 신청을 승인하시겠습니까?")
-                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
-                                intent.putExtra("date", reservationList.get(position).getDate());
-                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
-                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                parentActivity.startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("아니오", null)
-                        .create()
-                        .show();
-            }
-        });
 
-        approvalReception.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
-                builder.setMessage("예약 신청을 승인하시겠습니까?")
-                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
-                                intent.putExtra("date", reservationList.get(position).getDate());
-                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
-                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
-                                parentActivity.startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("아니오", null)
-                        .create()
-                        .show();
-            }
-        });
+
+//        approveButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+//                builder.setMessage("예약 신청을 승인하시겠습니까?")
+//                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
+//                                intent.putExtra("date", reservationList.get(position).getDate());
+//                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
+//                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
+//                                parentActivity.startActivity(intent);
+//                            }
+//                        })
+//                        .setNegativeButton("아니오", null)
+//                        .create()
+//                        .show();
+//            }
+//        });
+
+//        approvalReception.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
+//                builder.setMessage("예약 신청을 승인하시겠습니까?")
+//                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                Intent intent = new Intent(parentActivity.getApplicationContext(),ApproveReservationActivity.class);
+//                                intent.putExtra("date", reservationList.get(position).getDate());
+//                                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
+//                                intent.putExtra("starttime", reservationList.get(position).getStartTime());
+//                                parentActivity.startActivity(intent);
+//                            }
+//                        })
+//                        .setNegativeButton("아니오", null)
+//                        .create()
+//                        .show();
+//            }
+//        });
 
         cancleButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -119,6 +122,7 @@ public class ReservationListAdapter extends BaseAdapter {
                                 intent.putExtra("date", reservationList.get(position).getDate());
                                 intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
                                 intent.putExtra("starttime", reservationList.get(position).getStartTime());
+                                intent.putExtra("status_code", reservationList.get(position).getStatus_code());
                                 parentActivity.startActivity(intent);
                             }
                         })
@@ -140,29 +144,20 @@ public class ReservationListAdapter extends BaseAdapter {
         sidTextView.setText(reservation.getSid() + "");
 
         if(reservation.getStatus_code() == 1){
-            approveButton.setVisibility(View.VISIBLE);
+            approvalText.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.VISIBLE);
             approvalReception.setVisibility(View.GONE);
-            approval.setVisibility(View.GONE);
             cancellation.setVisibility(View.GONE);
-        }else if(reservation.getStatus_code() == 2){
-            approval.setVisibility(View.VISIBLE);
+        }else if(reservation.getStatus_code() == 4){
+            approvalReception.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.VISIBLE);
-            approvalReception.setVisibility(View.GONE);
-            approveButton.setVisibility(View.GONE);
+            approvalText.setVisibility(View.GONE);
             cancellation.setVisibility(View.GONE);
         }else if(reservation.getStatus_code() == 3){
             cancellation.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.GONE);
-            approveButton.setVisibility(View.GONE);
-            approval.setVisibility(View.GONE);
+            approvalText.setVisibility(View.GONE);
             approvalReception.setVisibility(View.GONE);
-        }else if(reservation.getStatus_code() == 4){
-            approvalReception.setVisibility(View.VISIBLE);
-            cancleButton.setVisibility(View.VISIBLE);
-            approval.setVisibility(View.GONE);
-            approveButton.setVisibility(View.GONE);
-            cancellation.setVisibility(View.GONE);
         }
 
         v.setTag(reservation.getSid());

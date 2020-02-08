@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:orientation="vertical"
-    android:padding="10sp">
+    android:paddingTop="10dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingBottom="5dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,46 +125,56 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="right"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/approvalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:text="자동승인완료"
+            android:clickable="false"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/approvalReception"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:text="후순위대기중.."
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <FrameLayout
             android:id="@+id/approveProcedure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp">
-
+            android:layout_marginRight="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
             <Button
-                android:id="@+id/approveButton"
+                android:id="@+id/cancleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
+                android:backgroundTint="@color/colorMainButton"
+                android:textColor="@color/colorBackground"
                 android:textSize="14sp"
-                android:text="승인대기"
-                />
-
-            <Button
-                android:id="@+id/approvalReception"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorText"
-                android:textSize="14sp"
-                android:visibility="invisible"
-                android:text="승인반려"
-                />
-
-            <Button
-                android:id="@+id/approval"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorRequestButton"
-                android:textColor="@color/colorText"
-                android:textSize="14sp"
-                android:visibility="invisible"
-                android:clickable="false"
-                android:text="승인완료"
+                android:text="예약취소"
                 />
 
             <Button
@@ -175,14 +188,5 @@
                 android:text="예약취소됨"
                 />
         </FrameLayout>
-        <Button
-            android:id="@+id/cancleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorMainButton"
-            android:textColor="@color/colorBackground"
-            android:textSize="14sp"
-            android:text="예약취소"
-            />
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>
