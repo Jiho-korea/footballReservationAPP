@@ -257,124 +257,125 @@ public class RequestPage extends AppCompatActivity {
                     return;
                 }
 
-                // ReservationValidateRequest -> 같은 날에 예약을 한적이 있는 지 확인
-                Response.Listener<String> validateListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
-                                Response.Listener<String> checkOverlapListener = new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        try{
-                                            JSONObject jsonResponse = new JSONObject(response);
-                                            boolean success = jsonResponse.getBoolean("success");
-                                            if(success){
-                                                // ReserveRequest -> 사용자가 입력한 정보를 갖고 예약을 신청
-                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                    @Override
-                                                    public void onResponse(String response) {
-                                                        try{
-                                                            JSONObject jsonResponse = new JSONObject(response);
-                                                            boolean success = jsonResponse.getBoolean("success")   ;
-                                                            if(success){
-                                                                circle_bar.setVisibility(View.GONE);
-                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
-                                                                finish();
-                                                            }
-                                                            else{
-                                                                circle_bar.setVisibility(View.GONE);
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                                builder.setMessage("예약신청에 실패하셨습니다")
-                                                                        .setNegativeButton("다시 시도", null)
-                                                                        .create()
-                                                                        .show();
-                                                                return;
-                                                            }
-                                                        }
-                                                        catch (JSONException e){
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                };
-                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
-                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-                                                queue.add(reserveRequest);
-                                            }else{
-                                                circle_bar.setVisibility(View.GONE);
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.\n해당 신청자의 취소를 기다리시겠습니까?")
-                                                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
-                                                            @Override
-                                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                                    @Override
-                                                                    public void onResponse(String response) {
-                                                                        try{
-                                                                            JSONObject jsonResponse = new JSONObject(response);
-                                                                            boolean success = jsonResponse.getBoolean("success")   ;
-                                                                            if(success){
-                                                                                circle_bar.setVisibility(View.GONE);
-                                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
-                                                                                finish();
-                                                                            }
-                                                                            else{
-                                                                                circle_bar.setVisibility(View.GONE);
-                                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                                                                builder.setMessage("예약신청에 실패하셨습니다")
-                                                                                        .setNegativeButton("다시 시도", null)
-                                                                                        .create()
-                                                                                        .show();
-                                                                                return;
-                                                                            }
-                                                                        }
-                                                                        catch (JSONException e){
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }
-                                                                };
-                                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
-                                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-                                                                queue.add(reserveRequest);
-                                                            }
-                                                        })
-                                                        .setNegativeButton("아니오", null)
-                                                        .create()
-                                                        .show();
-                                                return;
-                                            }
-                                        }
-                                        catch (JSONException e){
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-                                CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
-                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-                                queue.add(checkReservationOverlapRequest);
-                            }else{
-                                circle_bar.setVisibility(View.GONE);
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                                builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
-                                        .setNegativeButton("확인", null)
-                                        .create()
-                                        .show();
-                                return;
-                            }
-                        }
-                        catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
-                Log.i("b",trueTodayDate);
-                RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
-                vqueue.add(reservationValidateRequest);
 
+                new ReservationValidateBackgroundTask().execute();
+                // ReservationValidateRequest -> 같은 날에 예약을 한적이 있는 지 확인
+//                Response.Listener<String> validateListener = new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try{
+//                            JSONObject jsonResponse = new JSONObject(response);
+//                            boolean success = jsonResponse.getBoolean("success");
+//                            if(success){
+//                                // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
+//                                Response.Listener<String> checkOverlapListener = new Response.Listener<String>() {
+//                                    @Override
+//                                    public void onResponse(String response) {
+//                                        try{
+//                                            JSONObject jsonResponse = new JSONObject(response);
+//                                            boolean success = jsonResponse.getBoolean("success");
+//                                            if(success){
+//                                                // ReserveRequest -> 사용자가 입력한 정보를 갖고 예약을 신청
+//                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                                                    @Override
+//                                                    public void onResponse(String response) {
+//                                                        try{
+//                                                            JSONObject jsonResponse = new JSONObject(response);
+//                                                            boolean success = jsonResponse.getBoolean("success")   ;
+//                                                            if(success){
+//                                                                circle_bar.setVisibility(View.GONE);
+//                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+//                                                                finish();
+//                                                            }
+//                                                            else{
+//                                                                circle_bar.setVisibility(View.GONE);
+//                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+//                                                                builder.setMessage("예약신청에 실패하셨습니다")
+//                                                                        .setNegativeButton("다시 시도", null)
+//                                                                        .create()
+//                                                                        .show();
+//                                                                return;
+//                                                            }
+//                                                        }
+//                                                        catch (JSONException e){
+//                                                            e.printStackTrace();
+//                                                        }
+//                                                    }
+//                                                };
+//                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+//                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+//                                                queue.add(reserveRequest);
+//                                            }else{
+//                                                circle_bar.setVisibility(View.GONE);
+//                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+//                                                builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.\n해당 신청자의 취소를 기다리시겠습니까?")
+//                                                        .setPositiveButton("예", new DialogInterface.OnClickListener(){
+//                                                            @Override
+//                                                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                                                                    @Override
+//                                                                    public void onResponse(String response) {
+//                                                                        try{
+//                                                                            JSONObject jsonResponse = new JSONObject(response);
+//                                                                            boolean success = jsonResponse.getBoolean("success")   ;
+//                                                                            if(success){
+//                                                                                circle_bar.setVisibility(View.GONE);
+//                                                                                Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+//                                                                                finish();
+//                                                                            }
+//                                                                            else{
+//                                                                                circle_bar.setVisibility(View.GONE);
+//                                                                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+//                                                                                builder.setMessage("예약신청에 실패하셨습니다")
+//                                                                                        .setNegativeButton("다시 시도", null)
+//                                                                                        .create()
+//                                                                                        .show();
+//                                                                                return;
+//                                                                            }
+//                                                                        }
+//                                                                        catch (JSONException e){
+//                                                                            e.printStackTrace();
+//                                                                        }
+//                                                                    }
+//                                                                };
+//                                                                ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+//                                                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+//                                                                queue.add(reserveRequest);
+//                                                            }
+//                                                        })
+//                                                        .setNegativeButton("아니오", null)
+//                                                        .create()
+//                                                        .show();
+//                                                return;
+//                                            }
+//                                        }
+//                                        catch (JSONException e){
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                };
+//                                CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
+//                                RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+//                                queue.add(checkReservationOverlapRequest);
+//                            }else{
+//                                circle_bar.setVisibility(View.GONE);
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+//                                builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
+//                                        .setNegativeButton("확인", null)
+//                                        .create()
+//                                        .show();
+//                                return;
+//                            }
+//                        }
+//                        catch (JSONException e){
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//                ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
+//                RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
+//                vqueue.add(reservationValidateRequest);
+//
             }catch(Exception e){
                 circle_bar.setVisibility(View.GONE);
                 Toast.makeText(RequestPage.this, "모든 입력 사항을 올바르게 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
@@ -419,11 +420,8 @@ public class RequestPage extends AppCompatActivity {
             return true;
         }
     }
-    /*
-    class CheckOverlapBackgroundTask extends AsyncTask<String, Void, Void> {
-        String startTimeclone;
-        String endTimeclone;
-        String dateclone;
+
+    class ReservationValidateBackgroundTask extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
 
@@ -431,25 +429,19 @@ public class RequestPage extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... args) {
-            startTimeclone = args[0];
-            endTimeclone = args[1];
-            dateclone = args[2];
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
+            Response.Listener<String> validateListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try{
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success");
                         if(success){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                            builder.setMessage("예약 가능.")
-                                    .setNegativeButton("확인", null)
-                                    .create()
-                                    .show();
-                            return;
+                            // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
+                            new CheckReservationOverlapBackgroundTask().execute();
                         }else{
+                            circle_bar.setVisibility(View.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
-                            builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.")
+                            builder.setMessage("하루에 예약은 한번만 할 수있습니다.")
                                     .setNegativeButton("확인", null)
                                     .create()
                                     .show();
@@ -461,7 +453,58 @@ public class RequestPage extends AppCompatActivity {
                     }
                 }
             };
-            CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTimeclone,endTimeclone,dateclone,responseListener);
+            ReservationValidateRequest reservationValidateRequest = new ReservationValidateRequest(sid,trueTodayDate,validateListener);
+            RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
+            vqueue.add(reservationValidateRequest);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
+
+    class CheckReservationOverlapBackgroundTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(String... args) {
+            Response.Listener<String> checkOverlapListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try{
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        if(success){
+                            // ReserveRequest -> 사용자가 입력한 정보를 갖고 예약을 신청
+                            new ReserveBackgroundTask().execute();
+                        }else{
+                            circle_bar.setVisibility(View.GONE);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("다른 사람이 예약한 시간에 예약을 할 수 없습니다.\n해당 신청자의 취소를 기다리시겠습니까?")
+                                    .setPositiveButton("예", new DialogInterface.OnClickListener(){
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            new ReserveBackgroundTask().execute();
+                                        }
+                                    })
+                                    .setNegativeButton("아니오", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            CheckReservationOverlapRequest checkReservationOverlapRequest = new CheckReservationOverlapRequest(startTime,endTime,trueTodayDate,checkOverlapListener);
             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
             queue.add(checkReservationOverlapRequest);
             return null;
@@ -473,5 +516,52 @@ public class RequestPage extends AppCompatActivity {
         }
 
     }
-    */
+
+
+    class ReserveBackgroundTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(String... args) {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try{
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success")   ;
+                        if(success){
+                            circle_bar.setVisibility(View.GONE);
+                            Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                        else{
+                            circle_bar.setVisibility(View.GONE);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("예약신청에 실패하셨습니다")
+                                    .setNegativeButton("다시 시도", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+            RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
+            queue.add(reserveRequest);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
 }
