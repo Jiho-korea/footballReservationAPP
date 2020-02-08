@@ -10,7 +10,7 @@
         android:id="@+id/privacyTermPopupTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=" 개인 정보 처리 방침"
+        android:text=" 개인 정보 수집/이용 동의(필수)"
         android:background="@color/colorPrimary"
         android:textSize="17sp"
         android:padding="10dp"
@@ -19,17 +19,109 @@
         android:drawableLeft="@drawable/privacy"
         app:layout_constraintTop_toTopOf="parent"/>
     <ScrollView
+        android:id="@+id/privacyScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_margin="10dp"
         android:padding="10dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
-            android:text="@string/privacyTerm"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/privacyTerm1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm1"
+                android:layout_marginBottom="20dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm2"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm3"
+                android:textSize="14sp"
+                android:layout_marginBottom="20dp"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm4"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm5"
+                android:layout_marginBottom="20dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm6"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm7"
+                android:layout_marginBottom="20dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm8"
+                android:layout_marginBottom="10dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:id="@+id/privacyTerm9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/privacyTermPopupTitle"
+                android:text="@string/privacyTerm9"
+                android:layout_marginBottom="20dp"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -210,7 +210,7 @@
                 android:id="@+id/privacyTermText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="개인 정보 약관 동의"
+                android:text="개인 정보 수집/이용 동의"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 />

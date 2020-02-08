@@ -1,10 +1,15 @@
 package com.example.footballreservationapp;
 
+import android.renderscript.ScriptIntrinsicLUT;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 public class PrivacyTermPopupActivity extends AppCompatActivity {
+    ScrollView privacyScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +23,13 @@ public class PrivacyTermPopupActivity extends AppCompatActivity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width * 0.7), (int)(height * 0.7));
+
+        privacyScrollView = (ScrollView)findViewById(R.id.privacyScrollView);
+
+        ConstraintLayout.LayoutParams sp = (ConstraintLayout.LayoutParams)privacyScrollView.getLayoutParams();
+
+        sp.height = (int)(height * 0.6);
+
+        privacyScrollView.setLayoutParams(sp);
     }
 }
