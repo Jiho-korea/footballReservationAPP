@@ -31,6 +31,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".SetImageActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".RequestPage"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

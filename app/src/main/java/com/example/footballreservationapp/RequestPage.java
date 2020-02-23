@@ -1,10 +1,14 @@
 package com.example.footballreservationapp;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -12,12 +16,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,14 +36,12 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
 import java.util.regex.Pattern;
 
 public class RequestPage extends AppCompatActivity {
@@ -65,6 +70,15 @@ public class RequestPage extends AppCompatActivity {
     private EditText endTimeminuteEdit;
     private TextView privacyTermText;
     private CheckBox privacyTermCheckBox;
+
+    // 이미지 업로드를 위한 필드들
+    static final int getimagesetting=1001;//for request intent
+    static Context mContext;
+    ImageView image;
+    Button get,send,reflash;
+    //ListView bloblist;
+    String temp="";
+    private static final int REQUEST_CAMERA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +170,8 @@ public class RequestPage extends AppCompatActivity {
         spinnerAdapter2 = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,endtimeList);
         endtimehourSpinner.setAdapter(spinnerAdapter2);
 
+        // 이미지 업로드를 위한 메소드 호출
+        init();
     }
 
 
@@ -517,6 +533,152 @@ public class RequestPage extends AppCompatActivity {
 
     }
 
+    // 이미지 업로드를 위한 필드 초기화
+    private void init() {
+        image=(ImageView)findViewById(R.id.image);
+        get=(Button) findViewById(R.id.get);
+        //send=(Button)findViewById(R.id.send);
+        //reflash=(Button)findViewById(R.id.reflash);
+        //bloblist=(ListView)findViewById(R.id.bloblist);
+        //list=new ListView(this);
+        //send.setOnClickListener(this);
+        //reflash.setOnClickListener(this);
+        //bloblist.setAdapter(list);
+        mContext=this;
+        //list_cnt=0;
+        permission_init();
+    }
+
+    // 권한 검사
+    void permission_init(){
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {	//권한 거절
+            // Request missing location permission.
+            // Check Permissions Now
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.CAMERA)) {
+                // 이전에 권한거절
+                // Toast.makeText(this,getString(R.string.limit),Toast.LENGTH_SHORT).show();
+
+            } else {
+                ActivityCompat.requestPermissions(
+                        this, new String[]{android.Manifest.permission.CAMERA},
+                        REQUEST_CAMERA);
+            }
+
+        } else {	//권한승인
+            //Log.e("onConnected","else");
+            // mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        }
+
+    }
+
+    // 업로드 버튼 클릭시 동작
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.get:
+                addImage();
+                break;
+//            case R.id.send:
+//                if(temp.length()>0)
+//                    insert_blob();
+//                else
+//                    Toast.makeText(this,"이미지가 없습니다.",Toast.LENGTH_SHORT).show();
+//                break;
+//            case R.id.reflash:
+//
+//                reflash_list();
+//                break;
+        }
+    }
+
+    void addImage(){
+        Intent intent=new Intent(getApplicationContext(),SetImageActivity.class);
+
+        startActivityForResult(intent, getimagesetting);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==getimagesetting){	//if image change
+
+            if(resultCode==RESULT_OK){
+                //image=(ImageView)findViewById(R.id.image);
+                Bitmap selPhoto = null;
+                selPhoto=(Bitmap) data.getParcelableExtra("bitmap");
+                image.setImageBitmap(selPhoto);//썸네일
+                BitMapToString(selPhoto);
+
+
+
+
+            }
+        }
+    }
+    /**
+     * bitmap을 string으로
+     * @param bitmap
+     * @return
+     */
+    public void BitMapToString(Bitmap bitmap){
+
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);	//bitmap compress
+        byte [] arr=baos.toByteArray();
+        String image= Base64.encodeToString(arr, Base64.DEFAULT);
+
+
+        try{
+            temp= URLEncoder.encode(image,"utf-8");
+        }catch (Exception e){
+            Log.e("exception",e.toString());
+        }
+
+    }
+
+    /*
+     * string을 bitmap으로
+     * @param image
+     * @return
+     */
+//    public static Bitmap StringToBitMap(String image){
+//        Log.e("StringToBitMap","StringToBitMap");
+//        try{
+//            byte [] encodeByte= Base64.decode(image,Base64.DEFAULT);
+//            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+//            Log.e("StringToBitMap","good");
+//            return bitmap;
+//        }catch(Exception e){
+//            e.getMessage();
+//            return null;
+//        }
+//    }
+
+//    void insert_blob(){
+//        pd=new ProgressDialog(this);
+//        pd.setMessage("이미지를 DB에 저장중입니다. 잠시만 기다리세요.");
+//        pd.show();
+//        Log.e("insert image",temp);
+//        controlMysql adddb=new controlMysql(temp);
+//        controlMysql.active=true;
+//        adddb.start();
+//    }
+
+//    static public void add_image(String result){   //이미지 추가 결과
+//        if(result!=null)
+//            Log.e("result",result);
+//        controlMysql.active=false;
+//        if(result.contains("true")){
+//            Toast.makeText(mContext, "이미지가 DB에 추가되었습니다..", Toast.LENGTH_SHORT).show();
+//        }else{
+//
+//            Toast.makeText(mContext, result+" 이미지가 DB에 추가되지 못했습니다.", Toast.LENGTH_SHORT).show();
+//        }
+//        pd.cancel();
+//
+//    }
 
     class ReserveBackgroundTask extends AsyncTask<String, Void, Void> {
         @Override

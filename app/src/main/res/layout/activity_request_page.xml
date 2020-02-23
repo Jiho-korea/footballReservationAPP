@@ -201,6 +201,7 @@
             android:hint="예약비밀번호"
             android:inputType="textPassword"/>
         <LinearLayout
+            android:id="@+id/privacyTerm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -224,6 +225,27 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editlist"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="40dp"
+        android:src="@mipmap/studentcard"
+        />
+    <Button
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:text="Upload"
+        android:id="@+id/get"
+        android:onClick="onClick"
+        android:textSize="10sp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="@id/image"
+        app:layout_constraintTop_toBottomOf="@id/image"/>
 
     <Button
         android:id="@+id/submit"
