@@ -75,9 +75,9 @@ public class RequestPage extends AppCompatActivity {
     static final int getimagesetting=1001;//for request intent
     static Context mContext;
     ImageView image;
-    Button get,send,reflash;
+    Button get; // ,send,reflash;
     //ListView bloblist;
-    String temp="";
+    String temp=""; // utf-8 로 인코딩된 Base64 스트링
     private static final int REQUEST_CAMERA = 1;
 
     @Override
@@ -239,6 +239,10 @@ public class RequestPage extends AppCompatActivity {
                 }else if(!privacyTermCheckBox.isChecked()){
                     circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "개인 정보 처리 방침을 확인하시고 약관에 동의해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if("".equals(temp)){
+                    circle_bar.setVisibility(View.GONE);
+                    Toast.makeText(RequestPage.this, "학생증 이미지를 등록해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -454,6 +458,7 @@ public class RequestPage extends AppCompatActivity {
                         if(success){
                             // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
                             new CheckReservationOverlapBackgroundTask().execute();
+                            Log.e("progress1", "progress1");
                         }else{
                             circle_bar.setVisibility(View.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
@@ -507,6 +512,7 @@ public class RequestPage extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             new ReserveBackgroundTask().execute();
+                                            Log.e("progress2", "progress2");
                                         }
                                     })
                                     .setNegativeButton("아니오", null)
@@ -693,7 +699,8 @@ public class RequestPage extends AppCompatActivity {
                 public void onResponse(String response) {
                     try{
                         JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success")   ;
+                        boolean success = jsonResponse.getBoolean("success");
+                        Log.e("success", success + "");
                         if(success){
                             circle_bar.setVisibility(View.GONE);
                             Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
@@ -714,7 +721,8 @@ public class RequestPage extends AppCompatActivity {
                     }
                 }
             };
-            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,responseListener);
+
+            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,temp,responseListener);
             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
             queue.add(reserveRequest);
             return null;
