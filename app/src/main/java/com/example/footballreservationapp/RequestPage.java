@@ -1,17 +1,20 @@
 package com.example.footballreservationapp;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -276,9 +279,8 @@ public class RequestPage extends AppCompatActivity {
                             .show();
                     return;
                 }
-
-
-                new ReservationValidateBackgroundTask().execute();
+                ///////////////////////////////////////////////////////////////////////////////////////////// 스레드 시작
+                new CheckDateBackgroundTask().execute();
                 // ReservationValidateRequest -> 같은 날에 예약을 한적이 있는 지 확인
 //                Response.Listener<String> validateListener = new Response.Listener<String>() {
 //                    @Override
@@ -441,6 +443,54 @@ public class RequestPage extends AppCompatActivity {
         }
     }
 
+    //예약을 하려는 날짜가 서버날짜와 동일한지 체크하는 스레드
+    class CheckDateBackgroundTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(String... args) {
+            Response.Listener<String> validateListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try{
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+                        // success 가 ture 면 오늘 날짜와 동일하다는 뜻
+                        if(success){
+                            // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
+                            new ReservationValidateBackgroundTask().execute();
+                        }else{
+                            circle_bar.setVisibility(View.GONE);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("날짜가 일치하지 않습니다.")
+                                    .setNegativeButton("확인", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+                    }
+                    catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            };
+            CheckDateRequest checkDateRequest = new CheckDateRequest(trueTodayDate,validateListener);
+            RequestQueue vqueue = Volley.newRequestQueue(RequestPage.this);
+            vqueue.add(checkDateRequest);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
+
+    //예약을 두번 하는지 체크 하는 스레드
     class ReservationValidateBackgroundTask extends AsyncTask<String, Void, Void> {
         @Override
         protected void onPreExecute() {
@@ -458,7 +508,6 @@ public class RequestPage extends AppCompatActivity {
                         if(success){
                             // CheckReservationOverlapRequest -> 다른사람이 예약한 시간에 예약을 할려는지 체크
                             new CheckReservationOverlapBackgroundTask().execute();
-                            Log.e("progress1", "progress1");
                         }else{
                             circle_bar.setVisibility(View.GONE);
                             AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
@@ -614,15 +663,21 @@ public class RequestPage extends AppCompatActivity {
                 //image=(ImageView)findViewById(R.id.image);
                 Bitmap selPhoto = null;
                 selPhoto=(Bitmap) data.getParcelableExtra("bitmap");
+
+//                byte[] bytes = data.getByteArrayExtra("BMP");
+//                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                String fName = data.getStringExtra("filename");
+//                String path = Environment.getExternalStorageDirectory() + fName + ".png";
+//                Bitmap bm = BitmapFactory.decodeFile(path);
+
                 image.setImageBitmap(selPhoto);//썸네일
+                //Log.e("selPhoto", selPhoto.toString());
                 BitMapToString(selPhoto);
-
-
-
 
             }
         }
     }
+
     /**
      * bitmap을 string으로
      * @param bitmap
@@ -633,58 +688,22 @@ public class RequestPage extends AppCompatActivity {
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);	//bitmap compress
         byte [] arr=baos.toByteArray();
-        String image= Base64.encodeToString(arr, Base64.DEFAULT);
-
+        Log.e("arr", arr.toString());
+        String image= Base64.encodeToString(arr, Base64.NO_WRAP);
+        Log.e("사진DB에 저장시 UTF인코딩전 image",image);
 
         try{
             temp= URLEncoder.encode(image,"utf-8");
+            //temp = temp.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+            //temp = temp.substring(temp.indexOf(",") + 1);
+
+            Log.e("temp",temp);
         }catch (Exception e){
             Log.e("exception",e.toString());
         }
 
     }
 
-    /*
-     * string을 bitmap으로
-     * @param image
-     * @return
-     */
-//    public static Bitmap StringToBitMap(String image){
-//        Log.e("StringToBitMap","StringToBitMap");
-//        try{
-//            byte [] encodeByte= Base64.decode(image,Base64.DEFAULT);
-//            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-//            Log.e("StringToBitMap","good");
-//            return bitmap;
-//        }catch(Exception e){
-//            e.getMessage();
-//            return null;
-//        }
-//    }
-
-//    void insert_blob(){
-//        pd=new ProgressDialog(this);
-//        pd.setMessage("이미지를 DB에 저장중입니다. 잠시만 기다리세요.");
-//        pd.show();
-//        Log.e("insert image",temp);
-//        controlMysql adddb=new controlMysql(temp);
-//        controlMysql.active=true;
-//        adddb.start();
-//    }
-
-//    static public void add_image(String result){   //이미지 추가 결과
-//        if(result!=null)
-//            Log.e("result",result);
-//        controlMysql.active=false;
-//        if(result.contains("true")){
-//            Toast.makeText(mContext, "이미지가 DB에 추가되었습니다..", Toast.LENGTH_SHORT).show();
-//        }else{
-//
-//            Toast.makeText(mContext, result+" 이미지가 DB에 추가되지 못했습니다.", Toast.LENGTH_SHORT).show();
-//        }
-//        pd.cancel();
-//
-//    }
 
     class ReserveBackgroundTask extends AsyncTask<String, Void, Void> {
         @Override
@@ -701,6 +720,10 @@ public class RequestPage extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(response);
                         boolean success = jsonResponse.getBoolean("success");
                         Log.e("success", success + "");
+
+                        Log.e("image", jsonResponse.getString("image"));
+                        //Log.e("data", jsonResponse.getString("data"));
+
                         if(success){
                             circle_bar.setVisibility(View.GONE);
                             Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();

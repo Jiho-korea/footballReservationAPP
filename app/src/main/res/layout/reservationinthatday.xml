@@ -159,6 +159,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             />
+
+        <TextView
+            android:id="@+id/studentcard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/approveProcedure"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="학생증"
+            android:textSize="14sp"
+            android:layout_marginRight="5dp"
+            />
+
         <FrameLayout
             android:id="@+id/approveProcedure"
             android:layout_width="wrap_content"

@@ -66,7 +66,7 @@ public class ReservationListAdapter extends BaseAdapter {
         Button cancleButton = (Button)v.findViewById(R.id.cancleButton);
         Button cancellation = (Button)v.findViewById(R.id.cancellation);
 
-
+        TextView studentCard = (TextView)v.findViewById(R.id.studentcard);
 
 //        approveButton.setOnClickListener(new View.OnClickListener(){
 //            @Override
@@ -109,6 +109,18 @@ public class ReservationListAdapter extends BaseAdapter {
 //                        .show();
 //            }
 //        });
+
+        studentCard.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parentActivity.getApplicationContext(),StudentCheckActivity.class);
+                intent.putExtra("date", reservationList.get(position).getDate());
+                intent.putExtra("serial_number", reservationList.get(position).getSerial_number());
+                intent.putExtra("starttime", reservationList.get(position).getStartTime());
+                intent.putExtra("status_code", reservationList.get(position).getStatus_code());
+                parentActivity.startActivity(intent);
+            }
+        });
 
         cancleButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -158,6 +170,7 @@ public class ReservationListAdapter extends BaseAdapter {
             cancleButton.setVisibility(View.GONE);
             approvalText.setVisibility(View.GONE);
             approvalReception.setVisibility(View.GONE);
+            studentCard.setVisibility(View.GONE);
         }
 
         v.setTag(reservation.getSid());

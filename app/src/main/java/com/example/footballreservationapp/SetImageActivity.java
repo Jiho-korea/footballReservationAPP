@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.util.DisplayMetrics;
@@ -14,7 +16,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 //카메라, 갤러리 둘중 하나의 이미지 업로드 방식 선택시 수행 되는 액티비티
@@ -121,16 +126,31 @@ public class SetImageActivity extends Activity implements OnClickListener {
 					e.printStackTrace();
 				}*/
 				bm=(Bitmap) data.getExtras().get("data");
+
 				bm=resize(bm);
 				intent.putExtra("bitmap",bm);
 				setResult(RESULT_OK, intent);
 				finish();
 				break;
 			case gallery:
-				
 				try {
 					
 					bm = Images.Media.getBitmap( getContentResolver(), data.getData());
+                    //Bitmap bm2 = Images.Media.getBitmap( getContentResolver(), data.getData());
+
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                    byte[] bytes = stream.toByteArray();
+//                    intent.putExtra("BMP",bytes);
+
+//                    File file = new File(Environment.getExternalStorageDirectory() + "imageBitmap" + ".png");
+//                    FileOutputStream fOut = new FileOutputStream(file);
+//
+//                    bm2.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+//                    fOut.flush();
+//                    fOut.close();
+//                    intent.putExtra("filename", "imageBitmap");
+
 					bm=resize(bm);
 					intent.putExtra("bitmap",bm);
 				} catch (FileNotFoundException e) {
@@ -157,7 +177,31 @@ public class SetImageActivity extends Activity implements OnClickListener {
 			finish();
 		}
 	}
-	
-	
-	
+
+    public Bitmap readImageWithSampling(String imagePath, int targetWidth, int targetHeight) {
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, bmOptions);
+
+        int photoWidth  = bmOptions.outWidth;
+        int photoHeight = bmOptions.outHeight;
+
+        if (targetHeight <= 0) {
+            targetHeight = (targetWidth * photoHeight) / photoWidth;
+        }
+
+        // Determine how much to scale down the image
+        int scaleFactor = 1;
+        if (photoWidth > targetWidth) {
+            scaleFactor = Math.min(photoWidth / targetWidth, photoHeight / targetHeight);
+        }
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        return BitmapFactory.decodeFile(imagePath, bmOptions);
+    }
+
 }
