@@ -56,6 +56,15 @@ public class ReservationPage extends AppCompatActivity {
         Intent intent = getIntent();
 
         tvDate = (TextView)findViewById(R.id.tv_date);
+        tvDate.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("date",todayDate);
+                startActivityForResult(intent,1);
+            }
+        });
         reserveButton = (Button)findViewById(R.id.reserveButton);
         empty_word = getLayoutInflater().inflate(R.layout.empty_list_item, null, false);
         addContentView(empty_word, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -147,7 +156,7 @@ public class ReservationPage extends AppCompatActivity {
             listlayout = (RelativeLayout)findViewById(R.id.list);  // 빈 레이아웃 얻음
             String[] subDate = tvDate.getText().toString().split("-");
 
-            String trueDay = day+"";
+            String trueDay = day+""; // dd 형태의 날짜
 
             if(day < 10){
                 trueDay = "0"+trueDay;
@@ -177,6 +186,25 @@ public class ReservationPage extends AppCompatActivity {
                 empty_word.setVisibility(View.GONE);
             }
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    String choiceDay = data.getStringExtra("choiceDay");
+                    Toast.makeText(this, "선택한 날짜 : ", Toast.LENGTH_SHORT);
+                    break;
+                default:
+                    listReservation();
+                    break;
+            }
+        }
+
     }
 
     class ReservationBackgroundTask extends AsyncTask<String, Void, Void> {

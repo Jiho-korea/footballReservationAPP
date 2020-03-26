@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalendarActivity">
+
+    <TextView
+        android:id="@+id/month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" 0월"
+        android:background="@color/colorPrimary"
+        android:textSize="17sp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:drawableLeft="@drawable/main_re"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <GridView
+        android:id="@+id/calendarGrid"
+        android:paddingTop="20sp"
+        android:paddingLeft="20sp"
+        android:paddingRight="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numColumns="7"
+        android:listSelector="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </GridView>
+
+</android.support.constraint.ConstraintLayout>
