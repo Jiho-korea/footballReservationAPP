@@ -203,7 +203,7 @@ public class ReservationPage extends AppCompatActivity {
                                 JSONArray jsonArray = jsonObject.getJSONArray("response");
                                 int count = 0;
                                 int serial_number, sid, people, status_code;
-                                String name, date, startTime, endTime, subject, phone;
+                                String name, date, startTime, endTime, subject, phone, canclereason;
                                 while(count < jsonArray.length()){
                                     JSONObject object = jsonArray.getJSONObject(count);
                                     serial_number = object.getInt("serial_number");
@@ -216,7 +216,8 @@ public class ReservationPage extends AppCompatActivity {
                                     subject = object.getString("subject");
                                     phone = object.getString("phone");
                                     status_code = object.getInt("status_code");
-                                    Reservation reservation = new Reservation(serial_number,sid, name, people, startTime, endTime,subject, phone, date , status_code);
+                                    canclereason = object.getString("canclereason");
+                                    Reservation reservation = new Reservation(serial_number,sid, name, people, startTime, endTime,subject, phone, date , status_code, canclereason);
                                     reservationList.add(reservation);
                                     adapter.notifyDataSetChanged();
                                     count++;

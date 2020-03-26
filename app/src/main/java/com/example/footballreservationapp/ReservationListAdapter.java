@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -67,6 +68,9 @@ public class ReservationListAdapter extends BaseAdapter {
         Button cancellation = (Button)v.findViewById(R.id.cancellation);
 
         TextView studentCard = (TextView)v.findViewById(R.id.studentcard);
+
+        LinearLayout cancleReasonLayout = (LinearLayout)v.findViewById(R.id.canclereasonlayout);
+        TextView canclereason = (TextView)v.findViewById(R.id.canclereason);
 
 //        approveButton.setOnClickListener(new View.OnClickListener(){
 //            @Override
@@ -155,22 +159,34 @@ public class ReservationListAdapter extends BaseAdapter {
         subjectTestView.setText(reservation.getSubject());
         sidTextView.setText(reservation.getSid() + "");
 
+        /*
+            예약코드
+            1 -> 승인완료
+            4 -> 승인반려
+            3 -> 예약취소
+         */
+
         if(reservation.getStatus_code() == 1){
             approvalText.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.VISIBLE);
             approvalReception.setVisibility(View.GONE);
             cancellation.setVisibility(View.GONE);
+            cancleReasonLayout.setVisibility(View.GONE);
         }else if(reservation.getStatus_code() == 4){
             approvalReception.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.VISIBLE);
             approvalText.setVisibility(View.GONE);
             cancellation.setVisibility(View.GONE);
+            cancleReasonLayout.setVisibility(View.GONE);
         }else if(reservation.getStatus_code() == 3){
             cancellation.setVisibility(View.VISIBLE);
+            cancleReasonLayout.setVisibility(View.VISIBLE);
             cancleButton.setVisibility(View.GONE);
             approvalText.setVisibility(View.GONE);
             approvalReception.setVisibility(View.GONE);
             studentCard.setVisibility(View.GONE);
+
+            canclereason.setText(reservation.getCanclereason() + "");
         }
 
         v.setTag(reservation.getSid());

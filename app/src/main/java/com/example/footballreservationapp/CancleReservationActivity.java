@@ -11,8 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -21,13 +23,17 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class CancleReservationActivity extends AppCompatActivity {
     private ProgressBar circle_bar;
+    private Spinner reasonSpinner;
 
     int serial_number;
     String date;
     String starttime;
     String c_password;
+    private String canclereason;
     int status_code;
     private EditText c_passwordText;
     @Override
@@ -44,6 +50,19 @@ public class CancleReservationActivity extends AppCompatActivity {
         circle_bar = (ProgressBar)findViewById(R.id.progressBar);
         circle_bar.setVisibility(View.GONE);
 
+        reasonSpinner = (Spinner)findViewById(R.id.reasonspinner);
+        final ArrayList<String> list = new ArrayList<>();
+        list.add("선택");
+        list.add("단순변심");
+        list.add("행사예정");
+        list.add("사용불가시간");
+        list.add("공사중");
+        list.add("임시폐쇄");
+        list.add("기타(경비실문의)");
+        ArrayAdapter spinnerAdapter;
+        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,list);
+        reasonSpinner.setAdapter(spinnerAdapter);
+
         c_passwordText = (EditText)findViewById(R.id.c_passwordText);
     }
 
@@ -52,11 +71,18 @@ public class CancleReservationActivity extends AppCompatActivity {
         if (v.getId() == R.id.cancle) {
             checkNetWork();
             circle_bar.setVisibility(View.VISIBLE);
+            canclereason = reasonSpinner.getSelectedItem().toString();
             if(!"".equals(c_passwordText.getText().toString())){
                 c_password = c_passwordText.getText().toString();
             }else{
                 circle_bar.setVisibility(View.GONE);
                 Toast.makeText(CancleReservationActivity.this, "예약비밀번호를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if("선택".equals(canclereason.trim())){
+                circle_bar.setVisibility(View.GONE);
+                Toast.makeText(CancleReservationActivity.this, "사유를 선택하여 주십시오.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -98,7 +124,7 @@ public class CancleReservationActivity extends AppCompatActivity {
                     }
                 }
             };
-            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(serial_number,date,starttime,status_code,c_password,responseListener);
+            CancleReservationRequest cancleReservationRequest = new CancleReservationRequest(serial_number,date,starttime,status_code,c_password,canclereason,responseListener);
             RequestQueue queue = Volley.newRequestQueue(CancleReservationActivity.this);
             queue.add(cancleReservationRequest);
 

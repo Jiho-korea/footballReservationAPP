@@ -19,6 +19,32 @@
         android:drawableLeft="@drawable/req_clock"
         />
 
+    <LinearLayout
+        android:id="@+id/reasonspinnerlayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@id/c_passwordText" >
+        <TextView
+            android:id="@+id/subjectWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사유 : "
+            android:gravity="center"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="18sp"
+            />
+        <Spinner
+            android:id="@+id/reasonspinner"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="46dp"
+            android:layout_marginEnd="45dp"
+            />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/c_passwordText"
         android:layout_width="match_parent"

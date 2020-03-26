@@ -10,7 +10,7 @@ public class CancleReservationRequest extends StringRequest {
     final static private String URL = "http://yonamfootball.dothome.co.kr/CancleReservation.php";
     private Map<String, String> parameters;
 
-    public CancleReservationRequest(int serial_number, String date, String starttime, int status_code,String password,Response.Listener<String> listener) {
+    public CancleReservationRequest(int serial_number, String date, String starttime, int status_code,String password, String canclereason,Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
         parameters.put("serial_number", serial_number+"");
@@ -18,6 +18,7 @@ public class CancleReservationRequest extends StringRequest {
         parameters.put("starttime", starttime);
         parameters.put("status_code", status_code+"");
         parameters.put("password", password);
+        parameters.put("canclereason", canclereason);
     }
 
     @Override

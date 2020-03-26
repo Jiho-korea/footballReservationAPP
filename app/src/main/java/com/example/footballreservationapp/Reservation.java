@@ -11,8 +11,9 @@ public class Reservation {
     String phone;
     String date;
     int status_code;
+    String canclereason;
 
-    public Reservation(int serial_number, int sid, String name, int people, String startTime, String endTime, String subject, String phone, String date, int status_code) {
+    public Reservation(int serial_number, int sid, String name, int people, String startTime, String endTime, String subject, String phone, String date, int status_code, String canclereason) {
         this.serial_number = serial_number;
         this.sid = sid;
         this.name = name;
@@ -23,6 +24,7 @@ public class Reservation {
         this.phone = phone;
         this.date = date;
         this.status_code = status_code;
+        this.canclereason = canclereason;
     }
 
     public Reservation() {
@@ -106,5 +108,13 @@ public class Reservation {
 
     public void setStatus_code(int status_code) {
         this.status_code = status_code;
+    }
+
+    public String getCanclereason() {
+        return canclereason;
+    }
+
+    public void setCanclereason(String canclereason) {
+        this.canclereason = canclereason;
     }
 }

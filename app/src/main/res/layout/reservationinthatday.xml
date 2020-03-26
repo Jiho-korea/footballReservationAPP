@@ -160,6 +160,36 @@
             app:layout_constraintStart_toStartOf="parent"
             />
 
+        <LinearLayout
+            android:id="@+id/canclereasonlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:text="사유 : "
+            />
+            <TextView
+                android:id="@+id/canclereason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorText"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:text="사유"
+                />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/studentcard"
             android:layout_width="wrap_content"
