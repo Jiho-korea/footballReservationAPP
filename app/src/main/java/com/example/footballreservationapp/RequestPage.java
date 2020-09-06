@@ -1,21 +1,24 @@
 package com.example.footballreservationapp;
 
-import android.annotation.SuppressLint;
+
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,21 +30,21 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+//import com.android.volley.VolleyError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -78,9 +81,14 @@ public class RequestPage extends AppCompatActivity {
     static final int getimagesetting=1001;//for request intent
     static Context mContext;
     ImageView image;
+    String imgPath;
+
     Button get; // ,send,reflash;
     //ListView bloblist;
     String temp=""; // utf-8 로 인코딩된 Base64 스트링
+
+
+
     private static final int REQUEST_CAMERA = 1;
 
     @Override
@@ -243,7 +251,7 @@ public class RequestPage extends AppCompatActivity {
                     circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "개인 정보 처리 방침을 확인하시고 약관에 동의해주세요.", Toast.LENGTH_SHORT).show();
                     return;
-                }else if("".equals(temp)){
+                }else if(imgPath == null){  // 수정 ("".equals(temp)){
                     circle_bar.setVisibility(View.GONE);
                     Toast.makeText(RequestPage.this, "학생증 이미지를 등록해주세요.", Toast.LENGTH_SHORT).show();
                     return;
@@ -660,40 +668,53 @@ public class RequestPage extends AppCompatActivity {
         if(requestCode==getimagesetting){	//if image change
 
             if(resultCode==RESULT_OK){
-                //image=(ImageView)findViewById(R.id.image);
-                Bitmap selPhoto = null;
-                selPhoto=(Bitmap) data.getParcelableExtra("bitmap");
-
-//                byte[] bytes = data.getByteArrayExtra("BMP");
-//                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                String fName = data.getStringExtra("filename");
-//                String path = Environment.getExternalStorageDirectory() + fName + ".png";
-//                Bitmap bm = BitmapFactory.decodeFile(path);
-
-                image.setImageBitmap(selPhoto);//썸네일
+                //수정 (주석)
+                //Bitmap selPhoto = null;
+                //selPhoto=(Bitmap) data.getParcelableExtra("bitmap");
+                //image.setImageBitmap(selPhoto);//썸네일
                 //Log.e("selPhoto", selPhoto.toString());
-                BitMapToString(selPhoto);
 
+                // 수정
+                Uri uri = data.getParcelableExtra("uri");
+                image.setImageURI(uri);
+                //갤러리앱에서 관리하는 DB정보가 있는데, 그것이 나온다 [실제 파일 경로가 아님!!]
+                //얻어온 Uri는 Gallery앱의 DB번호임. (content://-----/2854)
+                //업로드를 하려면 이미지의 절대경로(실제 경로: file:// -------/aaa.png 이런식)가 필요함
+                //Uri -->절대경로(String)로 변환
+                imgPath= getRealPathFromUri(uri);   //임의로 만든 메소드 (절대경로를 가져오는 메소드)
+                if(imgPath == null){
+                    Toast.makeText(this, "갤러리에서 이미지를 선택해주세요.(클라우드X)", Toast.LENGTH_SHORT).show();
+                }
+                //이미지 경로 uri 확인해보기
+                new AlertDialog.Builder(this).setMessage(uri.toString()+"\n\n"+imgPath).create().show();
+
+
+                // 수정
+                //BitMapToString(selPhoto);
+
+            }else{
+                Toast.makeText(this, "이미지 선택을 하지 않았습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     /**
      * bitmap을 string으로
-     * @param bitmap
+     * @param
      * @return
      */
+    /* 수정
     public void BitMapToString(Bitmap bitmap){
 
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);	//bitmap compress
         byte [] arr=baos.toByteArray();
         Log.e("arr", arr.toString());
-        String image= Base64.encodeToString(arr, Base64.NO_WRAP);
+        String image= Base64.encodeToString(arr, Base64.DEFAULT);
         Log.e("사진DB에 저장시 UTF인코딩전 image",image);
 
         try{
-            temp= URLEncoder.encode(image,"utf-8");
+            temp= "&imagedevice="+ URLEncoder.encode(image,"utf-8");
             //temp = temp.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
             //temp = temp.substring(temp.indexOf(",") + 1);
 
@@ -703,7 +724,19 @@ public class RequestPage extends AppCompatActivity {
         }
 
     }
+    */
 
+    String getRealPathFromUri(Uri uri){
+
+        String[] proj= {MediaStore.Images.Media.DATA};
+        CursorLoader loader= new CursorLoader(this, uri, proj, null, null, null);
+        Cursor cursor= loader.loadInBackground();
+        int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result= cursor.getString(column_index);
+        cursor.close();
+        return  result;
+    }
 
     class ReserveBackgroundTask extends AsyncTask<String, Void, Void> {
         @Override
@@ -721,7 +754,8 @@ public class RequestPage extends AppCompatActivity {
                         boolean success = jsonResponse.getBoolean("success");
                         Log.e("success", success + "");
 
-                        Log.e("image", jsonResponse.getString("image"));
+                        // 수정
+                        //Log.e("image", jsonResponse.getString("image"));
                         //Log.e("data", jsonResponse.getString("data"));
 
                         if(success){
@@ -745,9 +779,52 @@ public class RequestPage extends AppCompatActivity {
                 }
             };
 
-            ReserveRequest reserveRequest = new ReserveRequest(sid,trueTodayDate,people,startTime,endTime,name,phone,subject,password,temp,responseListener);
+
+            // 수정
+            String serverUrl="http://yonamfootball.dothome.co.kr/ImageUpload.php";
+
+            //Volley plus Library를 이용해서
+            //파일 전송하도록..
+            //Volley+는 AndroidStudio에서 검색이 안됨 [google 검색 이용]
+            //파일 전송 요청 객체 생성[결과를 String으로 받음]
+            SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        String imageName = jsonResponse.getString("imageName");
+                        Toast.makeText(RequestPage.this,imageName,Toast.LENGTH_SHORT).show();
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(RequestPage.this, "ERROR", Toast.LENGTH_SHORT).show();
+                }
+
+            });
+
+            //요청 객체에 보낼 데이터를 추가
+            //smpr.addStringParam("name", name);
+            //smpr.addStringParam("msg", msg);
+            //이미지 파일 추가
+            smpr.addFile("img", imgPath);
+
+            // 여기까지 수정
+
+                                                                                                                                             // 수정 (temp 제거)
+            ReserveRequest reserveRequest = new ReserveRequest(sid, trueTodayDate, people, startTime, endTime, name, phone, subject, password, responseListener);
+
+
             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
             queue.add(reserveRequest);
+            queue.add(smpr);
             return null;
         }
 

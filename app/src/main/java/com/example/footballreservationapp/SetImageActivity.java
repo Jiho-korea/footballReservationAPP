@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -70,7 +71,7 @@ public class SetImageActivity extends Activity implements OnClickListener {
 		case R.id.gallerypopBtn:
 			
 			intent.setAction(Intent.ACTION_GET_CONTENT);
-			intent.setType("image/-");
+			intent.setType("image/*");
 			startActivityForResult(intent, gallery);
 			break;
 
@@ -107,59 +108,41 @@ public class SetImageActivity extends Activity implements OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		Intent intent=new Intent();
+		// 수정
+        Uri uri = data.getData();
+        //
+
 		Bitmap bm;
 		if(resultCode==RESULT_OK){
 			switch(requestCode){
 			case camera:
-				/*
-				try {
-					
-					bm= Images.Media.getBitmap(getContentResolver(), data.getData());
+			    // 수정
+				//bm=(Bitmap) data.getExtras().get("data");
 
-					bm=resize(bm);
-					intent.putExtra("bitmap",bm);
-				} catch (FileNotFoundException e) {
-					
-					e.printStackTrace();
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				}*/
-				bm=(Bitmap) data.getExtras().get("data");
-
-				bm=resize(bm);
-				intent.putExtra("bitmap",bm);
-				setResult(RESULT_OK, intent);
+				//bm=resize(bm);
+				//intent.putExtra("bitmap",bm);
+				//setResult(RESULT_OK, intent);
+                //
+                // 수정(추가)
+                intent.putExtra("uri", uri);
 				finish();
 				break;
 			case gallery:
 				try {
-					
-					bm = Images.Media.getBitmap( getContentResolver(), data.getData());
-                    //Bitmap bm2 = Images.Media.getBitmap( getContentResolver(), data.getData());
+					//Uri uri = data.getData();
 
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] bytes = stream.toByteArray();
-//                    intent.putExtra("BMP",bytes);
+                    //수정
+					//bm = Images.Media.getBitmap( getContentResolver(), data.getData());
+					//bm=resize(bm);
+					//intent.putExtra("bitmap",bm);
 
-//                    File file = new File(Environment.getExternalStorageDirectory() + "imageBitmap" + ".png");
-//                    FileOutputStream fOut = new FileOutputStream(file);
-//
-//                    bm2.compress(Bitmap.CompressFormat.PNG, 85, fOut);
-//                    fOut.flush();
-//                    fOut.close();
-//                    intent.putExtra("filename", "imageBitmap");
+                    // 수정
+                    intent.putExtra("uri", uri);
 
-					bm=resize(bm);
-					intent.putExtra("bitmap",bm);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}catch(OutOfMemoryError e){
+				} catch (Exception /*FileNotFoundException | IOException*/ e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }catch(OutOfMemoryError e){
 					Toast.makeText(getApplicationContext(), "이미지 용량이 너무 큽니다.", Toast.LENGTH_SHORT).show();
 				}
 				setResult(RESULT_OK, intent);

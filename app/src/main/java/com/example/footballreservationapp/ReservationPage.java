@@ -59,7 +59,7 @@ public class ReservationPage extends AppCompatActivity {
         tvDate.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
+                Intent intent = new Intent(ReservationPage.this, CalendarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("date",todayDate);
                 startActivityForResult(intent,1);
