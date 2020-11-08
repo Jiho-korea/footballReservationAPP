@@ -781,7 +781,8 @@ public class RequestPage extends AppCompatActivity {
 
 
             // 수정
-            String serverUrl="http://yonamfootball.dothome.co.kr/ImageUpload.php";
+
+            String serverUrl="http://yonamfootball.dothome.co.kr/Reserve.php";
 
             //Volley plus Library를 이용해서
             //파일 전송하도록..
@@ -790,15 +791,36 @@ public class RequestPage extends AppCompatActivity {
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    try {
+                    try{
                         JSONObject jsonResponse = new JSONObject(response);
-                        String imageName = jsonResponse.getString("imageName");
-                        Toast.makeText(RequestPage.this,imageName,Toast.LENGTH_SHORT).show();
+                        boolean success = jsonResponse.getBoolean("success");
+                        String success_name = jsonResponse.getString("name");
+                        Log.e("success", success + " " + success_name);
+                        //String message = jsonResponse.getString("message");
+                        //String imageName = jsonResponse.getString("imageName");
+                        //new AlertDialog.Builder(RequestPage.this).setMessage(message+"\n\n"+imageName).create().show();
+                        // 수정
+                        //Log.e("image", jsonResponse.getString("image"));
+                        //Log.e("data", jsonResponse.getString("data"));
 
-                    }catch (JSONException e){
+                        if(success){
+                            circle_bar.setVisibility(View.GONE);
+                            Toast.makeText(RequestPage.this,"예약신청완료",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                        else{
+                            circle_bar.setVisibility(View.GONE);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RequestPage.this);
+                            builder.setMessage("예약신청에 실패하셨습니다")
+                                    .setNegativeButton("다시 시도", null)
+                                    .create()
+                                    .show();
+                            return;
+                        }
+                    }
+                    catch (JSONException e){
                         e.printStackTrace();
                     }
-
                 }
 
 
@@ -809,21 +831,29 @@ public class RequestPage extends AppCompatActivity {
                 }
 
             });
-
+            
             //요청 객체에 보낼 데이터를 추가
-            //smpr.addStringParam("name", name);
-            //smpr.addStringParam("msg", msg);
+            smpr.addStringParam("sid",sid+"");
+            smpr.addStringParam("date",trueTodayDate);
+            smpr.addStringParam("people",people + "");
+            smpr.addStringParam("startTime", startTime);
+            smpr.addStringParam("endTime", endTime);
+            smpr.addStringParam("name", name);
+            smpr.addStringParam("phone", phone);
+            smpr.addStringParam("subject", subject);
+            smpr.addStringParam("password", password);
+
             //이미지 파일 추가
-            smpr.addFile("img", imgPath);
+            //smpr.addFile("img", imgPath);
 
             // 여기까지 수정
 
-                                                                                                                                             // 수정 (temp 제거)
-            ReserveRequest reserveRequest = new ReserveRequest(sid, trueTodayDate, people, startTime, endTime, name, phone, subject, password, responseListener);
+                                                                                                                                             // 수정 (temp -> imgPath)
+            //ReserveRequest reserveRequest = new ReserveRequest(sid, trueTodayDate, people, startTime, endTime, name, phone, subject, password, responseListener);
 
 
             RequestQueue queue = Volley.newRequestQueue(RequestPage.this);
-            queue.add(reserveRequest);
+            //queue.add(reserveRequest);
             queue.add(smpr);
             return null;
         }
